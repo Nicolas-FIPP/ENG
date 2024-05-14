@@ -10,53 +10,51 @@ export default class TipoOficinaController {
       const TipoOficina: TipoOficinaIn = req.body;
       console.log(TipoOficina);
       const newTipoOficina: TipoOficinaOut = await tipooficinaModel.create(TipoOficina);
-      console.log("antes de gravar")
       res.status(201).json(newTipoOficina);
-      console.log("dps de gravar")
     } catch (e) {
-      console.log("Failed to create tipo_oficina", e);
+      console.log("Failed to create Tipo_Oficina", e);
       res.status(500).send({
         error: "USR-01",
-        message: "Failed to create tipo_oficina",
+        message: "Failed to create Tipo_Oficina",
       });
     }
   };
-/*
+
   get = async (req: Request, res: Response) => {
     try {
       const id: number = parseInt(req.params.id);
-      const newUser: UserOut | null = await userModel.get(id);
+      let newTipoOficina: TipoOficinaOut | null = await tipooficinaModel.get(id);
 
-      if (newUser) {
-        res.status(200).json(newUser);
+      if (newTipoOficina?.id == id) {
+        res.status(200).json(newTipoOficina);
       } else {
         res.status(404).json({
           error: "USR-06",
-          message: "User not found.",
+          message: "Tipo_Oficina not found.",
         });
       }
     } catch (e) {
-      console.log("Failed to get user", e);
+      console.log("Failed to get Tipo_Oficina", e);
       res.status(500).send({
         error: "USR-02",
-        message: "Failed to get user",
+        message: "Failed to get Tipo_Oficina",
       });
     }
   };
 
   getAll = async (req: Request, res: Response) => {
     try {
-      const users: UserOut[] | null = await userModel.getAll();
-      res.status(200).json(users);
+      const Tipo_Oficina_s: TipoOficinaOut[] | null = await tipooficinaModel.getAll();
+      res.status(200).json(Tipo_Oficina_s);
     } catch (e) {
-      console.log("Failed to get all users", e);
+      console.log("Failed to get all Tipo_Oficina_s", e);
       res.status(500).send({
         error: "USR-03",
-        message: "Failed to get all users",
+        message: "Failed to get all Tipo_Oficina_s",
       });
     }
   };
-
+/*
   update = async (req: Request, res: Response) => {
     try {
       const id: number = parseInt(req.params.id);
