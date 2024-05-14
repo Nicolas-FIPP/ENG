@@ -1,9 +1,11 @@
 import "dotenv/config";
 import express from "express";
-import usersRoutes from "routes/UserRoute";
 import { authentication } from "middlewares/auth";
 import { DateTime } from "luxon";
 import tipooficinaRoutes from "routes/tipooficinaRoutes";
+import despesaRoutes from "routes/DespesaRoutes"
+import usuarioRoutes from "routes/UsuarioRoutes"
+import pessoaRoutes from "routes/PessoaRoutes"
 
 DateTime.local().setZone("America/Sao_Paulo");
 
@@ -16,4 +18,10 @@ app.get("/", (req, res) => {
 //app.use("/users", authentication, usersRoutes);
 //app.use("/users", usersRoutes);
 app.use("/tipooficina", tipooficinaRoutes);
+app.use("/despesa", despesaRoutes)
+app.use("/usuario", usuarioRoutes);
+app.use("/pessoa", pessoaRoutes);
+
+
+
 app.listen(process.env.PORT || 3344);

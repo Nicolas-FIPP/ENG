@@ -1,8 +1,8 @@
 export interface TipoOficinaIn {
-  tof_nome: string;
+  nome: string;
 }
 
 export interface TipoOficinaOut {
-  tof_id : number;
-  tof_nome: string | null;
+  id : number;
+  nome: string | null;
 }

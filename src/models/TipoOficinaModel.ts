@@ -8,7 +8,7 @@ export default class TipoOficinaModel {
   create = async (tipooficina : TipoOficinaIn) => {
     return await prisma.tipo_oficina.create({
       data : {
-        tof_nome : tipooficina.tof_nome
+        nome : tipooficina.nome
       }
     });
   }
@@ -17,26 +17,26 @@ export default class TipoOficinaModel {
     return await prisma.tipo_oficina.findMany();
   }
 
-  get = async (tof_id: number) => {
+  get = async (id: number) => {
     return await prisma.tipo_oficina.findUnique({
       where: {
-        tof_id
+        id
       }
     });
   }
 
-  delete = async (tof_id: number) => {
+  delete = async (id: number) => {
     return await prisma.tipo_oficina.delete({
       where: {
-        tof_id
+        id
       }
     })
   }
 
-  update = async (tof_id: number, tipooficina: TipoOficinaIn) => {
+  update = async (id: number, tipooficina: TipoOficinaIn) => {
     return await prisma.tipo_oficina.update({
       where: {
-        tof_id
+        id
       },
       data: {
         ...tipooficina

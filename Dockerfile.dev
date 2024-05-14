@@ -9,6 +9,9 @@ RUN yarn install
 RUN yarn global add prisma
 RUN yarn add @prisma/client
 RUN apt-get update && apt install -y openssl
+RUN yarn add bcrypt
+RUN yarn add jsonwebtoken
+
 RUN prisma generate
 
 EXPOSE 3344

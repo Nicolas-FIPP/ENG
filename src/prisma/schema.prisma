@@ -13,85 +13,98 @@ datasource db {
 }
 
 model beneficio {
-  ben_id          Int               @id @default(autoincrement())
-  ben_nome        String?           @db.VarChar(50)
-  ben_data_ent    DateTime?         @db.Date
-  ben_qtde        Int?
+  id              Int               @id @default(autoincrement())
+  nome            String            
+  dt_entrega      DateTime         
+  qtde            Int
+  criado_em       DateTime          @default(now())
+
   pes_id          Int?
-  pessoa          pessoa?           @relation(fields: [pes_id], references: [pes_id], onDelete: NoAction, onUpdate: NoAction)
+  pessoa          pessoa?           @relation(fields: [pes_id], references: [id])
   itens_beneficio itens_beneficio[]
 }
 
 model despesa {
-  des_id       Int           @id @default(autoincrement())
-  des_valor    Decimal?      @db.Decimal
-  des_dtvencto DateTime?     @db.Date
-  des_dtpagto  DateTime?     @db.Date
-  tde_id       Int?
-  usu_id       Int?
-  eve_id       Int?
-  evento       evento?       @relation(fields: [eve_id], references: [eve_id], onDelete: NoAction, onUpdate: NoAction)
-  tipo_despesa tipo_despesa? @relation(fields: [tde_id], references: [tde_id], onDelete: NoAction, onUpdate: NoAction)
-  usuario      usuario?      @relation(fields: [usu_id], references: [usu_id], onDelete: NoAction, onUpdate: NoAction)
+  id               Int           @id @default(autoincrement())
+  valor            Float       
+  dt_vencimento    DateTime      
+  dt_pagamento     DateTime      
+  criado_em        DateTime      @default(now())
+
+  tde_id           Int
+  usu_id           Int
+  eve_id           Int?
+  evento           evento?       @relation(fields: [eve_id], references: [id])
+  tipo_despesa     tipo_despesa  @relation(fields: [tde_id], references: [id])
+  usuario          usuario       @relation(fields: [usu_id], references: [id])
 }
 
 model doacao {
-  doa_id          Int            @id @default(autoincrement())
-  doa_data        DateTime?      @db.Date
-  doa_estado      String?        @db.VarChar(5)
-  doa_cidade      String?        @db.VarChar(50)
-  doa_rua         String?        @db.VarChar(70)
-  doa_bairro      String?        @db.VarChar(70)
-  doa_complemento String?        @db.VarChar(50)
-  doa_cep         String?        @db.VarChar(40)
-  doa_numero      String?        @db.VarChar(40)
-  pes_id          Int?
-  pessoa          pessoa?        @relation(fields: [pes_id], references: [pes_id], onDelete: NoAction, onUpdate: NoAction)
+  id              Int               @id @default(autoincrement())
+  data            DateTime      
+  uf              String            @db.VarChar(2)
+  cidade          String         
+  rua             String?        
+  bairro          String?        
+  complemento     String?        
+  cep             String            @db.VarChar(8)
+  numero          String?        
+  criado_em       DateTime          @default(now())
+
+  pes_id          Int
+  pessoa          pessoa            @relation(fields: [pes_id], references: [id])
   itens_doacao    itens_doacao[]
 }
 
 model donativo {
-  don_id          Int               @id @default(autoincrement())
-  don_desc        String?           @db.VarChar(50)
-  don_valor_total Decimal?          @db.Decimal
+  id              Int                   @id @default(autoincrement())
+  desc            String?       
+  valor_total     Float?    
+  criado_em       DateTime          @default(now())
+   
   itens_beneficio itens_beneficio[]
   itens_doacao    itens_doacao[]
 }
 
 model evento {
-  eve_id             Int            @id @default(autoincrement())
-  eve_nome           String?        @db.VarChar(50)
-  eve_custo          Decimal?       @db.Decimal
-  eve_dtini          DateTime?      @db.Date
-  eve_dtfim          DateTime?      @db.Date
-  eve_estado         String?        @db.VarChar(5)
-  eve_cidade         String?        @db.VarChar(50)
-  eve_rua            String?        @db.VarChar(70)
-  eve_bairro         String?        @db.VarChar(70)
-  eve_cep            String?        @db.VarChar(40)
-  eve_numero         String?        @db.VarChar(40)
-  eve_complemento    String?        @db.VarChar(50)
-  pes_id_responsavel Int?
-  despesa            despesa[]
-  pessoa             pessoa?        @relation(fields: [pes_id_responsavel], references: [pes_id], onDelete: NoAction, onUpdate: NoAction)
-  participante       participante[]
+  id                   Int            @id @default(autoincrement())
+  nome                 String
+  custo                Float   
+  dt_ini               DateTime    
+  dt_fim               DateTime    
+  uf                   String         @db.VarChar(2)
+  cidade               String         
+  rua                  String?        
+  bairro               String?        
+  complemento          String?        
+  cep                  String         @db.VarChar(8)
+  numero               String?
+  criado_em            DateTime       @default(now())
+
+
+  pes_id_responsavel   Int?
+  despesa              despesa[]
+  pessoa               pessoa?        @relation(fields: [pes_id_responsavel], references: [id])
+  participante         participante[]
 }
 
 model fisica {
-  pes_id        Int            @id @default(autoincrement())
-  pesfis_cpf    String?        @db.VarChar(20)
-  pesfis_dtnasc DateTime?      @db.Date
-  pesfis_sexo   String?        @db.VarChar(2)
-  pesfis_rg     String?        @db.VarChar(20)
+  pes_id        Int              @id 
+  cpf           String           @db.VarChar(11) @unique
+  dt_nasc       DateTime       
+  sexo          String           @db.VarChar(1)
+  rg            String           @db.VarChar(9)  @unique
+
   matricula     matricula[]
   participante  participante[]
+  usuario       usuario?
 }
 
 model itens_beneficio {
   don_id    Int
   ben_id    Int
-  beneficio beneficio @relation(fields: [ben_id], references: [ben_id], onDelete: NoAction, onUpdate: NoAction)
-  donativo  donativo  @relation(fields: [don_id], references: [don_id], onDelete: NoAction, onUpdate: NoAction)
+  beneficio beneficio @relation(fields: [ben_id], references: [id])
+  donativo  donativo  @relation(fields: [don_id], references: [id])
 
   @@id([don_id, ben_id])
 }
@@ -99,101 +112,112 @@ model itens_beneficio {
 model itens_doacao {
   doa_id       Int
   don_id       Int
-  itsdoa_valor Decimal? @db.Decimal
+  itsdoa_valor Decimal? 
   itsdoa_qtde  Int?
-  doacao       doacao   @relation(fields: [doa_id], references: [doa_id], onDelete: NoAction, onUpdate: NoAction)
-  donativo     donativo @relation(fields: [don_id], references: [don_id], onDelete: NoAction, onUpdate: NoAction)
+  doacao       doacao   @relation(fields: [doa_id], references: [id])
+  donativo     donativo @relation(fields: [don_id], references: [id])
 
   @@id([doa_id, don_id])
 }
 
 model juridica {
-  pes_id               Int             @id @default(autoincrement())
-  pesjur_cnpj          String?         @db.VarChar(35)
-  pesjur_insc_estadual String?         @db.VarChar(70)
-  pesjur_site          String?         @db.VarChar(90)
-  pesjur_razao_social  String?         @db.VarChar(80)
+  pes_id               Int             @id 
+  cnpj                 String          @unique @db.VarChar(14)
+  insc_estadual        String          @unique
+  site                 String?         @unique
+  razao_social         String          @unique
+
   parametrizacao       parametrizacao?
 }
 
 model matricula {
-  mat_id         Int       @id @default(autoincrement())
-  mat_data       DateTime? @db.Date
-  pes_id         Int?
-  oficina_ofi_id Int?
-  oficina        oficina?  @relation(fields: [oficina_ofi_id], references: [ofi_id], onDelete: NoAction, onUpdate: NoAction)
-  fisica         fisica?   @relation(fields: [pes_id], references: [pes_id], onDelete: NoAction, onUpdate: NoAction)
+  id               Int            @id @default(autoincrement())
+  criado_em        DateTime       @default(now())
+
+  pes_id           Int
+  ofi_id           Int?
+  oficina          oficina?       @relation(fields: [ofi_id], references: [id])
+  fisica           fisica         @relation(fields: [pes_id], references: [pes_id])
 }
 
 model oficina {
-  ofi_id                 Int           @id @default(autoincrement())
-  ofi_lim                Int?
-  ofi_disc               String?       @db.VarChar(65)
-  ofi_sala               Int?
-  ofi_dtini              DateTime?     @db.Date
-  ofi_dtfim              DateTime?     @db.Date
-  ofi_dias_funcionamento String?       @db.VarChar(80)
-  pes_id                 Int?
-  tof_id                 Int?
+  id                    Int           @id @default(autoincrement())
+  limite                Int
+  disciplina            String       
+  sala                  Int
+  dt_ini                DateTime     
+  dt_fim                DateTime     
+  dias_funcionamento    String       
+  criado_em             DateTime       @default(now())
+
+  pes_id                 Int
+  tof_id                 Int
   matricula              matricula[]
-  pessoa                 pessoa?       @relation(fields: [pes_id], references: [pes_id], onDelete: NoAction, onUpdate: NoAction)
-  tipo_oficina           tipo_oficina? @relation(fields: [tof_id], references: [tof_id], onDelete: NoAction, onUpdate: NoAction)
+  pessoa                 pessoa        @relation(fields: [pes_id], references: [id])
+  tipo_oficina           tipo_oficina  @relation(fields: [tof_id], references: [id])
 }
 
 model parametrizacao {
-  pes_id           Int      @id
-  par_logo_grande  String?  @db.VarChar(80)
-  par_logo_pequeno String?  @db.VarChar(80)
-  juridica         juridica @relation(fields: [pes_id], references: [pes_id], onDelete: NoAction, onUpdate: NoAction)
+  pes_id             Int      @id
+  par_logo_grande    String?  
+  par_logo_pequeno   String?  
+  juridica           juridica @relation(fields: [pes_id], references: [pes_id])
 }
 
 model participante {
   pes_id Int
   eve_id Int
-  evento evento @relation(fields: [eve_id], references: [eve_id], onDelete: NoAction, onUpdate: NoAction)
-  fisica fisica @relation(fields: [pes_id], references: [pes_id], onDelete: NoAction, onUpdate: NoAction)
+  evento evento @relation(fields: [eve_id], references: [id])
+  fisica fisica @relation(fields: [pes_id], references: [pes_id])
 
   @@id([pes_id, eve_id])
 }
 
 model pessoa {
-  pes_id          Int         @id @default(autoincrement())
-  pes_nome        String?     @db.VarChar(80)
-  pes_tel         String?     @db.VarChar(20)
-  pes_status      Int?
-  pes_email       String?     @db.VarChar(30)
-  pes_estado      String?     @db.VarChar(5)
-  pes_cidade      String?     @db.VarChar(50)
-  pes_rua         String?     @db.VarChar(70)
-  pes_bairro      String?     @db.VarChar(70)
-  pes_cep         String?     @db.VarChar(40)
-  pes_numero      String?     @db.VarChar(40)
-  pes_complemento String?     @db.VarChar(50)
+  id              Int         @id @default(autoincrement())
+  nome            String      
+  tel             String      @unique @db.VarChar(11)
+  status          Boolean     @default(true)
+  email           String      @unique
+  uf              String      @db.VarChar(2)
+  cidade          String         
+  rua             String?        
+  bairro          String?        
+  complemento     String?        
+  cep             String      @db.VarChar(8)
+  numero          String?
+  criado_em       DateTime    @default(now())
+
   beneficio       beneficio[]
   doacao          doacao[]
   evento          evento[]
   oficina         oficina[]
-  usuario         usuario[]
 }
 
 model tipo_despesa {
-  tde_id   Int       @id @default(autoincrement())
-  tde_nome String?   @db.VarChar(50)
+  id                   Int            @id @default(autoincrement())
+  nome                 String    
+  criado_em            DateTime       @default(now())
+
   despesa  despesa[]
 }
 
 model tipo_oficina {
-  tof_id   Int       @id @default(autoincrement())
-  tof_nome String?   @db.VarChar(50)
+  id                   Int          @id @default(autoincrement())
+  nome                 String       
+  criado_em            DateTime     @default(now())
+
   oficina  oficina[]
 }
 
 model usuario {
-  usu_id           Int       @id @default(autoincrement())
-  usu_senha        String?   @db.VarChar(50)
-  usu_nivel_acesso Int?
-  usu_status_ativo Int?
-  pes_id           Int?
+  id              Int            @id @default(autoincrement())
+  senha           String         
+  nivel_acesso    Int
+  status          Boolean        @default(true)
+  criado_em       DateTime       @default(now())
+
+  pes_id           Int           @unique
   despesa          despesa[]
-  pessoa           pessoa?   @relation(fields: [pes_id], references: [pes_id], onDelete: NoAction, onUpdate: NoAction)
+  fisica           fisica        @relation(fields: [pes_id], references: [pes_id])
 }
