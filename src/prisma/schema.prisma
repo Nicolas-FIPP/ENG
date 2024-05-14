@@ -2,8 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
-  binaryTargets = ["native", "darwin", "darwin-arm64", "linux-musl", "debian-openssl-1.1.x", "darwin"]
+  provider        = "prisma-client-js"
+  binaryTargets   = ["native", "darwin", "darwin-arm64", "linux-musl", "debian-openssl-1.1.x", "darwin"]
   previewFeatures = ["interactiveTransactions"]
 }
 
@@ -12,30 +12,188 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id                      Int     @id @default(autoincrement())
-  full_name               String
-  email                   String @unique
-  phone                   String
-  cpf                     String @unique
-  password                String
-  transaction_password    String
-  created_at              DateTime @default(now())
-  updated_at              DateTime?
-  address                 Address[]
+model beneficio {
+  ben_id          Int               @id @default(autoincrement())
+  ben_nome        String?           @db.VarChar(50)
+  ben_data_ent    DateTime?         @db.Date
+  ben_qtde        Int?
+  pes_id          Int?
+  pessoa          pessoa?           @relation(fields: [pes_id], references: [pes_id], onDelete: NoAction, onUpdate: NoAction)
+  itens_beneficio itens_beneficio[]
 }
 
-model Address {
-  id            Int   @id @default(autoincrement())
-  user          User @relation(fields: [userId], references: [id])
-  userId        Int
-  cep           String
-  street        String
-  number        String
-  complement    String
-  neighborhood  String
-  city          String
-  state         String
-  created_at    DateTime @default(now())
-  updated_at    DateTime?
+model despesa {
+  des_id       Int           @id @default(autoincrement())
+  des_valor    Decimal?      @db.Decimal
+  des_dtvencto DateTime?     @db.Date
+  des_dtpagto  DateTime?     @db.Date
+  tde_id       Int?
+  usu_id       Int?
+  eve_id       Int?
+  evento       evento?       @relation(fields: [eve_id], references: [eve_id], onDelete: NoAction, onUpdate: NoAction)
+  tipo_despesa tipo_despesa? @relation(fields: [tde_id], references: [tde_id], onDelete: NoAction, onUpdate: NoAction)
+  usuario      usuario?      @relation(fields: [usu_id], references: [usu_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model doacao {
+  doa_id          Int            @id @default(autoincrement())
+  doa_data        DateTime?      @db.Date
+  doa_estado      String?        @db.VarChar(5)
+  doa_cidade      String?        @db.VarChar(50)
+  doa_rua         String?        @db.VarChar(70)
+  doa_bairro      String?        @db.VarChar(70)
+  doa_complemento String?        @db.VarChar(50)
+  doa_cep         String?        @db.VarChar(40)
+  doa_numero      String?        @db.VarChar(40)
+  pes_id          Int?
+  pessoa          pessoa?        @relation(fields: [pes_id], references: [pes_id], onDelete: NoAction, onUpdate: NoAction)
+  itens_doacao    itens_doacao[]
+}
+
+model donativo {
+  don_id          Int               @id @default(autoincrement())
+  don_desc        String?           @db.VarChar(50)
+  don_valor_total Decimal?          @db.Decimal
+  itens_beneficio itens_beneficio[]
+  itens_doacao    itens_doacao[]
+}
+
+model evento {
+  eve_id             Int            @id @default(autoincrement())
+  eve_nome           String?        @db.VarChar(50)
+  eve_custo          Decimal?       @db.Decimal
+  eve_dtini          DateTime?      @db.Date
+  eve_dtfim          DateTime?      @db.Date
+  eve_estado         String?        @db.VarChar(5)
+  eve_cidade         String?        @db.VarChar(50)
+  eve_rua            String?        @db.VarChar(70)
+  eve_bairro         String?        @db.VarChar(70)
+  eve_cep            String?        @db.VarChar(40)
+  eve_numero         String?        @db.VarChar(40)
+  eve_complemento    String?        @db.VarChar(50)
+  pes_id_responsavel Int?
+  despesa            despesa[]
+  pessoa             pessoa?        @relation(fields: [pes_id_responsavel], references: [pes_id], onDelete: NoAction, onUpdate: NoAction)
+  participante       participante[]
+}
+
+model fisica {
+  pes_id        Int            @id @default(autoincrement())
+  pesfis_cpf    String?        @db.VarChar(20)
+  pesfis_dtnasc DateTime?      @db.Date
+  pesfis_sexo   String?        @db.VarChar(2)
+  pesfis_rg     String?        @db.VarChar(20)
+  matricula     matricula[]
+  participante  participante[]
+}
+
+model itens_beneficio {
+  don_id    Int
+  ben_id    Int
+  beneficio beneficio @relation(fields: [ben_id], references: [ben_id], onDelete: NoAction, onUpdate: NoAction)
+  donativo  donativo  @relation(fields: [don_id], references: [don_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([don_id, ben_id])
+}
+
+model itens_doacao {
+  doa_id       Int
+  don_id       Int
+  itsdoa_valor Decimal? @db.Decimal
+  itsdoa_qtde  Int?
+  doacao       doacao   @relation(fields: [doa_id], references: [doa_id], onDelete: NoAction, onUpdate: NoAction)
+  donativo     donativo @relation(fields: [don_id], references: [don_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([doa_id, don_id])
+}
+
+model juridica {
+  pes_id               Int             @id @default(autoincrement())
+  pesjur_cnpj          String?         @db.VarChar(35)
+  pesjur_insc_estadual String?         @db.VarChar(70)
+  pesjur_site          String?         @db.VarChar(90)
+  pesjur_razao_social  String?         @db.VarChar(80)
+  parametrizacao       parametrizacao?
+}
+
+model matricula {
+  mat_id         Int       @id @default(autoincrement())
+  mat_data       DateTime? @db.Date
+  pes_id         Int?
+  oficina_ofi_id Int?
+  oficina        oficina?  @relation(fields: [oficina_ofi_id], references: [ofi_id], onDelete: NoAction, onUpdate: NoAction)
+  fisica         fisica?   @relation(fields: [pes_id], references: [pes_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model oficina {
+  ofi_id                 Int           @id @default(autoincrement())
+  ofi_lim                Int?
+  ofi_disc               String?       @db.VarChar(65)
+  ofi_sala               Int?
+  ofi_dtini              DateTime?     @db.Date
+  ofi_dtfim              DateTime?     @db.Date
+  ofi_dias_funcionamento String?       @db.VarChar(80)
+  pes_id                 Int?
+  tof_id                 Int?
+  matricula              matricula[]
+  pessoa                 pessoa?       @relation(fields: [pes_id], references: [pes_id], onDelete: NoAction, onUpdate: NoAction)
+  tipo_oficina           tipo_oficina? @relation(fields: [tof_id], references: [tof_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model parametrizacao {
+  pes_id           Int      @id
+  par_logo_grande  String?  @db.VarChar(80)
+  par_logo_pequeno String?  @db.VarChar(80)
+  juridica         juridica @relation(fields: [pes_id], references: [pes_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model participante {
+  pes_id Int
+  eve_id Int
+  evento evento @relation(fields: [eve_id], references: [eve_id], onDelete: NoAction, onUpdate: NoAction)
+  fisica fisica @relation(fields: [pes_id], references: [pes_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([pes_id, eve_id])
+}
+
+model pessoa {
+  pes_id          Int         @id @default(autoincrement())
+  pes_nome        String?     @db.VarChar(80)
+  pes_tel         String?     @db.VarChar(20)
+  pes_status      Int?
+  pes_email       String?     @db.VarChar(30)
+  pes_estado      String?     @db.VarChar(5)
+  pes_cidade      String?     @db.VarChar(50)
+  pes_rua         String?     @db.VarChar(70)
+  pes_bairro      String?     @db.VarChar(70)
+  pes_cep         String?     @db.VarChar(40)
+  pes_numero      String?     @db.VarChar(40)
+  pes_complemento String?     @db.VarChar(50)
+  beneficio       beneficio[]
+  doacao          doacao[]
+  evento          evento[]
+  oficina         oficina[]
+  usuario         usuario[]
+}
+
+model tipo_despesa {
+  tde_id   Int       @id @default(autoincrement())
+  tde_nome String?   @db.VarChar(50)
+  despesa  despesa[]
+}
+
+model tipo_oficina {
+  tof_id   Int       @id @default(autoincrement())
+  tof_nome String?   @db.VarChar(50)
+  oficina  oficina[]
+}
+
+model usuario {
+  usu_id           Int       @id @default(autoincrement())
+  usu_senha        String?   @db.VarChar(50)
+  usu_nivel_acesso Int?
+  usu_status_ativo Int?
+  pes_id           Int?
+  despesa          despesa[]
+  pessoa           pessoa?   @relation(fields: [pes_id], references: [pes_id], onDelete: NoAction, onUpdate: NoAction)
 }

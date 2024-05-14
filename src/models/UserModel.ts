@@ -6,35 +6,35 @@ const prisma = new PrismaClient();
 export default class UserModel {
 
   create = async (user: UserIn) => {
-    return await prisma.user.create({
-      data: user
+    return await prisma.pessoa.create({
+      data : user
     });
   }
 
   getAll = async () => {
-    return await prisma.user.findMany();
+    return await prisma.pessoa.findMany();
   }
 
-  get = async (id: number) => {
-    return await prisma.user.findUnique({
+  get = async (pes_id: number) => {
+    return await prisma.pessoa.findUnique({
       where: {
-        id
+        pes_id
       }
     });
   }
 
-  delete = async (id: number) => {
-    return await prisma.user.delete({
+  delete = async (pes_id: number) => {
+    return await prisma.pessoa.delete({
       where: {
-        id
+        pes_id
       }
     })
   }
 
-  update = async (id: number, user: UserIn) => {
-    return await prisma.user.update({
+  update = async (pes_id: number, user: UserIn) => {
+    return await prisma.pessoa.update({
       where: {
-        id
+        pes_id
       },
       data: {
         ...user

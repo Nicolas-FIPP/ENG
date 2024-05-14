@@ -1,26 +1,27 @@
 import { Request, Response } from "express";
-import { UserIn, UserOut } from "dtos/UsersDTO";
-import UserModel from "models/UserModel";
+import TipoOficinaModel from "models/TipoOficinaModel";
+import { TipoOficinaIn, TipoOficinaOut } from 'dtos/TipoOficinaDTO';
 
-const userModel = new UserModel();
+const tipooficinaModel = new TipoOficinaModel();
 
-export default class UserController {
+export default class TipoOficinaController {
   create = async (req: Request, res: Response) => {
     try {
-      console.log("foi aqui antes");
-      const user: UserIn = req.body;
-      console.log("foi aqui dps");
-      const newUser: UserOut = await userModel.create(user);
-      res.status(201).json(newUser);
+      const TipoOficina: TipoOficinaIn = req.body;
+      console.log(TipoOficina);
+      const newTipoOficina: TipoOficinaOut = await tipooficinaModel.create(TipoOficina);
+      console.log("antes de gravar")
+      res.status(201).json(newTipoOficina);
+      console.log("dps de gravar")
     } catch (e) {
-      console.log("Failed to create user", e);
+      console.log("Failed to create tipo_oficina", e);
       res.status(500).send({
         error: "USR-01",
-        message: "Failed to create user",
+        message: "Failed to create tipo_oficina",
       });
     }
   };
-
+/*
   get = async (req: Request, res: Response) => {
     try {
       const id: number = parseInt(req.params.id);
@@ -94,5 +95,5 @@ export default class UserController {
         message: "Failed to delete user",
       });
     }
-  };
+  };*/
 }
