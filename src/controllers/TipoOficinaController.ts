@@ -23,9 +23,10 @@ export default class TipoOficinaController {
   get = async (req: Request, res: Response) => {
     try {
       const id: number = parseInt(req.params.id);
+      console.log(id);
       let newTipoOficina: TipoOficinaOut | null = await tipooficinaModel.get(id);
 
-      if (newTipoOficina?.id == id) {
+      if (newTipoOficina) {
         res.status(200).json(newTipoOficina);
       } else {
         res.status(404).json({
@@ -54,29 +55,29 @@ export default class TipoOficinaController {
       });
     }
   };
-/*
+
   update = async (req: Request, res: Response) => {
     try {
       const id: number = parseInt(req.params.id);
-      const updateUser: UserIn = req.body;
-      const userUpdated: UserOut | null = await userModel.update(
+      const updateTipoOficina: TipoOficinaIn = req.body;
+      const TipoOficinaUpdated: TipoOficinaOut | null = await tipooficinaModel.update(
         id,
-        updateUser
+        updateTipoOficina
       );
 
-      if (userUpdated) {
-        res.status(200).json(userUpdated);
+      if (TipoOficinaUpdated) {
+        res.status(200).json(TipoOficinaUpdated);
       } else {
         res.status(404).json({
           error: "USR-06",
-          message: "User not found.",
+          message: "Tipo_Oficina not found.",
         });
       }
     } catch (e) {
-      console.log("Failed to update user", e);
+      console.log("Failed to update Tipo_Oficina", e);
       res.status(500).send({
         error: "USR-04",
-        message: "Failed to update user",
+        message: "Failed to update Tipo_Oficina",
       });
     }
   };
@@ -84,14 +85,14 @@ export default class TipoOficinaController {
   delete = async (req: Request, res: Response) => {
     try {
       const id: number = parseInt(req.params.id);
-      const userDeleted = await userModel.delete(id);
-      res.status(204).json(userDeleted);
+      const TipoOficinaDeleted = await tipooficinaModel.delete(id);
+      res.status(204).json(TipoOficinaDeleted);
     } catch (e) {
-      console.log("Failed to delete user", e);
+      console.log("Failed to delete Tipo_Oficina", e);
       res.status(500).send({
         error: "USR-05",
-        message: "Failed to delete user",
+        message: "Failed to delete Tipo_Oficina",
       });
     }
-  };*/
+  };
 }
