@@ -1,13 +1,14 @@
 import { PrismaClient } from "@prisma/client"
-import { PessoaJurdicaIn } from "dtos/JuridicaDTO";
+import { PessoaJuridicaIn } from "dtos/JuridicaDTO";
 
 
 const prisma = new PrismaClient();
 
-export default class FisicaModel{
+export default class JuridicaModel{
 
 
-    createPessoaJuridica = async (pessoa: PessoaJurdicaIn)=>{
+    createPessoaJuridica = async (pessoa: PessoaJuridicaIn)=>{
+  
         return await prisma.juridica.create({
           data:{
             pes_id: pessoa.id,
@@ -17,6 +18,9 @@ export default class FisicaModel{
             razao_social: pessoa.razao_social
           }
         });
+
+      
+
         
       }
     
