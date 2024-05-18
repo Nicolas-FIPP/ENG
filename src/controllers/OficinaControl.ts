@@ -5,7 +5,7 @@ import { OficinaIn, OficinaOut } from "dtos/Oficina/OficinaDTO";
 
 const oficinaModel = new OficinaModel();
 
-export default class TipoOficinaController {
+export default class OficinaController {
   create = async (req: Request, res: Response) => {
     try {
 
