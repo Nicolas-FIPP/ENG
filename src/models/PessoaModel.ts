@@ -41,18 +41,6 @@ export default class PessoaModel {
     });
   }
 
-  createPessoaJuridica = async (pessoa: PessoaJurdicaIn)=>{
-    return await prisma.juridica.create({
-      data:{
-        pes_id: pessoa.id,
-        cnpj: pessoa.cnpj,
-        insc_estadual: pessoa.insc_estadual,
-        site: pessoa.site,
-        razao_social: pessoa.razao_social
-      }
-    });
-    
-  }
 
   
 
@@ -114,6 +102,8 @@ export default class PessoaModel {
       }
     }
   }
+
+
   /*
 
   get = async (id: number) => {

@@ -30,17 +30,22 @@ export default class PessoaController {
         } 
       }
       if(pessoa.cpf){
-        if(pessoa.pessoaFisica){
-          const pessoaFisica : PessoaFisicaIn = {
-            id: newPessoa.id,
-            cpf: pessoa.cpf,
-            dt_nasc: new Date( pessoa.pessoaFisica.dt_nasc),
-            sexo: pessoa.pessoaFisica.sexo,
-            rg: pessoa.pessoaFisica.rg
+        pessoa.cpf =  pessoa.cpf.replace(/[^\d]/g, '');
+        if(pessoaModel.validaCpf(pessoa.cpf)){
+          if(pessoa.pessoaFisica){
+            const pessoaFisica : PessoaFisicaIn = {
+              id: newPessoa.id,
+              cpf: pessoa.cpf,
+              dt_nasc: new Date( pessoa.pessoaFisica.dt_nasc),
+              sexo: pessoa.pessoaFisica.sexo,
+              rg: pessoa.pessoaFisica.rg
+            }
+            const newPessoaFisica : PessoaFisicaIn = await pessoaModel.createPessoaFisica(pessoaFisica);
+            res.status(201).json(newPessoaFisica);
           }
-          const newPessoaFisica : PessoaFisicaIn = await pessoaModel.createPessoaFisica(pessoaFisica);
-          res.status(201).json(newPessoaFisica);
-
+        }
+        else{
+          res.status(400).json({message:"Cpf Inválido"});
         }
       }
      
