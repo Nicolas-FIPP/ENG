@@ -1,21 +1,24 @@
 import { Request, Response } from "express";
-import TipoOficinaModel from "models/TipoOficinaModel";
+import OficinaModel from "models/Oficina";
 import { TipoOficinaIn, TipoOficinaOut } from 'dtos/TipoOficinaDTO';
+import { OficinaIn, OficinaOut } from "dtos/Oficina/OficinaDTO";
 
-const tipooficinaModel = new TipoOficinaModel();
+const oficinaModel = new OficinaModel();
 
 export default class TipoOficinaController {
   create = async (req: Request, res: Response) => {
     try {
-      const TipoOficina: TipoOficinaIn = req.body;
-      console.log(TipoOficina);
-      const newTipoOficina: TipoOficinaOut = await tipooficinaModel.create(TipoOficina);
+
+      const Oficina: OficinaIn = req.body;
+      console.log(Oficina);
+      const newTipoOficina: OficinaOut = await oficinaModel.create(Oficina);
       res.status(201).json(newTipoOficina);
+
     } catch (e) {
-      console.log("Failed to create Tipo_Oficina", e);
+      console.log("Failed to create Oficina", e);
       res.status(500).send({
         error: "USR-01",
-        message: "Failed to create Tipo_Oficina",
+        message: "Failed to create Oficina",
       });
     }
   };
@@ -24,14 +27,13 @@ export default class TipoOficinaController {
     try {
       const id: number = parseInt(req.params.id);
       console.log(id);
-      let newTipoOficina: TipoOficinaOut | null = await tipooficinaModel.get(id);
-
-      if (newTipoOficina) {
-        res.status(200).json(newTipoOficina);
+      let newOficina: OficinaOut | null = await oficinaModel.get(id);
+      if (newOficina) {
+        res.status(200).json(newOficina);
       } else {
         res.status(404).json({
           error: "USR-06",
-          message: "Tipo_Oficina not found.",
+          message: "Oficina not found.",
         });
       }
     } catch (e) {
@@ -41,11 +43,12 @@ export default class TipoOficinaController {
         message: "Failed to get Tipo_Oficina",
       });
     }
+
   };
 
   getAll = async (req: Request, res: Response) => {
     try {
-      const Tipo_Oficina_s: TipoOficinaOut[] | null = await tipooficinaModel.getAll();
+      const Tipo_Oficina_s: TipoOficinaOut[] | null = await oficinaModel.getAll();
       res.status(200).json(Tipo_Oficina_s);
     } catch (e) {
       console.log("Failed to get all Tipo_Oficina_s", e);
@@ -59,25 +62,25 @@ export default class TipoOficinaController {
   update = async (req: Request, res: Response) => {
     try {
       const id: number = parseInt(req.params.id);
-      const updateTipoOficina: TipoOficinaIn = req.body;
-      const TipoOficinaUpdated: TipoOficinaOut | null = await tipooficinaModel.update(
+      const updateOficina:  OficinaIn = req.body;
+      const OficinaUpdated: OficinaOut | null = await oficinaModel.update(
         id,
-        updateTipoOficina
+        updateOficina
       );
 
-      if (TipoOficinaUpdated) {
-        res.status(200).json(TipoOficinaUpdated);
+      if (OficinaUpdated) {
+        res.status(200).json(OficinaUpdated);
       } else {
         res.status(404).json({
           error: "USR-06",
-          message: "Tipo_Oficina not found.",
+          message: "Oficina não encontrada",
         });
       }
     } catch (e) {
-      console.log("Failed to update Tipo_Oficina", e);
+      console.log("Falha ao atualizar  Oficina", e);
       res.status(500).send({
         error: "USR-04",
-        message: "Failed to update Tipo_Oficina",
+        message: "Falha ao atualizar  Oficina",
       });
     }
   };
@@ -85,13 +88,13 @@ export default class TipoOficinaController {
   delete = async (req: Request, res: Response) => {
     try {
       const id: number = parseInt(req.params.id);
-      const TipoOficinaDeleted = await tipooficinaModel.delete(id);
-      res.status(204).json(TipoOficinaDeleted);
+      const OficinaDeleted = await oficinaModel.delete(id);
+      res.status(204).json(OficinaDeleted);
     } catch (e) {
-      console.log("Failed to delete Tipo_Oficina", e);
+      console.log("Falha ao deletar Oficina", e);
       res.status(500).send({
         error: "USR-05",
-        message: "Failed to delete Tipo_Oficina",
+        message: "Falha ao deletar Oficina",
       });
     }
   };
