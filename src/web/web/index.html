@@ -36,7 +36,7 @@
                   </div>
                   <div class="col-sm-6">
                       <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Adicionar Novo Tipo</span></a>
-                      <a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Deletar</span></a>                        
+                      <!--<a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Deletar</span></a>-->
                   </div>
               </div>
           </div>
@@ -54,12 +54,12 @@
               </thead>
               <tbody>
                   <tr>
-                      <td>
+                      <!--<td>
                           <span class="custom-checkbox">
                               <input type="checkbox" id="checkbox1" name="options[]" value="1">
                               <label for="checkbox1"></label>
                           </span>
-                      </td>
+                      </td>-->
                       <td>Aula</td>
                       <td class="alinha-edit-del">
                           <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
@@ -113,13 +113,13 @@
           <div class="modal-content">
               <form>
                   <div class="modal-header">                        
-                      <h4 class="modal-title">Edit Employee</h4>
+                      <h4 class="modal-title">Alterar</h4>
                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                   </div>
                   <div class="modal-body">                    
                       <div class="form-group">
                           <label>Nome</label>
-                          <input type="text" class="form-control" required>
+                          <input id="MODAL_EDIT_Nome" type="text" class="form-control" required>
                       </div>                 
                   </div>
                   <div class="modal-footer">
@@ -145,7 +145,7 @@
                   </div>
                   <div class="modal-footer">
                       <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-                      <input type="submit" class="btn btn-danger" value="Deletar">
+                      <input type="submit" class="btn btn-danger" id="MODAL_DELETE_Id" data-user-id="" onclick="DeletaTipoOficina(this)" value="Deletar"> 
                   </div>
               </form>
           </div>

@@ -10,7 +10,7 @@ import oficinaRoutes from "routes/OficinaRoutes"
 DateTime.local().setZone("America/Sao_Paulo");
 
 const app = express();
-const cors = require('cors')
+import cors from 'cors';
 app.use(cors())
 
 

@@ -48,15 +48,13 @@ async function CadastraNovoTipodeOficina ()
 		alert('Tipo de oficina criada')
 		GetAll();
 	}
-		//console.log('criado')
 	else
 	{
 		console.log(response + '\n' + JSON.stringify(response))
-
 	}
 }
 
-async function GetAll() {
+async function RecuperaTipoOficina() {
     let URL = "http://localhost:3344/tipo-oficina/todos-tipos-oficinas";
     let response = await fetch(URL, {
         method: "GET",
@@ -65,13 +63,13 @@ async function GetAll() {
 
     if (response.ok) {
         const data = await response.json();
-        populateTable(data); // Chama a função para preencher a tabela com os dados recebidos
+        GETALL(data); // Chama a função para preencher a tabela com os dados recebidos
     } else {
         console.log(response.status + '\n' + JSON.stringify(response));
     }
 }
 
-function populateTable(data) {
+function GETALL(data) {
     let tbody = document.querySelector('.table tbody');
     
     // Limpa qualquer conteúdo pré-existente na tabela
@@ -82,21 +80,62 @@ function populateTable(data) {
         let row = document.createElement('tr');
         row.innerHTML = `
             <td>
-                <span class="custom-checkbox">
-                    <input type="checkbox" id="checkbox${item.id}" name="options[]" value="${item.id}">
-                    <label for="checkbox${item.id}"></label>
+                <span id=${item.id}>
                 </span>
             </td>
             <td>${item.nome}</td>
             <td class="alinha-edit-del">
-                <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                <a href="#editEmployeeModal" onclick="CarregaIdParaUpdate(this)" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                <a href="#deleteEmployeeModal" onclick="CarregaIdParaDelete(this)" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
             </td>
         `;
         tbody.appendChild(row);
     });
 }
 
+
+function CarregaIdParaDelete (event)
+{
+	let id = event.parentNode.parentNode.firstElementChild.firstElementChild.id;
+	//console.log(id);
+	document.getElementById("MODAL_DELETE_Id").dataset.userId = id;
+	console.log(document.getElementById("MODAL_DELETE_Id").dataset.userId);
+}
+
+function CarregaIdParaUpdate (event)
+{
+	colunas = event.parentNode.parentNode.children;
+	nome = colunas[1].innerHTML;
+	console.log(nome);
+	document.getElementById("MODAL_Nome").value = nome;
+}
+
+
+function DeletaTipoOficina (event)
+{
+	let id = event.dataset.userId;
+	console.log(id);
+	let URL = "http://localhost:3344/tipo-oficina/deletar-tipo-oficina/"+id;
+
+	let response = fetch(URL,{
+		method : "DELETE"
+	})
+
+	if (response.ok)
+		console.log("Deu Algo Errado");
+
+	RecuperaTipoOficina();
+}
+
+
+function AlterarTipoOficina (event)
+{
+	// SÓ FALTOU ISSO MESMO
+}
+
+
+
+
 window.addEventListener('load', function () {
-    GetAll();
+	RecuperaTipoOficina();
 });
