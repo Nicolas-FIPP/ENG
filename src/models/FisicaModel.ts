@@ -79,7 +79,39 @@ export default class FisicaModel{
           }
         }
       }
+
+      getAll = async () => {
+        return await prisma.fisica.findMany();
+      }
+      
+    /*
+      get = async (id: number) => {
+        return await prisma.fisica.findUnique({
+          where: {
+            id
+          }
+        });
+      }
     
+      delete = async (id: number) => {
+        return await prisma.fisica.delete({
+          where: {
+            id
+          }
+        })
+      }*/
+    /*
+      update = async (id: number, user: UserIn) => {
+        return await prisma.fisica.update({
+          where: {
+            id
+          },
+          data: {
+            ...user
+          }
+        })
+      }*/
+  
     
       /*
     getById = async (id: number) => {

@@ -88,17 +88,6 @@ model evento {
   participante         participante[]
 }
 
-model fisica {
-  pes_id        Int              @id 
-  cpf           String           @db.VarChar(11) @unique
-  dt_nasc       DateTime       
-  sexo          String           @db.VarChar(1)
-  rg            String           @db.VarChar(9)  @unique
-
-  matricula     matricula[]
-  participante  participante[]
-  usuario       usuario?
-}
 
 model itens_beneficio {
   don_id    Int
@@ -120,15 +109,7 @@ model itens_doacao {
   @@id([doa_id, don_id])
 }
 
-model juridica {
-  pes_id               Int             @id 
-  cnpj                 String          @unique @db.VarChar(14)
-  insc_estadual        String          @unique
-  site                 String?         @unique
-  razao_social         String          @unique
 
-  parametrizacao       parametrizacao?
-}
 
 model matricula {
   id               Int            @id @default(autoincrement())
@@ -192,7 +173,35 @@ model pessoa {
   doacao          doacao[]
   evento          evento[]
   oficina         oficina[]
+
+    fisica          fisica?
+    juridica        juridica?
 }
+
+model juridica {
+  pes_id               Int             @id 
+  cnpj                 String          @unique @db.VarChar(14)
+  insc_estadual        String          @unique
+  site                 String?         @unique
+  razao_social         String          @unique
+
+  parametrizacao       parametrizacao?
+  pessoa   pessoa @relation(fields: [pes_id], references: [id])
+}
+
+model fisica {
+  pes_id        Int              @id 
+  cpf           String           @db.VarChar(11) @unique
+  dt_nasc       DateTime       
+  sexo          String           @db.VarChar(1)
+  rg            String           @db.VarChar(9)  @unique
+
+  matricula     matricula[]
+  participante  participante[]
+  usuario       usuario?
+  pessoa   pessoa @relation(fields: [pes_id], references: [id])
+}
+
 
 model tipo_despesa {
   id                   Int            @id @default(autoincrement())

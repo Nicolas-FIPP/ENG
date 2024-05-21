@@ -32,6 +32,43 @@ export default class PessoaModel {
 
   }
 
+  getAll = async () => {
+    return await prisma.pessoa.findMany({
+      include: {
+        fisica: true,
+        juridica: true,
+        beneficio: true,
+        doacao: true,
+        evento: true,
+        oficina: true
+      }
+    });
+  }
+
+  update = async (id: number, data: any) => {
+    return await prisma.pessoa.update({
+      where: { id: id },
+      data: data
+    });
+  }
+  /*
+
+  get = async (id: number) => {
+    return await prisma.pessoa.findUnique({
+      where: {
+        id
+      }
+    });
+  }
+
+  delete = async (id: number) => {
+    return await prisma.pessoa.delete({
+      where: {
+        id
+      }
+    })
+  }
+*/
   
   /*
 

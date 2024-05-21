@@ -34,3 +34,5 @@ export interface pessoaOut {
   rua?: string | null;
   uf:string;
 }
+
+

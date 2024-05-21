@@ -73,4 +73,60 @@ export default class PessoaController {
       });
     }
   };
+
+
+
+  getAll = async (req: Request, res: Response) => {
+    try {
+      const pessoas = await pessoaModel.getAll();
+      res.status(200).json(pessoas);
+    } catch (e) {
+      console.log("Failed to get all users", e);
+      res.status(500).send({
+        error: "USR-03",
+        message: "Failed to get all users",
+      });
+    }
+  };
+  /*
+
+  update = async (req: Request, res: Response) => {
+    try {
+      const id: number = parseInt(req.params.id);
+      const updateUser: UserIn = req.body;
+      const userUpdated: UserOut | null = await userModel.update(
+        id,
+        updateUser
+      );
+
+      if (userUpdated) {
+        res.status(200).json(userUpdated);
+      } else {
+        res.status(404).json({
+          error: "USR-06",
+          message: "User not found.",
+        });
+      }
+    } catch (e) {
+      console.log("Failed to update user", e);
+      res.status(500).send({
+        error: "USR-04",
+        message: "Failed to update user",
+      });
+    }
+  };
+
+  delete = async (req: Request, res: Response) => {
+    try {
+      const id: number = parseInt(req.params.id);
+      const userDeleted = await userModel.delete(id);
+      res.status(204).json(userDeleted);
+    } catch (e) {
+      console.log("Failed to delete user", e);
+      res.status(500).send({
+        error: "USR-05",
+        message: "Failed to delete user",
+      });
+    }
+  };*/
 }
