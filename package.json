@@ -20,9 +20,11 @@
   },
   "dependencies": {
     "@prisma/client": "^5.14.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.19.2",
-    "swagger-ui-express": "^4.5.0"
+    "swagger-ui-express": "^4.5.0",
+    "yarn": "^1.22.22"
   },
   "prisma": {
     "schema": "src/prisma/schema.prisma"

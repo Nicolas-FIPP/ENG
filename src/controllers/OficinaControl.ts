@@ -12,6 +12,8 @@ export default class OficinaController {
       const Oficina: OficinaIn = req.body;
       console.log(Oficina);
       const newTipoOficina: OficinaOut = await oficinaModel.create(Oficina);
+
+      console.log('aaaaaaaaaaaaaaa'+ newTipoOficina)
       res.status(201).json(newTipoOficina);
 
     } catch (e) {
@@ -48,8 +50,8 @@ export default class OficinaController {
 
   getAll = async (req: Request, res: Response) => {
     try {
-      const Tipo_Oficina_s: TipoOficinaOut[] | null = await oficinaModel.getAll();
-      res.status(200).json(Tipo_Oficina_s);
+      const Oficina_s: OficinaOut[] | null = await oficinaModel.getAll();
+      res.status(200).json(Oficina_s);
     } catch (e) {
       console.log("Failed to get all Tipo_Oficina_s", e);
       res.status(500).send({
