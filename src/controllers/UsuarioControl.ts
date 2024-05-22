@@ -1,7 +1,7 @@
-import { FisicaOut } from "dtos/FisicaDTO";
 import { UsuarioIn, UsuarioOut } from "dtos/UsuarioDTO";
 import { Request, Response } from "express";
 import FisicaModel from "models/FisicaModel";
+import PessoaModel from "models/PessoaModel";
 import UsuarioModel from "models/UsuarioModel";
 
 const jwt = require('jsonwebtoken');
@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken');
 
 const usuarioModel = new UsuarioModel();
 const fisicaModel = new FisicaModel();
-
+const pessoaModel = new PessoaModel();
 
 export default class UsuarioControl{
     create = async( req: Request, res: Response) => {
@@ -22,7 +22,7 @@ export default class UsuarioControl{
                 nivel_acesso: Number(req.body.nivel_acesso)
             }
             
-            const fisica : FisicaOut | null = await fisicaModel.getById(usuario.pes_id);
+            const fisica = await fisicaModel.getById(usuario.pes_id);
             if(!fisica){
                 return res.status(404).send({message: "Cadastro de pessoa não encontrado."});
             }
@@ -57,18 +57,77 @@ export default class UsuarioControl{
             return res.status(500).send({message: "CPF e/ou senha inválidos."});
         }
 
+        const pessoa = await pessoaModel.getById(usuarioDb.pes_id);
+        if(!pessoa?.status){
+            return res.status(500).send({message: "Cadastro de PESSOA inativo."});
+        }
+
         const verificaSenha: boolean = await usuarioModel.verificaSenha(usuario.senha, usuarioDb.senha); 
         if(!verificaSenha){
             return res.status(500).send({message: "CPF e/ou senha inválidos."});
         }
 
         if(!usuarioDb.status){
-            return res.status(402).send({message: "Usuário inativo."});
+            return res.status(500).send({message: "Usuário inativo."});
         }
+      
+        const secret = process.env.SECRET_JWT;
 
-        const secret = process.env.SECRE_JWT;
-        const token = jwt.sign({id: usuarioDb.id}, secret || ' ', {expiresIn: '2h'});
+        const token = jwt.sign({id: usuarioDb.id, nivel: usuarioDb.nivel_acesso},secret || ' ', {expiresIn: '2h'});
 
         return res.status(200).json(token);
+    }
+
+    get = async (req: Request, res: Response) => {
+        if(req.body.nivel !== 1){
+            return res.status(401).send({message: "Não autorizado."});
+        }
+        try{
+            const usuario = await usuarioModel.getById(Number(req.params.id));
+
+            if(!usuario){
+                return res.status(404).send({message: "Usuário não encontrado."});
+            }
+
+            return res.status(200).json(usuario);
+
+        }catch(error){
+            return res.status(500).send({message: "Não foi possível obter o usuário."});
+        }
+    }
+
+    getAll = async(req: Request, res: Response) => {
+        if(req.body.nivel !== 1){
+            return res.status(401).send({message: "Não autorizado."});
+        }
+        try{
+            const usuarios = await usuarioModel.getAll();
+
+            if(!usuarios){
+                return res.status(404).send({message: "Não há usuários para listar."});
+            }
+
+            return res.status(200).json(usuarios);
+        }catch(error){
+            return res.status(500).send({message: "Não foi possível obter os usuários."});
+        }
+    }
+
+    inativar = async (req: Request, res: Response) => {
+        if(req.body.nivel !== 1){
+            return res.status(401).send({message: "Não autorizado."});
+        }
+
+        try{
+            const usuario = await usuarioModel.deleteLogico(Number(req.params.id));
+
+            if(!usuario){
+                return res.status(404).send({message: "Usuário não encontrado."});
+            }
+
+            return res.status(200).send({message: "Usuário foi inativado."});
+        }catch(error){
+            return res.status(500).send({message: "Não foi possível deletar o usuário."});
+        }
     }
 }

@@ -1,5 +1,4 @@
 import { DateTime } from "luxon";
-import { PessoaOut } from "./PessoaDTO";
 
 export interface UsuarioIn{
     senha: string;
