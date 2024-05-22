@@ -1,4 +1,7 @@
-export interface PessoaIn {
+import { PessoaFisicaIn } from "./FisicaDTO";
+import { PessoaJuridicaIn } from "./JuridicaDTO";
+
+export interface pessoaIn {
   nome: string;
   tel: string;
   email: string;
@@ -11,39 +14,25 @@ export interface PessoaIn {
   rua?: string;
   cpf?: string;
   cnpj?: string;
-  pessoaFisica?: PessoaFisica;
-  pessoaJuridica?: PessoaJurdica;
+  pessoaFisica?: PessoaFisicaIn;
+  pessoaJuridica?: PessoaJuridicaIn;
   
 }
 
-export interface PessoaFisica{
-  pes_id: number;
-  cpf: string;
-  dt_nasc: Date;
-  sexo: string;
-  rg: string;
-}
 
-export interface PessoaJurdica{
-  pes_id: number;
-  cnpj: string;
-  insc_estadual: string;
-  site?: string | null;
-  razao_social: string;
-}
-
-
-
-export interface PessoaOut {
+export interface pessoaOut {
   id: number;
   nome: string;
   tel: string;
+  status: boolean;
   email: string;
   cidade: string;
-  bairro: string | null;
+  bairro?: string | null;
   cep: string;
-  numero: string | null;
-  complemento: string | null;
-  rua: string | null;
+  numero?: string | null;
+  complemento?: string | null;
+  rua?: string | null;
   uf:string;
 }
+
+

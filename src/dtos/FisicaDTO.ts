@@ -1,16 +1,8 @@
 
-export interface FisicaIn {
-    pes_id: number;
-    cpf: string;
-    dt_nasc: Date | null;
-    sexo: string;
-    rg: string;
-  }
-
-  export interface FisicaOut {
-    pes_id: number;
-    cpf: string;
-    dt_nasc: Date | null;
-    sexo: string;
-    rg: string;
-  }
+export interface PessoaFisicaIn{
+  id: number;
+  cpf: string;
+  dt_nasc: Date;
+  sexo: string;
+  rg: string;
+}
