@@ -44,8 +44,8 @@ async function CadastraNovoTipodeOficina ()
 	});
 
 	if (response.ok){
-
-		alert('Tipo de oficina criada')
+		console.log("Cadastrou");
+		document.getElementById("NOME").value = "";
 		RecuperaTipoOficina();
 	}
 	else
@@ -130,8 +130,9 @@ async function DeletaTipoOficina (event)
 
 async function AlterarTipoOficina (event)
 {
-	console.log(event.dataset.userId);
+	let id = event.dataset.userId;
 	let nome = document.getElementById("MODAL_EDIT_Nome").value;
+
 	let URL = "http://localhost:3344/tipo-oficina/altera-tipo-oficina/"+id;
 	let json = {
 		nome : nome
@@ -145,7 +146,8 @@ async function AlterarTipoOficina (event)
 
 	if (response.ok)
 	{
-		alert('Tipo de oficina Alterada')
+		//alert('Tipo de oficina Alterada')
+		console.log("DEU CERTO");
 		RecuperaTipoOficina();
 	}
 	else
