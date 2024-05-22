@@ -71,16 +71,19 @@ export default class PessoaModel {
         id
       }
     });
-  }
+  }*/
 
   delete = async (id: number) => {
-    return await prisma.pessoa.delete({
+    return await prisma.pessoa.update({
       where: {
-        id
+        id:id
+      },
+      data:{
+        status:false
       }
     })
   }
-*/
+
   
   /*
 

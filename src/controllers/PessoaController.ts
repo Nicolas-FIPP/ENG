@@ -144,12 +144,12 @@ export default class PessoaController {
       });
     }
   };
-/*
+
   delete = async (req: Request, res: Response) => {
     try {
-      const id: number = parseInt(req.params.id);
-      const userDeleted = await userModel.delete(id);
-      res.status(204).json(userDeleted);
+      const id: number = parseInt(req.body.id);
+      const userDeleted = await pessoaModel.delete(id);
+      res.status(201).json({message: "ok"});
     } catch (e) {
       console.log("Failed to delete user", e);
       res.status(500).send({
@@ -157,5 +157,10 @@ export default class PessoaController {
         message: "Failed to delete user",
       });
     }
-  };*/
+  };
+  
+
+
+
+
 }
