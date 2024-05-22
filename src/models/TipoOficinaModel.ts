@@ -7,9 +7,7 @@ export default class TipoOficinaModel {
 
   create = async (tipooficina : TipoOficinaIn) => {
     return await prisma.tipo_oficina.create({
-      data : {
-        nome : tipooficina.nome
-      }
+      data : tipooficina
     });
   }
 

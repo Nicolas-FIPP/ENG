@@ -10,7 +10,6 @@ export default class UsuarioModel{
             data:{
                 senha: usuario.senha,
                 nivel_acesso: usuario.nivel_acesso,
-                status: usuario.status,
                 fisica:{
                     connect: {
                         pes_id: usuario.pes_id
@@ -20,23 +19,21 @@ export default class UsuarioModel{
         });
     };
 
-    getById = async (id: number) => {
+    getByFisicaId = async (id: number) => {
         return await prisma.usuario.findUnique({
             where:{
-                id
+                pes_id: id
             }
         })
     };
 
-    getByCpf = async (cpf: string) => {
-        return await prisma.fisica.findUnique({
-          where: {
-            cpf: cpf,
-          },
-          include: {
-            usuario: true,
-          },
-        });
-    };
+
+    verificaSenha = async (senha: string, senhaBanco: string) => {
+        const bcrypt = require('bcrypt');
+
+        const verificacao : boolean = await bcrypt.compare(senha, senhaBanco);
+
+        return verificacao;
+    }
 
 }

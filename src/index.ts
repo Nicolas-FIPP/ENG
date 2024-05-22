@@ -6,10 +6,13 @@ import tipooficinaRoutes from "routes/tipooficinaRoutes";
 import despesaRoutes from "routes/DespesaRoutes"
 import usuarioRoutes from "routes/UsuarioRoutes"
 import pessoaRoutes from "routes/PessoaRoutes"
-
+import oficinaRoutes from "routes/OficinaRoutes"
 DateTime.local().setZone("America/Sao_Paulo");
 
 const app = express();
+import cors from 'cors';
+app.use(cors())
+
 
 app.use(express.json());
 app.get("/", (req, res) => {
@@ -17,10 +20,12 @@ app.get("/", (req, res) => {
 });
 //app.use("/users", authentication, usersRoutes);
 //app.use("/users", usersRoutes);
-app.use("/tipooficina", tipooficinaRoutes);
+app.use("/tipo-oficina", tipooficinaRoutes);
 app.use("/despesa", despesaRoutes)
 app.use("/usuario", usuarioRoutes);
 app.use("/pessoa", pessoaRoutes);
+app.use("/oficina", oficinaRoutes);
+
 
 
 
