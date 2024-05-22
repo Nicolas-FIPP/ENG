@@ -1,11 +1,11 @@
 import { PrismaClient } from '@prisma/client';
-import { PessoaFisicaIn, PessoaJurdicaIn, pessoaIn } from 'dtos/PessoaDTO';
+import { PessoaFisica, PessoaJurdica, PessoaIn } from 'dtos/PessoaDTO';
 
 const prisma = new PrismaClient();
 
 export default class PessoaModel {
 
-  create = async (pessoa: pessoaIn ) => {
+  create = async (pessoa: PessoaIn ) => {
     return await prisma.pessoa.create({
 
       data: {
@@ -24,14 +24,10 @@ export default class PessoaModel {
     });
   }
 
-  getAll = async () => {
-    return await prisma.user.findMany();
-  }
-
-  createPessoaFisica = async (pessoa: PessoaFisicaIn) => {
+  createPessoaFisica = async (pessoa: PessoaFisica) => {
     return await prisma.fisica.create({
       data:{
-        pes_id: pessoa.id,
+        pes_id: pessoa.pes_id,
         cpf: pessoa.cpf,
         dt_nasc: pessoa.dt_nasc,
         sexo : pessoa.sexo,
@@ -41,10 +37,10 @@ export default class PessoaModel {
     });
   }
 
-  createPessoaJuridica = async (pessoa: PessoaJurdicaIn)=>{
+  createPessoaJuridica = async (pessoa: PessoaJurdica)=>{
     return await prisma.juridica.create({
       data:{
-        pes_id: pessoa.id,
+        pes_id: pessoa.pes_id,
         cnpj: pessoa.cnpj,
         insc_estadual: pessoa.insc_estadual,
         site: pessoa.site,
@@ -113,6 +109,14 @@ export default class PessoaModel {
         return false; 
       }
     }
+  }
+
+  getById = async (id: number) => {
+    return await prisma.pessoa.findUnique({
+      where: {
+        id
+      }
+    });
   }
   /*
 

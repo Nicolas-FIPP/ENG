@@ -1,9 +1,9 @@
 import { DateTime } from "luxon";
+import { PessoaOut } from "./PessoaDTO";
 
 export interface UsuarioIn{
     senha: string;
     nivel_acesso: number;
-    status: boolean;
     pes_id: number;
 }
 

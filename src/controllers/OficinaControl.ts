@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import OficinaModel from "models/Oficina";
 import { TipoOficinaIn, TipoOficinaOut } from 'dtos/TipoOficinaDTO';
-import { OficinaIn, OficinaOut } from "dtos/Oficina/OficinaDTO";
+import { OficinaIn, OficinaOut } from "dtos/OficinaDTO";
 
 const oficinaModel = new OficinaModel();
 

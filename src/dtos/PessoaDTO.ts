@@ -1,4 +1,4 @@
-export interface pessoaIn {
+export interface PessoaIn {
   nome: string;
   tel: string;
   email: string;
@@ -11,39 +11,39 @@ export interface pessoaIn {
   rua?: string;
   cpf?: string;
   cnpj?: string;
-  pessoaFisica?: PessoaFisicaIn;
-  pessoaJuridica?: PessoaJurdicaIn;
+  pessoaFisica?: PessoaFisica;
+  pessoaJuridica?: PessoaJurdica;
   
 }
 
-export interface PessoaFisicaIn{
-  id: number;
+export interface PessoaFisica{
+  pes_id: number;
   cpf: string;
   dt_nasc: Date;
   sexo: string;
   rg: string;
 }
 
-export interface PessoaJurdicaIn{
-  id: number;
+export interface PessoaJurdica{
+  pes_id: number;
   cnpj: string;
   insc_estadual: string;
-  site: string;
+  site?: string | null;
   razao_social: string;
 }
 
-export interface pessoaOut {
+
+
+export interface PessoaOut {
   id: number;
   nome: string;
   tel: string;
-  status: number;
   email: string;
-  estado: string;
   cidade: string;
-  bairro: string;
+  bairro: string | null;
   cep: string;
-  numero: string;
-  complemento: string;
-  rua: string;
+  numero: string | null;
+  complemento: string | null;
+  rua: string | null;
   uf:string;
 }
