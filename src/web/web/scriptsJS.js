@@ -46,7 +46,7 @@ async function CadastraNovoTipodeOficina ()
 	if (response.ok){
 
 		alert('Tipo de oficina criada')
-		GetAll();
+		RecuperaTipoOficina();
 	}
 	else
 	{
@@ -104,36 +104,56 @@ function CarregaIdParaDelete (event)
 
 function CarregaIdParaUpdate (event)
 {
-	colunas = event.parentNode.parentNode.children;
-	nome = colunas[1].innerHTML;
-	console.log(nome);
-	document.getElementById("MODAL_Nome").value = nome;
+	let colunas = event.parentNode.parentNode.children;
+	let nome = colunas[1].innerHTML;
+	let id = colunas[0].firstElementChild.id;
+	document.getElementById("MODAL_EDIT_Nome").value = nome;
+	document.getElementById("MODAL_EDIT_Id").dataset.userId = id;
+	//console.log(document.getElementById("MODAL_EDIT_Nome").value);
+	//console.log(document.getElementById("MODAL_EDIT_Id").dataset.userId);
 }
 
 
-function DeletaTipoOficina (event)
+async function DeletaTipoOficina (event)
 {
 	let id = event.dataset.userId;
 	console.log(id);
 	let URL = "http://localhost:3344/tipo-oficina/deletar-tipo-oficina/"+id;
-
-	let response = fetch(URL,{
+	let response = await fetch(URL,{
 		method : "DELETE"
 	})
-
 	if (response.ok)
 		console.log("Deu Algo Errado");
-
 	RecuperaTipoOficina();
 }
 
 
-function AlterarTipoOficina (event)
+async function AlterarTipoOficina (event)
 {
-	// SÓ FALTOU ISSO MESMO
+	console.log(event.dataset.userId);
+	let nome = document.getElementById("MODAL_EDIT_Nome").value;
+	let URL = "http://localhost:3344/tipo-oficina/altera-tipo-oficina/"+id;
+	let json = {
+		nome : nome
+	}
+
+	let response = await fetch(URL,{
+		method : "PUT",
+		headers: {'Content-Type': 'application/json'},
+		body : JSON.stringify(json)
+	});
+
+	if (response.ok)
+	{
+		alert('Tipo de oficina Alterada')
+		RecuperaTipoOficina();
+	}
+	else
+	{
+		console.log(response + '\n' + JSON.stringify(response))
+	}
+
 }
-
-
 
 
 window.addEventListener('load', function () {
