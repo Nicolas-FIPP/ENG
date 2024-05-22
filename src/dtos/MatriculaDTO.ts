@@ -1,13 +1,13 @@
-import { OficinaOut } from "dtos/Oficina/OficinaDTO"
+import { OficinaOut } from "dtos/OficinaDTO"
 
-export interface matriculaIn{
+export interface MatriculaIn{
     criado_em: Date
     pes_id:number
     ofi_id?:number
 }
 
 
-export interface matriculaOUT{
+export interface MatriculaOUT{
     criado_em: Date
     oficina: OficinaOut
     fisica: number

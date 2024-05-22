@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { PessoaFisicaIn, PessoaJurdicaIn, pessoaIn, pessoaOut } from "dtos/PessoaDTO";
+import { PessoaFisica, PessoaJurdica, PessoaIn, PessoaOut } from "dtos/PessoaDTO";
 import PessoaModel from "models/PessoaModel";
 
 const pessoaModel = new PessoaModel();
@@ -8,16 +8,15 @@ export default class PessoaController {
   create = async (req: Request, res: Response) => {
 
     try {
-      const pessoa: pessoaIn = req.body;
+      const pessoa: PessoaIn = req.body;
   
-      
-      const newPessoa: pessoaOut = await pessoaModel.create(pessoa);
+      const newPessoa: PessoaOut = await pessoaModel.create(pessoa);
 
 
       if(pessoa.cnpj){
         if(pessoa.pessoaJuridica){
-          const pessoaJurdica : PessoaJurdicaIn = {
-            id: newPessoa.id,
+          const pessoaJurdica : PessoaJurdica = {
+            pes_id: newPessoa.id,
             cnpj: pessoa.cnpj,
             insc_estadual: pessoa.pessoaJuridica.insc_estadual,
             site: pessoa.pessoaJuridica.site,
@@ -25,20 +24,20 @@ export default class PessoaController {
           }
           console.log(pessoaJurdica)
 
-          const newPessoaJuridica : PessoaJurdicaIn = await pessoaModel.createPessoaJuridica(pessoaJurdica);
+          const newPessoaJuridica : PessoaJurdica = await pessoaModel.createPessoaJuridica(pessoaJurdica);
           res.status(201).json(newPessoaJuridica);
         } 
       }
       if(pessoa.cpf){
         if(pessoa.pessoaFisica){
-          const pessoaFisica : PessoaFisicaIn = {
-            id: newPessoa.id,
+          const pessoaFisica : PessoaFisica = {
+            pes_id: newPessoa.id,
             cpf: pessoa.cpf,
             dt_nasc: new Date( pessoa.pessoaFisica.dt_nasc),
             sexo: pessoa.pessoaFisica.sexo,
             rg: pessoa.pessoaFisica.rg
           }
-          const newPessoaFisica : PessoaFisicaIn = await pessoaModel.createPessoaFisica(pessoaFisica);
+          const newPessoaFisica : PessoaFisica = await pessoaModel.createPessoaFisica(pessoaFisica);
           res.status(201).json(newPessoaFisica);
 
         }

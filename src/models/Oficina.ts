@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { OficinaIn } from 'dtos/Oficina/OficinaDTO';
+import { OficinaIn } from 'dtos/OficinaDTO';
 import { TipoOficinaIn } from 'dtos/TipoOficinaDTO';
 
 const prisma = new PrismaClient();

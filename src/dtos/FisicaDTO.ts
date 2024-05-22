@@ -1,16 +1,16 @@
 
 export interface FisicaIn {
     pes_id: number;
-    pesfis_cpf: string;
-    pesfis_dtnasc: Date | null;
-    pesfis_sexo: string;
-    pesfis_rg: string;
+    cpf: string;
+    dt_nasc: Date | null;
+    sexo: string;
+    rg: string;
   }
 
   export interface FisicaOut {
     pes_id: number;
-    pesfis_cpf: string;
-    pesfis_dtnasc: Date | null;
-    pesfis_sexo: string;
-    pesfis_rg: string;
+    cpf: string;
+    dt_nasc: Date | null;
+    sexo: string;
+    rg: string;
   }
