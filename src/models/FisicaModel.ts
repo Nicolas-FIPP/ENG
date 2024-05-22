@@ -100,17 +100,18 @@ export default class FisicaModel{
           }
         })
       }*/
-    /*
-      update = async (id: number, user: UserIn) => {
+    
+      update = async (id: number, pessoa: PessoaFisicaIn) => {
         return await prisma.fisica.update({
-          where: {
-            id
-          },
+          where: { pes_id:id},
           data: {
-            ...user
+            cpf: pessoa.cpf,
+            dt_nasc: pessoa.dt_nasc,
+            sexo : pessoa.sexo,
+            rg: pessoa.rg
           }
         })
-      }*/
+      }
   
     
       /*

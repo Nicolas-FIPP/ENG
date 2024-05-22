@@ -76,7 +76,7 @@ export default class PessoaController {
 
 
 
-  getAll = async (req: Request, res: Response) => {
+  getAll = async (res: Response) => {
     try {
       const pessoas = await pessoaModel.getAll();
       res.status(200).json(pessoas);
@@ -88,24 +88,53 @@ export default class PessoaController {
       });
     }
   };
-  /*
+  
 
   update = async (req: Request, res: Response) => {
     try {
-      const id: number = parseInt(req.params.id);
-      const updateUser: UserIn = req.body;
-      const userUpdated: UserOut | null = await userModel.update(
-        id,
-        updateUser
-      );
+      const id:number = req.body.id;
+      const pessoa: pessoaIn = req.body;
+      if(pessoaModel.ValidaEmail(pessoa.email)){
+        if (pessoa.cpf && pessoa.pessoaFisica) {
+          pessoa.cpf = pessoa.cpf.replace(/[^\d]/g, '');
+          if (pessoaFisicaModel.validaCpf(pessoa.cpf)) {
 
-      if (userUpdated) {
-        res.status(200).json(userUpdated);
-      } else {
-        res.status(404).json({
-          error: "USR-06",
-          message: "User not found.",
-        });
+            const updatePessoa: pessoaOut = await pessoaModel.update(id,pessoa);
+
+            const pessoaFisica: PessoaFisicaIn = {
+              id:id,
+              cpf: pessoa.cpf,
+              dt_nasc: new Date(pessoa.pessoaFisica.dt_nasc),
+              sexo: pessoa.pessoaFisica.sexo,
+              rg: pessoa.pessoaFisica.rg
+            };
+
+            const newPessoaFisica = await pessoaFisicaModel.update(id,pessoaFisica);
+            return res.status(201).json(newPessoaFisica);
+          } else {
+            return res.status(400).json({ message: "CPF Inválido" });
+          }
+        }
+
+        if (pessoa.cnpj && pessoa.pessoaJuridica) {
+        
+          const updatePessoa: pessoaOut = await pessoaModel.update(id,pessoa);
+
+          const pessoaJuridica: PessoaJuridicaIn = {
+            id: id,
+            cnpj: pessoa.cnpj,
+            insc_estadual: pessoa.pessoaJuridica.insc_estadual,
+            site: pessoa.pessoaJuridica.site,
+            razao_social: pessoa.pessoaJuridica.razao_social
+          };
+
+          const newPessoaJuridica = await pessoaJuridicaModel.update(id,pessoaJuridica);
+          return res.status(201).json(newPessoaJuridica);
+        }
+      }
+      else{
+        return res.status(400).json({ message: "Email Inválido" });
+
       }
     } catch (e) {
       console.log("Failed to update user", e);
@@ -115,7 +144,7 @@ export default class PessoaController {
       });
     }
   };
-
+/*
   delete = async (req: Request, res: Response) => {
     try {
       const id: number = parseInt(req.params.id);

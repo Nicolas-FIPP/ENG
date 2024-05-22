@@ -45,10 +45,22 @@ export default class PessoaModel {
     });
   }
 
-  update = async (id: number, data: any) => {
+  update = async (id: number, pessoa: pessoaIn) => {
     return await prisma.pessoa.update({
       where: { id: id },
-      data: data
+      data: {
+        nome: pessoa.nome,
+        tel: pessoa.tel,
+        email:pessoa.email,
+        cidade: pessoa.cidade,
+        bairro: pessoa.bairro,
+        cep: pessoa.cep,
+        numero: pessoa.numero,
+        complemento: pessoa.complemento,
+        rua : pessoa.rua,
+        uf:pessoa.uf
+
+      }
     });
   }
   /*

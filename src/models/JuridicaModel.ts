@@ -18,10 +18,20 @@ export default class JuridicaModel{
             razao_social: pessoa.razao_social
           }
         });
-
-      
-
         
+      }
+
+      update = async (id: number, pessoa: PessoaJuridicaIn) => {
+        return await prisma.juridica.update({
+          where: { pes_id:id},
+          data: {
+            pes_id: pessoa.id,
+            cnpj: pessoa.cnpj,
+            insc_estadual: pessoa.insc_estadual,
+            site: pessoa.site,
+            razao_social: pessoa.razao_social
+          }
+        })
       }
     
       /*
