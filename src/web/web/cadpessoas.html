@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>System</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="js/cad-pessoas.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Painel Principal</a>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">Cadastros</a></li>
+                <li><a href="#">Relatórios</a></li>
+                <li><a href="#">Ações</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h2>Pessoa <b>Fisica</b></h2>
+                    </div>
+                    <div class="col-sm-6">
+                        <a href="#addEmployeeModal-fisica" class="btn btn-success" data-toggle="modal"><i
+                                class="material-icons">&#xE147;</i> <span>Adicionar Novo Tipo</span></a>
+                        <!--<a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Deletar</span></a>-->
+                    </div>
+                </div>
+            </div>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Telefone</th>
+                        <th>Email</th>
+                        <th>Cidade</th>
+                        <th>Bairro</th>
+                        <th>CEP</th>
+                        <th>Número</th>
+                        <th>Complemento</th>
+                        <th>Rua</th>
+                        <th>CPF</th>
+                        <th>Estado</th>
+                        <th>Data de Nascimento</th>
+                        <th>Sexo</th>
+                        <th>RG</th>
+                        <th>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="tbfisica">
+                    <!--
+                    <tr>
+                        <td>
+                          <span class="custom-checkbox">
+                              <input type="checkbox" id="checkbox1" name="options[]" value="1">
+                              <label for="checkbox1"></label>
+                          </span>
+                      </td>
+                        <td>Aula</td>
+                        <td class="alinha-edit-del">
+                            <a href="#editEmployeeModal-fisica" class="edit" data-toggle="modal"><i class="material-icons"
+                                    data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                            <a href="#deleteEmployeeModal-fisica" class="delete" data-toggle="modal"><i class="material-icons"
+                                    data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                        </td>
+                    </tr>-->
+                </tbody>
+            </table>
+            <!--<div class="clearfix">
+              <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
+              <ul class="pagination">
+                  <li class="page-item disabled"><a href="#">Previous</a></li>
+                  <li class="page-item"><a href="#" class="page-link">1</a></li>
+                  <li class="page-item"><a href="#" class="page-link">2</a></li>
+                  <li class="page-item active"><a href="#" class="page-link">3</a></li>
+                  <li class="page-item"><a href="#" class="page-link">4</a></li>
+                  <li class="page-item"><a href="#" class="page-link">5</a></li>
+                  <li class="page-item"><a href="#" class="page-link">Next</a></li>
+              </ul>
+          </div>-->
+        </div>
+    </div>
+    <div class="container">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h2>Pessoa <b>Juridica</b></h2>
+                    </div>
+                    <div class="col-sm-6">
+                        <a href="#addEmployeeModal-juridica" class="btn btn-success" data-toggle="modal"><i
+                                class="material-icons">&#xE147;</i> <span>Adicionar Novo Tipo</span></a>
+                        <!--<a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Deletar</span></a>-->
+                    </div>
+                </div>
+            </div>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Telefone</th>
+                        <th>Email</th>
+                        <th>Cidade</th>
+                        <th>Bairro</th>
+                        <th>CEP</th>
+                        <th>Número</th>
+                        <th>Complemento</th>
+                        <th>Rua</th>
+                        <th>CPF</th>
+                        <th>Estado</th>
+                        <th>Data de Nascimento</th>
+                        <th>Sexo</th>
+                        <th>RG</th>
+                        <th>
+                            <!--<span class="custom-checkbox">
+                              <input type="checkbox" id="selectAll">
+                              <label for="selectAll"></label>
+                          </span>-->
+                        </th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <!--<td>
+                          <span class="custom-checkbox">
+                              <input type="checkbox" id="checkbox1" name="options[]" value="1">
+                              <label for="checkbox1"></label>
+                          </span>
+                      </td>-->
+                        <td>Aula</td>
+                        <td class="alinha-edit-del">
+                            <a href="#editEmployeeModal-juridica" class="edit" data-toggle="modal"><i class="material-icons"
+                                    data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                            <a href="#deleteEmployeeModal-juridica" class="delete" data-toggle="modal"><i class="material-icons"
+                                    data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                    </tr>
+                </tbody>
+            </table>
+            <!--<div class="clearfix">
+              <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
+              <ul class="pagination">
+                  <li class="page-item disabled"><a href="#">Previous</a></li>
+                  <li class="page-item"><a href="#" class="page-link">1</a></li>
+                  <li class="page-item"><a href="#" class="page-link">2</a></li>
+                  <li class="page-item active"><a href="#" class="page-link">3</a></li>
+                  <li class="page-item"><a href="#" class="page-link">4</a></li>
+                  <li class="page-item"><a href="#" class="page-link">5</a></li>
+                  <li class="page-item"><a href="#" class="page-link">Next</a></li>
+              </ul>
+          </div>-->
+        </div>
+    </div>
+
+
+
+
+
+    <!-- Edit Modal HTML FISICA -->
+    <div id="addEmployeeModal-fisica" class="modal fade">
+        <div class="modal-dialog-centered ">
+            <div class="modal-content">
+                <form>
+                    <div class="modal-header">
+                        <h4 class="modal-title">Adicionar Pessoa Fisica</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Nome</label>
+                                    <input id="nome" type="text" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Sobrenome</label>
+                                    <input id="sobrenome" type="text" class="form-control" required>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3">
+                                
+                                <div class="form-group">
+                                    <label>Cel</label>
+                                    <input id="cel" type="text" class="form-control" required>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3">
+                                
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input id="email" type="text" class="form-control" required>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                        
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="Cpf" class="form-label">CPF</label>
+                                        <input type="text" name="cpf" class="form-control" id="cpf" placeholder="000.000.000.00"
+                                        onkeyup="mascara('###.###.###-##',this,event)" onblur="validarCPF(this)">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="CEP" class="form-label">CEP</label>
+                                        <input type="text" class="form-control" name="Cep" id="cep" placeholder="00000-000"
+                                        onkeyup="mascara('#####-###',this,event)" onblur="buscaCep()">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="classRua" class="form-label">Rua</label>
+                                    <input type="text" name="rua" class="form-control" id="RUA" placeholder="Ex. São Paulo">
+                                </div>
+                            </div>
+                            <div class="col-md-3 ">
+                                <div class="form-group">
+                                    <label for="classNumero" class="form-label">Número</label>
+                                    <input type="number" name="numero" class="form-control" id="NUMERO" placeholder="Ex. 619"
+                                    required="required">
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="classEstate" class="form-label">Estado</label>
+                                    <select class="form-control" name="estado" id="estado" onchange="buscarCidadesDadoEstado()">
+                                      <option value="AC" selected>Acre</option>
+                                      <option value="AL">Alagoas</option>
+                                      <option value="AP">Amapá</option>
+                                      <option value="AM">Amazonas</option>
+                                      <option value="BA">Bahia</option>
+                                      <option value="CE">Ceará</option>
+                                      <option value="DF">Distrito Federal</option>
+                                      <option value="ES">Espírito Santo</option>
+                                      <option value="GO">Goiás</option>
+                                      <option value="MA">Maranhão</option>
+                                      <option value="MT">Mato Grosso</option>
+                                      <option value="MS">Mato Grosso do Sul</option>
+                                      <option value="MG">Minas Gerais</option>
+                                      <option value="PA">Pará</option>
+                                      <option value="PB">Paraíba</option>
+                                      <option value="PR">Paraná</option>
+                                      <option value="PE">Pernambuco</option>
+                                      <option value="PI">Piauí</option>
+                                      <option value="RJ">Rio de Janeiro</option>
+                                      <option value="RN">Rio Grande do Norte</option>
+                                      <option value="RS">Rio Grande do Sul</option>
+                                      <option value="RO">Rondônia</option>
+                                      <option value="RR">Roraima</option>
+                                      <option value="SC">Santa Catarina</option>
+                                      <option value="SP">São Paulo</option>
+                                      <option value="SE">Sergipe</option>
+                                      <option value="TO">Tocantins</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="cidade" class="form-label">Cidade</label>
+                                        <select class="form-control" name="cidade" id="CIDADE">
+                                        <!--OS OPTIONS VÃO SER INSERIDOS AQUI PELO RETORNO DA API-->
+                                        </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">                    
+                                <div class="form-group">
+                                    <label>Complmento</label>
+                                    <input id="complemento" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="classDate" class="form-label">Data de Nascimento</label>
+                                    <input type="date" name="date" class="form-control" id="DATA">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="sexo" class="form-label">Sexo</label>
+                                    <select class="form-control" name="sexo" id="sexo">
+                                        <option value="M" selected>Masculino</option>
+                                        <option value="F">Feminino</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="rg" class="form-label">RG</label>
+                                    <input type="text" name="rg" class="form-control" id="rg">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+                        <input type="button" class="btn btn-success" onclick="enviarFormulario()"
+                            value="Salvar">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- Edit Modal  -->
+    <div id="editEmployeeModal-fisica" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form>
+                    <div class="modal-header">
+                        <h4 class="modal-title">Alterar</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Nome</label>
+                            <input id="MODAL_EDIT_Nome" type="text" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+                        <input type="submit" class="btn btn-warning" id="MODAL_EDIT_Id" data-user-id=""
+                            onclick="AlterarTipoOficina(this)" value="Alterar">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Delete Modal HTML -->
+    <div id="deleteEmployeeModal-fisica" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form>
+                    <div class="modal-header">
+                        <h4 class="modal-title">Deletar</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Você tem certeza que Deseja DELETAR o Registro Selecionado ?</p>
+                        <p class="text-warning"><small>Essa ação não pode ser Desfeita</small></p>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+                        <input type="submit" class="btn btn-danger" id="MODAL_DELETE_Id" data-user-id=""
+                            onclick="DeletaTipoOficina(this)" value="Deletar">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+        <!-- Edit Modal HTML JURIDICA -->
+        <div id="addEmployeeModal-juridica" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form>
+                        <div class="modal-header">
+                            <h4 class="modal-title">Adicionar Tipo da Oficina</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Nome</label>
+                                <input id="NOME" type="text" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+                            <input type="button" class="btn btn-success" onclick="CadastraNovoTipodeOficina()"
+                                value="Salvar">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Edit Modal HTML -->
+        <div id="editEmployeeModal-juridica" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form>
+                        <div class="modal-header">
+                            <h4 class="modal-title">Alterar</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Nome</label>
+                                <input id="MODAL_EDIT_Nome" type="text" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+                            <input type="submit" class="btn btn-warning" id="MODAL_EDIT_Id" data-user-id=""
+                                onclick="AlterarTipoOficina(this)" value="Alterar">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Delete Modal HTML -->
+        <div id="deleteEmployeeModal-juridica" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form>
+                        <div class="modal-header">
+                            <h4 class="modal-title">Deletar</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Você tem certeza que Deseja DELETAR o Registro Selecionado ?</p>
+                            <p class="text-warning"><small>Essa ação não pode ser Desfeita</small></p>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+                            <input type="submit" class="btn btn-danger" id="MODAL_DELETE_Id" data-user-id=""
+                                onclick="DeletaTipoOficina(this)" value="Deletar">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+</body>
+
+</html>
