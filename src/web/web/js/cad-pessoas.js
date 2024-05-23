@@ -18,12 +18,35 @@ async function buscaCep()
   }
 }
 
+async function buscaCep2()
+{
+  cep = document.getElementById("cep2").value
+  
+  const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`)
+  const Dados = await response.json();
+  if (Dados.error)
+  {
+    //document.getElementById("CEP").value = "Algo Deu Errado no Processo";
+    alert("Algo deu Errado no Processo");
+  }
+  else
+  {
+    //console.log(Dados.logradouro);
+    //document.getElementById("CIDADE").value = Dados.localidade
+    document.getElementById("RUA2").value = Dados.logradouro
+    //console.log(document.getElementById("RUA").value);
+  }
+}
+
 
 // API PARA BUSCAR CIDADE DADO UM ESTADO
 
 async function buscarCidadesDadoEstado() {
   try {
-    const uf = document.getElementById("estado").value;
+ 
+      const uf = document.getElementById("estado").value;
+
+    
     console.log(uf);
 
     const response = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`);
@@ -58,45 +81,51 @@ async function buscarCidadesDadoEstado() {
   }
 }
 
+async function buscarCidadesDadoEstado2() {
+   try {
+  
+       const uf = document.getElementById("estado2").value;
+ 
+     
+     console.log(uf);
+ 
+     const response = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`);
+     const dados = await response.json();
+ 
+     // Verifica se a resposta contém um array de dados
+     if (Array.isArray(dados)) {
+       // Limpa as opções anteriores
+       const selectCidade = document.getElementById("CIDADE2");
+       selectCidade.innerHTML = "";
+ 
+       // Adiciona uma opção padrão
+       const optionPadrao = document.createElement("option");
+       optionPadrao.value = "";
+       optionPadrao.textContent = "Selecione sua cidade";
+       selectCidade.appendChild(optionPadrao);
+ 
+       // Itera sobre o array de dados e cria uma opção para cada cidade
+       dados.forEach(cidade => {
+         const optionCidade = document.createElement("option");
+         optionCidade.value = cidade.nome;
+         optionCidade.textContent = cidade.nome;
+         selectCidade.appendChild(optionCidade);
+       });
+     } else {
+       // Se a resposta não contiver um array de dados, exibe uma mensagem de erro
+       throw new Error('Erro ao buscar cidades');
+     }
+   } catch (error) {
+     console.error('Erro:', error);
+     alert("Algo deu Errado no Processo");
+   }
+ }
+
 
 //VALIDAÇOES
-function getMoney(){
-    var vStr = event.target.value;
-    event.target.value =  parseInt( vStr.replace(/[\D]+/g,'') );
-  }
+
+
   
-  /* OU para receber uma string formatada e converter pra inteiro e usar em cálculos, ou para gravar no banco de dados,... 
-  function getMoney( str ){
-       return parseInt( str.replace(/[\D]+/g,'') );
-  }
-  */
-  
-  function mMoeda () {
-   // Para pegar o objeto que chamou o evento 
-   var v = (event.target.value).substring(3); //extrai os 3 primeiros caracteres relativos ao 'R$ '
-   //var v = event.target.value;
-            
-   //Faz uma série de substituições nas Expressões Regulares que podem gerar valores monetários
-   v = v.replace(/\D/g, "");
-   v = v.replace(/^0+/g, "");
-   v = v.replace(/(\d{1})(\d{13})$/, "$1.$2");
-   v = v.replace(/(\d{1})(\d{10})$/, "$1.$2");
-   v = v.replace(/(\d{1})(\d{7})$/, "$1.$2");
-   v = v.replace(/(\d{1})(\d{4})$/, "$1.$2");
-   v = v.replace(/(\d{1})(\d{1,1})$/, "$1,$2");
-   // Para retornar os valores que estão sendo digitados com a formatação ao elemento que chamou a função
-   event.target.value = "R$ " + v;
-   //event.target.value = v;
-  }
-  
-  function formatReal(){
-    var tmp = event.target.value+'';
-    tmp = tmp.replace(/([0-9]{2})$/g, ",$1");
-    if( tmp.length > 6 )
-       tmp = tmp.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2");
-  
-    event.target.value = tmp;
-  }
   
   function mCpf() {
     var cpf = event.target.value;
@@ -107,24 +136,7 @@ function getMoney(){
     event.target.value = cpf;
   }
   
-  function mTel () { //telefone fixo
-    var tel = event.target.value;
-    tel = tel.replace(/\D/g, "")
-    tel = tel.replace(/^(\d)/, "($1")
-    tel = tel.replace(/(.{3})(\d)/, "$1)$2")
-    if (tel.length == 9) {
-       tel = tel.replace(/(.{1})$/, "-$1")
-    } else if (tel.length == 10) {
-       tel = tel.replace(/(.{2})$/, "-$1")
-    } else if (tel.length == 11) {
-       tel = tel.replace(/(.{3})$/, "-$1")
-    } else if (tel.length == 12) {
-       tel = tel.replace(/(.{4})$/, "-$1")
-    } else if (tel.length > 12) {
-       tel = tel.replace(/(.{4})$/, "-$1")
-    }
-    event.target.value = tel;
-  }
+
          
   
   function mCEP () {
@@ -242,7 +254,7 @@ function getMoney(){
    if (response.ok) {
        const data = await response.json();
        console.log(data);
-       GETALL(data); // Chama a função para preencher a tabela com os dados recebidos
+       GETALL(data); 
    } else {
        console.log(response.status + '\n' + JSON.stringify(response));
    }
@@ -251,10 +263,10 @@ function getMoney(){
 function GETALL(data) {
    let tbody = document.getElementById('tbfisica');
    
-   // Limpa qualquer conteúdo pré-existente na tabela
+  
    tbody.innerHTML = '';
 
-   // Itera sobre os dados e adiciona linhas à tabela
+   
    data.forEach(item => {
        let row = document.createElement('tr');
        row.innerHTML = `
@@ -273,13 +285,46 @@ function GETALL(data) {
            <td>${item.fisica.sexo}</td>
            <td>${item.fisica.rg}</td>
            <td class="alinha-edit-del">
-               <a href="#editEmployeeModal" onclick="CarregaIdParaUpdate(${item.id})" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-               <a href="#deleteEmployeeModal" onclick="CarregaIdParaDelete(${item.id})" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+           <a href="#editEmployeeModal-fisica" onclick='CarregaIdParaUpdate(this, "${item.id}", "${item.tel}" ,"${item.nome}", "${item.email}", "${item.cidade}", "${item.bairro}", "${item.cep}", "${item.numero}", "${item.complemento}", "${item.rua}", "${item.fisica.cpf}", "${item.uf}", "${item.fisica.dt_nasc}", "${item.fisica.sexo}", "${item.fisica.rg}")' class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+               <a href="#deleteEmployeeModal-fisica" onclick="CarregaIdParaDelete(${item.id})" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
            </td>
-       `;
+       `
        tbody.appendChild(row);
    });
 }
+
+function CarregaIdParaUpdate(event,id,tel, nome, email, cidade, bairro, cep, numero, complemento, rua, cpf, uf, dt_nasc, sexo, rg) {
+   console.log(nome);
+   console.log("entrei");
+
+   const partesNome = nome.split(" "); 
+   const primeiroNome = partesNome[0]; 
+   const sobrenome = partesNome.slice(1).join(" "); 
+
+   $('#editEmployeeModal-fisica').find('#nome').val(primeiroNome);
+   $('#editEmployeeModal-fisica').find('#sobrenome').val(sobrenome);
+    $('#editEmployeeModal-fisica').find('#cel').val(tel);
+    $('#editEmployeeModal-fisica').find('#email').val(email);
+    $('#editEmployeeModal-fisica').find('#cpf').val(cpf);
+    $('#editEmployeeModal-fisica').find('#RUA2').val(rua);
+    $('#editEmployeeModal-fisica').find('#NUMERO').val(numero);
+    $('#editEmployeeModal-fisica').find('#estado2').val(uf);
+    buscarCidadesDadoEstado2();
+    $('#editEmployeeModal-fisica').find('#cep2').val(cep);
+    
+    $('#editEmployeeModal-fisica').find('#complemento').val(complemento);
+   $('#editEmployeeModal-fisica').find('#DATA').val(dt_nasc);
+   $('#editEmployeeModal-fisica').find('#sexo').val(sexo);
+    $('#editEmployeeModal-fisica').find('#rg').val(rg);
+    $('#editEmployeeModal-fisica').find('#bairro').val(bairro);
+    $('#editEmployeeModal-fisica').find('#CIDADE2').val(cidade);
+  
+  
+   
+   
+   
+}
+
 
 
   async function enviarFormulario() {
@@ -298,6 +343,7 @@ function GETALL(data) {
    const dt_nasc = document.getElementById('DATA').value;
    const rg = document.getElementById('rg').value;
    const sexo = document.getElementById('sexo').value;
+   const bairro = document.getElementById('bairro').value;
 
 
    if (!validarEmail(email)) {
@@ -307,14 +353,14 @@ function GETALL(data) {
   if (!nome || !tel || !email || !cpf || !cep || !uf || !cidade || !dt_nasc || !sexo || !rg) {
    alert('Por favor, preencha todos os campos obrigatórios.');
    return;
-}
+   }
    // Criar o objeto JSON
    const dados = {
        nome: nome + ' ' + sobrenome,
        tel: tel,
        email: email,
        cidade: cidade,
-       bairro: '', // Se houver campo de bairro, substitua
+       bairro: bairro, 
        cep: cep,
        numero: numero,
        complemento: complemento,
@@ -323,8 +369,8 @@ function GETALL(data) {
        uf: uf,
        pessoaFisica: {
            dt_nasc: dt_nasc,
-           sexo: sexo, // Adicione o campo de sexo se houver
-           rg: rg    // Adicione o campo de rg se houver
+           sexo: sexo, 
+           rg: rg   
        }
    };
    console.log(JSON.stringify(dados));
@@ -347,11 +393,88 @@ function GETALL(data) {
        const respostaJson = await response.json();
        console.log('Resposta do servidor:', respostaJson);
        alert('Dados enviados com sucesso!');
+       location.reload();
    } catch (error) {
        console.error('Erro:', error);
        alert('Erro ao enviar os dados.');
    }
 }
+
+
+async function alterarFormulario() {
+   // Coletar os dados do formulário
+   const nome = $('#editEmployeeModal-fisica').find('#nome').val();
+   const sobrenome = $('#editEmployeeModal-fisica').find('#sobrenome').val();
+   const tel = $('#editEmployeeModal-fisica').find('#cel').val().replace(/\D/g, '');
+   const email = $('#editEmployeeModal-fisica').find('#email').val();
+   const cpf = $('#editEmployeeModal-fisica').find('#cpf').val().replace(/\D/g, '');
+   const cep = $('#editEmployeeModal-fisica').find('#cep2').val().replace(/[^\d]/g, '');
+   const rua = $('#editEmployeeModal-fisica').find('#RUA2').val();
+   const numero = $('#editEmployeeModal-fisica').find('#NUMERO').val();
+   const complemento = $('#editEmployeeModal-fisica').find('#complemento').val();
+   const uf = $('#editEmployeeModal-fisica').find('#estado2').val();
+   const cidade = $('#editEmployeeModal-fisica').find('#CIDADE2').val();
+   const dt_nasc = $('#editEmployeeModal-fisica').find('#DATA').val();
+   const rg = $('#editEmployeeModal-fisica').find('#rg').val();
+   const sexo = $('#editEmployeeModal-fisica').find('#sexo').val();
+   const bairro = $('#editEmployeeModal-fisica').find('#bairro').val();
+   console.log("etrenidasdjas");
+
+
+   if (!validarEmail(email)) {
+      alert('Por favor, insira um e-mail válido.');
+      return;
+  }
+  if (!nome || !tel || !email || !cpf || !cep || !uf || !cidade || !dt_nasc || !sexo || !rg) {
+   alert('Por favor, preencha todos os campos obrigatórios.');
+   return;
+   }
+   // Criar o objeto JSON
+   const dados = {
+       nome: nome + ' ' + sobrenome,
+       tel: tel,
+       email: email,
+       cidade: cidade,
+       bairro: bairro, 
+       cep: cep,
+       numero: numero,
+       complemento: complemento,
+       rua: rua,
+       cpf: cpf,
+       uf: uf,
+       pessoaFisica: {
+           dt_nasc: dt_nasc,
+           sexo: sexo, 
+           rg: rg   
+       }
+   };
+   console.log(JSON.stringify(dados));
+   
+
+   // Enviar os dados usando fetch
+   try {
+       const response = await fetch('http://localhost:3344/pessoa/update', {
+           method: 'POST',
+           headers: {
+               'Content-Type': 'application/json'
+           },
+           body: JSON.stringify(dados)
+       });
+
+       if (!response.ok) {
+           throw new Error('Erro na requisição');
+       }
+
+       const respostaJson = await response.json();
+       console.log('Resposta do servidor:', respostaJson);
+       alert('Dados enviados com sucesso!');
+       location.reload();
+   } catch (error) {
+       console.error('Erro:', error);
+       alert('Erro ao enviar os dados.');
+   }
+}
+ 
  
         
 
