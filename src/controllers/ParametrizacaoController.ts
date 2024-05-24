@@ -7,6 +7,13 @@ const ParametrizacaoMod = new ParametrizacaoModel();
 export default class ParametrizacaoController {
   create = async (req: Request, res: Response) => {
     try {
+      const registros = await prisma.ParametrizacaoMod.get();
+
+      if( registros.length > 0)
+      {
+          console.log('Já existe um registro na tabela.');
+          return;
+      }
       const Parametrizacao: ParametrizacaoDTO = req.body;
       console.log(Parametrizacao);
       const newParametrizacao: ParametrizacaoDTO = await ParametrizacaoMod.create(Parametrizacao);
