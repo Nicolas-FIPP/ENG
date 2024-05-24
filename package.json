@@ -29,5 +29,9 @@
   },
   "prisma": {
     "schema": "src/prisma/schema.prisma"
-  }
+  },
+  "description": "OI",
+  "keywords": [],
+  "author": "Higor Brito <higordpb@gmail.com>",
+  "repository": "https://github.com/Nicolas-FIPP/ENG.git"
 }

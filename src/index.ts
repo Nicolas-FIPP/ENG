@@ -7,6 +7,8 @@ import despesaRoutes from "routes/DespesaRoutes"
 import usuarioRoutes from "routes/UsuarioRoutes"
 import pessoaRoutes from "routes/PessoaRoutes"
 import oficinaRoutes from "routes/OficinaRoutes"
+import parametrizacaoRoutes from "routes/parametrizacaoRoutes"
+
 DateTime.local().setZone("America/Sao_Paulo");
 
 const app = express();
@@ -25,6 +27,7 @@ app.use("/despesa", despesaRoutes)
 app.use("/usuario", usuarioRoutes);
 app.use("/pessoa", pessoaRoutes);
 app.use("/oficina", oficinaRoutes);
+app.use("/parametrizacao", parametrizacaoRoutes);
 
 
 
