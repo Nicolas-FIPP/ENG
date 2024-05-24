@@ -54,6 +54,12 @@ async function CadastraNovoTipodeOficina ()
 	}
 }
 
+
+
+
+
+
+
 async function RecuperaTipoOficina() {
     let URL = "http://localhost:3344/tipo-oficina/todos-tipos-oficinas";
     let response = await fetch(URL, {
@@ -120,12 +126,13 @@ async function DeletaTipoOficina (event)
 	console.log(id);
 	let URL = "http://localhost:3344/tipo-oficina/deletar-tipo-oficina/"+id;
 	let response = await fetch(URL,{
-		method : "DELETE"
+		method : "PUT"
 	})
 	if (response.ok)
 		console.log("Deu Algo Errado");
-	RecuperaTipoOficina();
+	RecuperaUsuario();
 }
+
 
 
 async function AlterarTipoOficina (event)
@@ -154,6 +161,10 @@ async function AlterarTipoOficina (event)
 	}
 
 }
+
+
+
+
 
 
 window.addEventListener('load', function () {

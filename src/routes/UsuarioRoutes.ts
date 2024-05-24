@@ -20,10 +20,10 @@ routes.post('/login', usuarioControl.login)
 routes.get('/get-usuario/:id', autenticacaoToken, usuarioControl.get)
 
 // Rota para listar todos os usuários
-routes.get('/get-todos-usuarios', autenticacaoToken, usuarioControl.getAll);
+routes.get('/get-todos-usuarios', usuarioControl.getAll); //autenticacaoToken
 
 // Rota para excluir logicamente um usuário
-routes.put('/inativar-usuario/:id', autenticacaoToken, usuarioControl.inativar);
+routes.put('/inativar-usuario/:id', usuarioControl.inativar); //autenticacaoToken
 
 
 

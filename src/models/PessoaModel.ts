@@ -72,6 +72,8 @@ export default class PessoaModel {
     })
   }
 
+  
+
   /*
 
   get = async (id: number) => {

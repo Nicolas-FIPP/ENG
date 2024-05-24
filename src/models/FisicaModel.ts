@@ -125,8 +125,18 @@ createPessoaFisica = async (pessoa: PessoaFisicaIn) => {
         cpf: cpf
       }
     })
+  }  
+  
+  getCpfByPesId = async(id: number) => {
+    return await prisma.fisica.findUnique({
+      where:{
+        pes_id: id
+      }, 
+      select:{
+        cpf: true
+      }
+    })
   }
-      
       /*
     getById = async (id: number) => {
         return await prisma.usuario.findUnique({

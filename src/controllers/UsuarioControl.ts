@@ -17,21 +17,21 @@ export default class UsuarioControl{
             const bcrypt = require('bcrypt');
 
             const usuario : UsuarioIn = {
-                pes_id: Number(req.body.pes_id),
+                cpf: req.body.cpf.replace(/[^\d]/g, ''),
                 senha: await bcrypt.hash(req.body.senha, 10),
                 nivel_acesso: Number(req.body.nivel_acesso)
             }
             
-            const fisica = await fisicaModel.getById(usuario.pes_id);
+            const fisica = await fisicaModel.getByCpf(usuario.cpf);
             if(!fisica){
                 return res.status(404).send({message: "Cadastro de pessoa não encontrado."});
             }
             
-            const usuarioExistente : UsuarioOut | null = await usuarioModel.getByFisicaId(usuario.pes_id);
+            const usuarioExistente : UsuarioOut | null = await usuarioModel.getByFisicaId(fisica.pes_id);
             if(usuarioExistente){
                 return res.status(500).send({message: "A pessoa indicada já possui um usuário criado no sistema."});
             }
-
+            usuario.pes_id = fisica.pes_id;
             const newUsuario : UsuarioOut = await usuarioModel.create(usuario);
             if(!newUsuario){
                 return res.status(500).send({message: "Falha ao criar usuário."});
@@ -45,8 +45,11 @@ export default class UsuarioControl{
     };
 
     login = async(req: Request, res: Response) => {
-        const usuario = req.body;
-
+        const usuario = {
+            cpf: req.body.cpf.replace(/[^\d]/g, ''),
+            senha: req.body.senha
+        }
+        console.log(usuario)
         const fisica = await fisicaModel.getByCpf(usuario.cpf);
         if(!fisica){
             return res.status(500).send({message: "CPF não cadastrado. Faça o cadastro de pessoa."});
@@ -97,28 +100,36 @@ export default class UsuarioControl{
     }
 
     getAll = async(req: Request, res: Response) => {
-        if(req.body.nivel !== 1){
+        /*if(req.body.nivel !== 1){
             return res.status(401).send({message: "Não autorizado."});
-        }
+        }*/
         try{
             const usuarios = await usuarioModel.getAll();
 
             if(!usuarios){
                 return res.status(404).send({message: "Não há usuários para listar."});
             }
+        
+            const usuariosAtivos = usuarios.filter(usuario => usuario.status);
 
-            return res.status(200).json(usuarios);
+            for(const object of usuariosAtivos){
+                const objetoFisica = await fisicaModel.getCpfByPesId(object.pes_id);
+                Reflect.set(object, 'cpf', objetoFisica?.cpf);
+            }
+
+            return res.status(200).json(usuariosAtivos);
         }catch(error){
             return res.status(500).send({message: "Não foi possível obter os usuários."});
         }
     }
 
     inativar = async (req: Request, res: Response) => {
-        if(req.body.nivel !== 1){
+        /*if(req.body.nivel !== 1){
             return res.status(401).send({message: "Não autorizado."});
-        }
+        }*/
 
         try{
+            console.log(req.params.id)
             const usuario = await usuarioModel.deleteLogico(Number(req.params.id));
 
             if(!usuario){
