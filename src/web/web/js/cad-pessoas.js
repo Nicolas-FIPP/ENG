@@ -38,6 +38,26 @@ async function buscaCep2()
   }
 }
 
+async function buscaCep3()
+{
+  cep = document.getElementById("cep3").value
+  
+  const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`)
+  const Dados = await response.json();
+  if (Dados.error)
+  {
+    //document.getElementById("CEP").value = "Algo Deu Errado no Processo";
+    alert("Algo deu Errado no Processo");
+  }
+  else
+  {
+    //console.log(Dados.logradouro);
+    //document.getElementById("CIDADE").value = Dados.localidade
+    document.getElementById("RUA3").value = Dados.logradouro
+    //console.log(document.getElementById("RUA").value);
+  }
+}
+
 
 // API PARA BUSCAR CIDADE DADO UM ESTADO
 
@@ -120,6 +140,86 @@ async function buscarCidadesDadoEstado2() {
      alert("Algo deu Errado no Processo");
    }
  }
+
+ async function buscarCidadesDadoEstado3() {
+  try {
+ 
+      const uf = document.getElementById("estado3").value;
+
+    
+    console.log(uf);
+
+    const response = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`);
+    const dados = await response.json();
+
+    // Verifica se a resposta contém um array de dados
+    if (Array.isArray(dados)) {
+      // Limpa as opções anteriores
+      const selectCidade = document.getElementById("CIDADE3");
+      selectCidade.innerHTML = "";
+
+      // Adiciona uma opção padrão
+      const optionPadrao = document.createElement("option");
+      optionPadrao.value = "";
+      optionPadrao.textContent = "Selecione sua cidade";
+      selectCidade.appendChild(optionPadrao);
+
+      // Itera sobre o array de dados e cria uma opção para cada cidade
+      dados.forEach(cidade => {
+        const optionCidade = document.createElement("option");
+        optionCidade.value = cidade.nome;
+        optionCidade.textContent = cidade.nome;
+        selectCidade.appendChild(optionCidade);
+      });
+    } else {
+      // Se a resposta não contiver um array de dados, exibe uma mensagem de erro
+      throw new Error('Erro ao buscar cidades');
+    }
+  } catch (error) {
+    console.error('Erro:', error);
+    alert("Algo deu Errado no Processo");
+  }
+}
+async function buscarCidadesDadoEstado4() {
+  try {
+ 
+      const uf = document.getElementById("estado4").value;
+
+    
+    console.log(uf);
+
+    const response = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`);
+    const dados = await response.json();
+
+    // Verifica se a resposta contém um array de dados
+    if (Array.isArray(dados)) {
+      // Limpa as opções anteriores
+      const selectCidade = document.getElementById("CIDADE4");
+      selectCidade.innerHTML = "";
+
+      // Adiciona uma opção padrão
+      const optionPadrao = document.createElement("option");
+      optionPadrao.value = "";
+      optionPadrao.textContent = "Selecione sua cidade";
+      selectCidade.appendChild(optionPadrao);
+
+      // Itera sobre o array de dados e cria uma opção para cada cidade
+      dados.forEach(cidade => {
+        const optionCidade = document.createElement("option");
+        optionCidade.value = cidade.nome;
+        optionCidade.textContent = cidade.nome;
+        selectCidade.appendChild(optionCidade);
+      });
+    } else {
+      // Se a resposta não contiver um array de dados, exibe uma mensagem de erro
+      throw new Error('Erro ao buscar cidades');
+    }
+  } catch (error) {
+    console.error('Erro:', error);
+    alert("Algo deu Errado no Processo");
+  }
+}
+
 
 
 //VALIDAÇOES
@@ -262,49 +362,146 @@ async function buscarCidadesDadoEstado2() {
 
 function GETALL(data) {
    let tbody = document.getElementById('tbfisica');
+   let tbody2 = document.getElementById('tabela-juridica');
    
   
    tbody.innerHTML = '';
 
    
    data.forEach(item => {
+    if (item.fisica) {
 
 
-    let data = new Date(item.fisica.dt_nasc);
+      let data = new Date(item.fisica.dt_nasc);
 
-    let dia = String(data.getDate()).padStart(2, '0');
-    let mes = String(data.getMonth() + 1).padStart(2, '0');
-    let ano = data.getFullYear();
+      let dia = String(data.getDate()).padStart(2, '0');
+      let mes = String(data.getMonth() + 1).padStart(2, '0');
+      let ano = data.getFullYear();
 
-    //let dataFormatada = ano + '-' + mes + '-' + dia;
-    let dataFormatada = dia + '/' + mes + '/' + ano;
-       let row = document.createElement('tr');
-       row.innerHTML = `
-       <td>${item.nome}</td>
-           <td>${item.tel}</td>
-           <td>${item.email}</td>
-           <td>${item.cidade}</td>
-           <td>${item.bairro}</td>
-           <td>${item.cep}</td>
-           <td>${item.numero}</td>
-           <td>${item.complemento}</td>
-           <td>${item.rua}</td>
-           <td>${item.fisica.cpf}</td>
-           <td>${item.uf}</td>
-           <td>${dataFormatada}</td>
-           <td>${item.fisica.sexo}</td>
-           <td>${item.fisica.rg}</td>
-           <td class="alinha-edit-del">
-           <a href="#editEmployeeModal-fisica" onclick='CarregaIdParaUpdate(this, "${item.id}", "${item.tel}" ,"${item.nome}", "${item.email}", "${item.cidade}", "${item.bairro}", "${item.cep}", "${item.numero}", "${item.complemento}", "${item.rua}", "${item.fisica.cpf}", "${item.uf}", "${item.fisica.dt_nasc}", "${item.fisica.sexo}", "${item.fisica.rg}")' class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-               <a href="#deleteEmployeeModal-fisica" onclick="CarregaIdParaDelete(${item.id})" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-           </td>
-       `
-       tbody.appendChild(row);
+      //let dataFormatada = ano + '-' + mes + '-' + dia;
+      let dataFormatada = dia + '/' + mes + '/' + ano;
+        let row = document.createElement('tr');
+        row.innerHTML = `
+        <td>${item.nome}</td>
+            <td>${item.tel}</td>
+            <td>${item.email}</td>
+            <td>${item.cidade}</td>
+            <td>${item.bairro}</td>
+            <td>${item.cep}</td>
+            <td>${item.numero}</td>
+            <td>${item.complemento}</td>
+            <td>${item.rua}</td>
+            <td>${item.fisica.cpf}</td>
+            <td>${item.uf}</td>
+            <td>${dataFormatada}</td>
+            <td>${item.fisica.sexo}</td>
+            <td>${item.fisica.rg}</td>
+            <td class="alinha-edit-del">
+            <a href="#editEmployeeModal-fisica" onclick='CarregaIdParaUpdate(this, "${item.id}", "${item.tel}" ,"${item.nome}", "${item.email}", "${item.cidade}", "${item.bairro}", "${item.cep}", "${item.numero}", "${item.complemento}", "${item.rua}", "${item.fisica.cpf}", "${item.uf}", "${item.fisica.dt_nasc}", "${item.fisica.sexo}", "${item.fisica.rg}")' class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                <a href="#deleteEmployeeModal-fisica" onclick="CarregaIdParaDelete(${item.id})" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+            </td>
+        `
+        tbody.appendChild(row);
+    }
+    else{
+          let row = document.createElement('tr');
+          row.innerHTML = `
+        <td>${item.nome}</td>
+        <td>${item.tel}</td>
+        <td>${item.email}</td>
+        <td>${item.cidade}</td>
+        <td>${item.bairro}</td>
+        <td>${item.cep}</td>
+        <td>${item.numero}</td>
+        <td>${item.complemento}</td>
+        <td>${item.rua}</td>
+        <td>${item.juridica.cnpj}</td>
+        <td>${item.uf}</td>
+        <td>${item.juridica.site}</td>
+        <td>${item.juridica.insc_estadual}</td>
+        <td>${item.juridica.razao_social}</td>
+        <td class="alinha-edit-del">
+            <a href="#editEmployeeModal-juridica" onclick='CarregaIdParaUpdateJuridica(this, "${item.id}", "${item.tel}", "${item.nome}", "${item.email}", "${item.cidade}", "${item.bairro}", "${item.cep}", "${item.numero}", "${item.complemento}", "${item.rua}", "${item.juridica.cnpj}", "${item.uf}", "${item.juridica.site}", "${item.juridica.insc_estadual}", "${item.juridica.razao_social}")' class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+            <a href="#deleteEmployeeModal-juridica" onclick="CarregaIdParaDeletejuridica(${item.id})" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+        </td>
+    `
+          tbody2.appendChild(row);
+
+    }
    });
+}
+
+async function CarregaIdParaUpdateJuridica(event, id, tel, nome, email, cidade, bairro, cep, numero, complemento, rua, cnpj, uf, site, inscEstadual, razaoSocial) {
+  const partesNome = nome.split(" "); 
+  const primeiroNome = partesNome[0]; 
+  const sobrenome = partesNome.slice(1).join(" "); 
+
+  // Preenchendo os campos do modal com os dados fornecidos
+  $('#editEmployeeModal-juridica').find('#ideditarjuridica').val(id);
+  $('#editEmployeeModal-juridica').find('#nome').val(primeiroNome);
+  $('#editEmployeeModal-juridica').find('#sobrenome').val(sobrenome);
+  $('#editEmployeeModal-juridica').find('#cel').val(tel);
+  $('#editEmployeeModal-juridica').find('#email').val(email);
+  $('#editEmployeeModal-juridica').find('#cnpj').val(cnpj);
+  $('#editEmployeeModal-juridica').find('#RUA4').val(rua);
+  $('#editEmployeeModal-juridica').find('#NUMERO').val(numero);
+  $('#editEmployeeModal-juridica').find('#estado4').val(uf);
+  $('#editEmployeeModal-juridica').find('#cep4').val(cep);
+
+  await buscarCidadesDadoEstado4();
+
+  $('#editEmployeeModal-juridica').find('#complemento').val(complemento);
+  $('#editEmployeeModal-juridica').find('#site').val(site);
+  $('#editEmployeeModal-juridica').find('#insc').val(inscEstadual);
+  $('#editEmployeeModal-juridica').find('#bairro').val(bairro);
+  $('#editEmployeeModal-juridica').find('#CIDADE4').val(cidade);
+  $('#editEmployeeModal-juridica').find('#razao').val(razaoSocial);
+  
+  console.log(cidade);
 }
 
 async function CarregaIdParaDelete(id){
   $('#deleteEmployeeModal-fisica').find('#fisica-delete').val(id);
+
+}
+
+async function CarregaIdParaDeletejuridica(id){
+  $('#deleteEmployeeModal-juridica').find('#juridica-delete').val(id);
+
+}
+
+async function DeletaPessoaJuridica(event){
+  id=$('#deleteEmployeeModal-juridica').find('#juridica-delete').val();
+   // Criar o objeto JSON
+   const dados = {
+       id:parseInt(id)
+
+   };
+   console.log(JSON.stringify(dados));
+   
+
+   // Enviar os dados usando fetch
+   try {
+       const response = await fetch('http://localhost:3344/pessoa/delete', {
+           method: 'PUT',
+           headers: {
+               'Content-Type': 'application/json'
+           },
+           body: JSON.stringify(dados)
+       });
+
+       if (!response.ok) {
+           throw new Error('Erro na requisição');
+       }
+
+       const respostaJson = await response.json();
+       console.log('Resposta do servidor:', respostaJson);
+       alert('Dados excluidos sucesso!');
+      // location.reload();
+   } catch (error) {
+       console.error('Erro:', error);
+       alert('Erro ao enviar os dados.');
+   }
 
 }
 
@@ -459,6 +656,167 @@ async function CarregaIdParaUpdate(event,id,tel, nome, email, cidade, bairro, ce
    }
 }
 
+async function enviarFormularioJuridca () {
+  // Coletar os dados do formulário usando jQuery
+  const modal = $('#addEmployeeModal-juridica');
+  const nome = modal.find('#nome').val();
+  const sobrenome = modal.find('#sobrenome').val();
+  const tel = modal.find('#cel').val().replace(/\D/g, ''); // Remove caracteres não numéricos
+  const email = modal.find('#email').val();
+  const cnpj = modal.find('#cnpj').val().replace(/\D/g, ''); // Remove pontos e traços
+  const cep = modal.find('#cep3').val().replace(/\D/g, ''); // Remove caracteres não numéricos
+  const rua = modal.find('#RUA3').val();
+  const numero = modal.find('#NUMERO').val();
+  const complemento = modal.find('#complemento').val();
+  const uf = modal.find('#estado3').val();
+  const cidade = modal.find('#CIDADE3').val();
+  const site = modal.find('#site').val();
+  const inscEstadual = modal.find('#insc').val();
+  const bairro = modal.find('#bairro').val();
+  const razaoSocial = modal.find('#razao').val();
+
+  // Validação dos campos
+  if (!validarEmail(email)) {
+      alert('Por favor, insira um e-mail válido.');
+      return;
+  }
+  if (!nome || !tel || !email || !cnpj || !cep || !uf || !cidade || !razaoSocial) {
+      alert('Por favor, preencha todos os campos obrigatórios.');
+      return;
+  }
+
+  // Criar o objeto JSON
+  const dados = {
+      nome: nome + ' ' + sobrenome,
+      tel: tel,
+      email: email,
+      cidade: cidade,
+      bairro: bairro,
+      cep: cep,
+      numero: numero,
+      complemento: complemento,
+      rua: rua,
+      cnpj: cnpj,
+      uf: uf,
+        pessoaJuridica: {
+          insc_estadual: inscEstadual,
+          site: site,
+          razao_social: razaoSocial 
+        }
+    }
+
+
+  console.log(JSON.stringify(dados));
+
+  // Enviar os dados usando fetch
+  try {
+      const response = await fetch('http://localhost:3344/pessoa/cadastrar', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(dados)
+      });
+
+      if (!response.ok) {
+          throw new Error('Erro na requisição');
+      }
+
+      const respostaJson = await response.json();
+      console.log('Resposta do servidor:', respostaJson);
+      alert('Dados enviados com sucesso!');
+      location.reload();
+  } catch (error) {
+      console.error('Erro:', error);
+      alert('Erro ao enviar os dados.');
+  }
+}
+
+// Exemplo de função para validar email
+function validarEmail(email) {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(String(email).toLowerCase());
+}
+
+
+async function alterarFormularioJuridca () {
+  // Coletar os dados do formulário usando jQuery
+
+  const modal = $('#editEmployeeModal-juridica');
+  const id =  modal.find('#ideditarjuridica').val();
+  const nome = modal.find('#nome').val();
+  const sobrenome = modal.find('#sobrenome').val();
+  const tel = modal.find('#cel').val().replace(/\D/g, ''); // Remove caracteres não numéricos
+  const email = modal.find('#email').val();
+  const cnpj = modal.find('#cnpj').val().replace(/\D/g, ''); // Remove pontos e traços
+  const cep = modal.find('#cep4').val().replace(/\D/g, ''); // Remove caracteres não numéricos
+  const rua = modal.find('#RUA4').val();
+  const numero = modal.find('#NUMERO').val();
+  const complemento = modal.find('#complemento').val();
+  const uf = modal.find('#estado4').val();
+  const cidade = modal.find('#CIDADE4').val();
+  const site = modal.find('#site').val();
+  const inscEstadual = modal.find('#insc').val();
+  const bairro = modal.find('#bairro').val();
+  const razaoSocial = modal.find('#razao').val();
+
+  // Validação dos campos
+  if (!validarEmail(email)) {
+      alert('Por favor, insira um e-mail válido.');
+      return;
+  }
+  if (!nome || !tel || !email || !cnpj || !cep || !uf || !cidade || !razaoSocial) {
+      alert('Por favor, preencha todos os campos obrigatórios.');
+      return;
+  }
+
+  // Criar o objeto JSON
+  const dados = {
+      id:parseInt(id),
+      nome: nome + ' ' + sobrenome,
+      tel: tel,
+      email: email,
+      cidade: cidade,
+      bairro: bairro,
+      cep: cep,
+      numero: numero,
+      complemento: complemento,
+      rua: rua,
+      cnpj: cnpj,
+      uf: uf,
+        pessoaJuridica: {
+          insc_estadual: inscEstadual,
+          site: site,
+          razao_social: razaoSocial 
+        }
+    }
+
+
+  console.log(JSON.stringify(dados));
+
+  // Enviar os dados usando fetch
+  try {
+      const response = await fetch('http://localhost:3344/pessoa/update', {
+          method: 'PUT',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(dados)
+      });
+
+      if (!response.ok) {
+          throw new Error('Erro na requisição');
+      }
+
+      const respostaJson = await response.json();
+      console.log('Resposta do servidor:', respostaJson);
+      alert('Dados enviados com sucesso!');
+      location.reload();
+  } catch (error) {
+      console.error('Erro:', error);
+      alert('Erro ao enviar os dados.');
+  }
+}
 
 async function alterarFormulario() {
    // Coletar os dados do formulário
