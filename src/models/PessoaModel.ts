@@ -34,6 +34,7 @@ export default class PessoaModel {
 
   getAll = async () => {
     return await prisma.pessoa.findMany({
+      where:{status:true},
       include: {
         fisica: true,
         juridica: true,

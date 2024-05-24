@@ -268,6 +268,16 @@ function GETALL(data) {
 
    
    data.forEach(item => {
+
+
+    let data = new Date(item.fisica.dt_nasc);
+
+    let dia = String(data.getDate()).padStart(2, '0');
+    let mes = String(data.getMonth() + 1).padStart(2, '0');
+    let ano = data.getFullYear();
+
+    //let dataFormatada = ano + '-' + mes + '-' + dia;
+    let dataFormatada = dia + '/' + mes + '/' + ano;
        let row = document.createElement('tr');
        row.innerHTML = `
        <td>${item.nome}</td>
@@ -281,7 +291,7 @@ function GETALL(data) {
            <td>${item.rua}</td>
            <td>${item.fisica.cpf}</td>
            <td>${item.uf}</td>
-           <td>${item.fisica.dt_nasc}</td>
+           <td>${dataFormatada}</td>
            <td>${item.fisica.sexo}</td>
            <td>${item.fisica.rg}</td>
            <td class="alinha-edit-del">
@@ -293,14 +303,65 @@ function GETALL(data) {
    });
 }
 
-function CarregaIdParaUpdate(event,id,tel, nome, email, cidade, bairro, cep, numero, complemento, rua, cpf, uf, dt_nasc, sexo, rg) {
-   console.log(nome);
-   console.log("entrei");
+async function CarregaIdParaDelete(id){
+  $('#deleteEmployeeModal-fisica').find('#fisica-delete').val(id);
+
+}
+
+async function DeletaPessoaFisica(event){
+  id=$('#deleteEmployeeModal-fisica').find('#fisica-delete').val();
+
+
+
+   // Criar o objeto JSON
+   const dados = {
+       id:parseInt(id)
+
+   };
+   console.log(JSON.stringify(dados));
+   
+
+   // Enviar os dados usando fetch
+   try {
+       const response = await fetch('http://localhost:3344/pessoa/delete', {
+           method: 'PUT',
+           headers: {
+               'Content-Type': 'application/json'
+           },
+           body: JSON.stringify(dados)
+       });
+
+       if (!response.ok) {
+           throw new Error('Erro na requisição');
+       }
+
+       const respostaJson = await response.json();
+       console.log('Resposta do servidor:', respostaJson);
+       alert('Dados excluidos sucesso!');
+      // location.reload();
+   } catch (error) {
+       console.error('Erro:', error);
+       alert('Erro ao enviar os dados.');
+   }
+
+}
+
+async function CarregaIdParaUpdate(event,id,tel, nome, email, cidade, bairro, cep, numero, complemento, rua, cpf, uf, dt_nasc, sexo, rg) {
+
 
    const partesNome = nome.split(" "); 
    const primeiroNome = partesNome[0]; 
    const sobrenome = partesNome.slice(1).join(" "); 
 
+   let data = new Date(dt_nasc);
+
+   let dia = String(data.getDate()).padStart(2, '0');
+   let mes = String(data.getMonth() + 1).padStart(2, '0');
+   let ano = data.getFullYear();
+
+   let dataFormatada = ano + '-' + mes + '-' + dia;
+
+   $('#editEmployeeModal-fisica').find('#ideditar').val(id);
    $('#editEmployeeModal-fisica').find('#nome').val(primeiroNome);
    $('#editEmployeeModal-fisica').find('#sobrenome').val(sobrenome);
     $('#editEmployeeModal-fisica').find('#cel').val(tel);
@@ -309,19 +370,17 @@ function CarregaIdParaUpdate(event,id,tel, nome, email, cidade, bairro, cep, num
     $('#editEmployeeModal-fisica').find('#RUA2').val(rua);
     $('#editEmployeeModal-fisica').find('#NUMERO').val(numero);
     $('#editEmployeeModal-fisica').find('#estado2').val(uf);
-    buscarCidadesDadoEstado2();
+    
     $('#editEmployeeModal-fisica').find('#cep2').val(cep);
+    await buscarCidadesDadoEstado2();
     
     $('#editEmployeeModal-fisica').find('#complemento').val(complemento);
-   $('#editEmployeeModal-fisica').find('#DATA').val(dt_nasc);
+   $('#editEmployeeModal-fisica').find('#DATA').val(dataFormatada);
    $('#editEmployeeModal-fisica').find('#sexo').val(sexo);
     $('#editEmployeeModal-fisica').find('#rg').val(rg);
     $('#editEmployeeModal-fisica').find('#bairro').val(bairro);
     $('#editEmployeeModal-fisica').find('#CIDADE2').val(cidade);
-  
-  
-   
-   
+    console.log(cidade);
    
 }
 
@@ -403,6 +462,7 @@ function CarregaIdParaUpdate(event,id,tel, nome, email, cidade, bairro, cep, num
 
 async function alterarFormulario() {
    // Coletar os dados do formulário
+   const id = $('#editEmployeeModal-fisica').find('#ideditar').val();
    const nome = $('#editEmployeeModal-fisica').find('#nome').val();
    const sobrenome = $('#editEmployeeModal-fisica').find('#sobrenome').val();
    const tel = $('#editEmployeeModal-fisica').find('#cel').val().replace(/\D/g, '');
@@ -431,6 +491,7 @@ async function alterarFormulario() {
    }
    // Criar o objeto JSON
    const dados = {
+      id:parseInt(id),
        nome: nome + ' ' + sobrenome,
        tel: tel,
        email: email,
@@ -454,7 +515,7 @@ async function alterarFormulario() {
    // Enviar os dados usando fetch
    try {
        const response = await fetch('http://localhost:3344/pessoa/update', {
-           method: 'POST',
+           method: 'PUT',
            headers: {
                'Content-Type': 'application/json'
            },

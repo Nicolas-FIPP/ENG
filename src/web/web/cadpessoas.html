@@ -29,7 +29,7 @@
             </ul>
         </div>
     </nav>
-    <div class="container">
+    <div class="">
         <div class="table-wrapper">
             <div class="table-title">
                 <div class="row">
@@ -97,7 +97,8 @@
           </div>-->
         </div>
     </div>
-    <div class="container">
+    <!-- PESSOA JURIDICA-->
+    <div class="">
         <div class="table-wrapper">
             <div class="table-title">
                 <div class="row">
@@ -359,6 +360,7 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
+                                    <input type="hidden" id="ideditar">
                                     <label>Nome</label>
                                     <input id="nome" type="text" class="form-control" required>
                                 </div>
@@ -517,6 +519,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <form>
+                    <input type="hidden" id="fisica-delete">
                     <div class="modal-header">
                         <h4 class="modal-title">Deletar</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -527,8 +530,8 @@
                     </div>
                     <div class="modal-footer">
                         <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-                        <input type="submit" class="btn btn-danger" id="MODAL_DELETE_Id" data-user-id=""
-                            onclick="DeletaTipoOficina(this)" value="Deletar">
+                        <input type="button" class="btn btn-danger" id="MODAL_DELETE_Id" data-user-id=""
+                            onclick="DeletaPessoaFisica(this)" value="Deletar">
                     </div>
                 </form>
             </div>
@@ -536,7 +539,25 @@
     </div>
 
 
-
+ <!--- 
+{
+   "nome": "vamoo lopes",
+   "tel": "1899999",
+   "email": "jds@gmail.com",
+   "cidade": "Autazes",
+   "bairro": "fghfg",
+   "cep": "19068235",
+   "numero": "22",
+   "complemento": "gdfgd",
+   "rua": "Rua Sebastião Barbosa",
+   "cnpj": "39394392000156",
+   "uf": "AM",
+   "pessoaJuridica": {
+      "insc_estadual": "asdasd",
+      "site": "M",
+      "razao_social": "123"
+   }
+}-->
 
         <!-- Edit Modal HTML JURIDICA -->
         <div id="addEmployeeModal-juridica" class="modal fade">
