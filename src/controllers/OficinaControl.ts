@@ -5,6 +5,29 @@ import { OficinaIn, OficinaOut } from "dtos/OficinaDTO";
 
 const oficinaModel = new OficinaModel();
 
+
+
+
+export function verificarCamposPreenchidos(oficina: OficinaIn): boolean {
+  
+  if (
+    oficina.limite === null ||
+    oficina.disciplina.trim() === '' ||
+    oficina.sala === null ||
+    !oficina.dt_ini ||
+    !oficina.dt_fim ||
+    oficina.dias_funcionamento.trim() === '' ||
+    !oficina.criado_em ||
+    oficina.pes_id === null ||
+    oficina.tof_id === null
+  ) {
+
+    return false;
+  }
+  return true;
+}
+
+
 export default class OficinaController {
   create = async (req: Request, res: Response) => {
     try {
@@ -62,9 +85,17 @@ export default class OficinaController {
   };
 
   update = async (req: Request, res: Response) => {
+        
     try {
       const id: number = parseInt(req.params.id);
       const updateOficina:  OficinaIn = req.body;
+    
+      
+
+
+
+
+
       const OficinaUpdated: OficinaOut | null = await oficinaModel.update(
         id,
         updateOficina
