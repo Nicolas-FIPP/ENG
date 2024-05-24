@@ -1,5 +1,6 @@
 async function buscaCep()
 {
+
   cep = document.getElementById("cep").value
   
   const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`)
@@ -16,6 +17,101 @@ async function buscaCep()
     document.getElementById("RUA").value = Dados.logradouro
     //console.log(document.getElementById("RUA").value);
   }
+}
+
+function validarCPF2(cpf) {
+  cpf = cpf.replace(/[^\d]+/g, '');
+
+  if (cpf.length !== 11) {
+    return false;
+  }
+
+  // Elimina CPFs conhecidos que são inválidos
+  if (/^(\d)\1{10}$/.test(cpf)) {
+    return false;
+  }
+
+  // Valida DVs
+  let soma = 0;
+  let resto;
+
+  for (let i = 1; i <= 9; i++) {
+    soma += parseInt(cpf.substring(i - 1, i)) * (11 - i);
+  }
+  resto = (soma * 10) % 11;
+
+  if (resto === 10 || resto === 11) {
+    resto = 0;
+  }
+  if (resto !== parseInt(cpf.substring(9, 10))) {
+    return false;
+  }
+
+  soma = 0;
+  for (let i = 1; i <= 10; i++) {
+    soma += parseInt(cpf.substring(i - 1, i)) * (12 - i);
+  }
+  resto = (soma * 10) % 11;
+
+  if (resto === 10 || resto === 11) {
+    resto = 0;
+  }
+  if (resto !== parseInt(cpf.substring(10, 11))) {
+    return false;
+  }
+
+  return true;
+}
+
+
+function validarCNPJ(campo) {
+  var cnpj = campo.value.replace(/\D/g, '');
+  var cnpjMsg = document.getElementById('cnpj-msg');
+
+  if (cnpj.length !== 14) {
+      cnpjMsg.textContent = 'CNPJ inválido';
+      cnpjMsg.className = 'error';
+      return false;
+  }
+
+  var tamanho = cnpj.length - 2;
+  var numeros = cnpj.substring(0, tamanho);
+  var digitos = cnpj.substring(tamanho);
+  var soma = 0;
+  var pos = tamanho - 7;
+
+  for (var i = tamanho; i >= 1; i--) {
+      soma += numeros.charAt(tamanho - i) * pos--;
+      if (pos < 2) pos = 9;
+  }
+
+  var resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+  if (resultado !== parseInt(digitos.charAt(0))) {
+      cnpjMsg.textContent = 'CNPJ inválido';
+      cnpjMsg.className = 'error';
+      return false;
+  }
+
+  tamanho = tamanho + 1;
+  numeros = cnpj.substring(0, tamanho);
+  soma = 0;
+  pos = tamanho - 7;
+
+  for (var i = tamanho; i >= 1; i--) {
+      soma += numeros.charAt(tamanho - i) * pos--;
+      if (pos < 2) pos = 9;
+  }
+
+  resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+  if (resultado !== parseInt(digitos.charAt(1))) {
+      cnpjMsg.textContent = 'CNPJ inválido';
+      cnpjMsg.className = 'error';
+      return false;
+  }
+
+  cnpjMsg.textContent = 'CNPJ válido';
+  cnpjMsg.className = 'valid';
+  return true;
 }
 
 async function buscaCep2()
@@ -235,6 +331,52 @@ async function buscarCidadesDadoEstado4() {
     cpf = cpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2")
     event.target.value = cpf;
   }
+  function validarCNPJ2(cnpj) {
+    cnpj = cnpj.replace(/[^\d]+/g, '');
+  
+    if (cnpj.length !== 14) {
+      return false;
+    }
+  
+    // Elimina CNPJs conhecidos que são inválidos
+    if (/^(\d)\1{13}$/.test(cnpj)) {
+      return false;
+    }
+  
+    // Valida DVs
+    let tamanho = cnpj.length - 2;
+    let numeros = cnpj.substring(0, tamanho);
+    let digitos = cnpj.substring(tamanho);
+    let soma = 0;
+    let pos = tamanho - 7;
+    
+    for (let i = tamanho; i >= 1; i--) {
+      soma += numeros.charAt(tamanho - i) * pos--;
+      if (pos < 2) pos = 9;
+    }
+    
+    let resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+    if (resultado != digitos.charAt(0)) {
+      return false;
+    }
+  
+    tamanho = tamanho + 1;
+    numeros = cnpj.substring(0, tamanho);
+    soma = 0;
+    pos = tamanho - 7;
+    
+    for (let i = tamanho; i >= 1; i--) {
+      soma += numeros.charAt(tamanho - i) * pos--;
+      if (pos < 2) pos = 9;
+    }
+    
+    resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+    if (resultado != digitos.charAt(1)) {
+      return false;
+    }
+  
+    return true;
+  }
   
 
          
@@ -288,7 +430,7 @@ async function buscarCidadesDadoEstado4() {
              }
          }
          if (ok == 0) {
-            alert("Ops... Ocorreu um problema... CPF inválido!");
+            alert(" CPF inválido!");
             //event.target.focus();
          }
      }
@@ -497,7 +639,7 @@ async function DeletaPessoaJuridica(event){
        const respostaJson = await response.json();
        console.log('Resposta do servidor:', respostaJson);
        alert('Dados excluidos sucesso!');
-      // location.reload();
+       location.reload();
    } catch (error) {
        console.error('Erro:', error);
        alert('Erro ao enviar os dados.');
@@ -535,7 +677,7 @@ async function DeletaPessoaFisica(event){
        const respostaJson = await response.json();
        console.log('Resposta do servidor:', respostaJson);
        alert('Dados excluidos sucesso!');
-      // location.reload();
+       location.reload();
    } catch (error) {
        console.error('Erro:', error);
        alert('Erro ao enviar os dados.');
@@ -606,6 +748,10 @@ async function CarregaIdParaUpdate(event,id,tel, nome, email, cidade, bairro, ce
       alert('Por favor, insira um e-mail válido.');
       return;
   }
+  if (!validarCPF2(cpf)) {
+    alert('Por favor, insira um cpf válido.');
+    return;
+}
   if (!nome || !tel || !email || !cpf || !cep || !uf || !cidade || !dt_nasc || !sexo || !rg) {
    alert('Por favor, preencha todos os campos obrigatórios.');
    return;
@@ -679,6 +825,11 @@ async function enviarFormularioJuridca () {
   if (!validarEmail(email)) {
       alert('Por favor, insira um e-mail válido.');
       return;
+  }
+  if(!validarCNPJ2(cnpj)){
+    alert('Por favor, insira um cnpj válido.');
+    return;
+
   }
   if (!nome || !tel || !email || !cnpj || !cep || !uf || !cidade || !razaoSocial) {
       alert('Por favor, preencha todos os campos obrigatórios.');
@@ -765,6 +916,11 @@ async function alterarFormularioJuridca () {
       alert('Por favor, insira um e-mail válido.');
       return;
   }
+  if(!validarCNPJ2(cnpj)){
+    alert('Por favor, insira um cnpj válido.');
+    return;
+
+  }
   if (!nome || !tel || !email || !cnpj || !cep || !uf || !cidade || !razaoSocial) {
       alert('Por favor, preencha todos os campos obrigatórios.');
       return;
@@ -843,6 +999,11 @@ async function alterarFormulario() {
       alert('Por favor, insira um e-mail válido.');
       return;
   }
+  if (!validarCPF2(cpf)) {
+      alert('Por favor, insira um cpf válido.');
+      return;
+  }
+  
   if (!nome || !tel || !email || !cpf || !cep || !uf || !cidade || !dt_nasc || !sexo || !rg) {
    alert('Por favor, preencha todos os campos obrigatórios.');
    return;

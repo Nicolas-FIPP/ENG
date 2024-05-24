@@ -14,6 +14,15 @@
     <script src="js/cad-pessoas.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <style>
+        .error {
+            color: red;
+        }
+        .valid {
+            color: green;
+        }
+    </style>
 </head>
 
 <body>
@@ -171,7 +180,7 @@
 
     <!-- Edit Modal HTML FISICA -->
     <div id="addEmployeeModal-fisica" class="modal fade">
-        <div class="modal-dialog-centered ">
+        <div class="modal-dialog-centered">
             <div class="modal-content">
                 <form>
                     <div class="modal-header">
@@ -197,7 +206,7 @@
                                 
                                 <div class="form-group">
                                     <label>Cel</label>
-                                    <input id="cel" type="text" class="form-control" required>
+                                    <input id="cel" type="text" onkeyup="mascara('(##) #####-####', this, event)" class="form-control" required>
                                 </div>
 
                             </div>
@@ -219,20 +228,20 @@
                                 <div class="form-group">
                                     <label for="Cpf" class="form-label">CPF</label>
                                         <input type="text" name="cpf" class="form-control" id="cpf" placeholder="000.000.000.00"
-                                        onkeyup="mascara('###.###.###-##',this,event)" onblur="validarCPF(this)">
+                                        onkeyup="mascara('###.###.###-##',this,event)" onblur="validarCPF(this)" required>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="CEP" class="form-label">CEP</label>
                                         <input type="text" class="form-control" name="Cep" id="cep" placeholder="00000-000"
-                                        onkeyup="mascara('#####-###',this,event)" onblur="buscaCep()">
+                                        onkeyup="mascara('#####-###',this,event)" onblur="buscaCep()" required>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="classRua" class="form-label">Rua</label>
-                                    <input type="text" name="rua" class="form-control" id="RUA" placeholder="Ex. São Paulo">
+                                    <input type="text" name="rua" class="form-control" id="RUA" placeholder="Ex. São Paulo" required>
                                 </div>
                             </div>
                             <div class="col-md-3 ">
@@ -241,7 +250,6 @@
                                     <input type="number" name="numero" class="form-control" id="NUMERO" placeholder="Ex. 619"
                                     required="required">
                                 </div>
-
                             </div>
                         </div>
 
@@ -249,7 +257,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="classEstate" class="form-label">Estado</label>
-                                    <select class="form-control" name="estado" id="estado" onchange="buscarCidadesDadoEstado()">
+                                    <select class="form-control" name="estado" id="estado" required onchange="buscarCidadesDadoEstado()">
                                       <option value="AC" selected>Acre</option>
                                       <option value="AL">Alagoas</option>
                                       <option value="AP">Amapá</option>
@@ -283,7 +291,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="cidade" class="form-label">Cidade</label>
-                                        <select class="form-control" name="cidade" id="CIDADE">
+                                        <select class="form-control" name="cidade" id="CIDADE" required>
                                         <!--OS OPTIONS VÃO SER INSERIDOS AQUI PELO RETORNO DA API-->
                                         </select>
                                 </div>
@@ -291,13 +299,13 @@
                             <div class="col-md-3">                    
                                 <div class="form-group">
                                     <label>Complmento</label>
-                                    <input id="complemento" type="text" class="form-control">
+                                    <input id="complemento" type="text" class="form-control" >
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="classDate" class="form-label">Data de Nascimento</label>
-                                    <input type="date" name="date" class="form-control" id="DATA">
+                                    <input type="date" name="date" class="form-control" id="DATA" required>
                                 </div>
                             </div>
                         </div>
@@ -314,7 +322,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="rg" class="form-label">RG</label>
-                                    <input type="text" name="rg" class="form-control" id="rg">
+                                    <input type="text" name="rg" class="form-control" id="rg" required>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -368,7 +376,7 @@
                                 
                                 <div class="form-group">
                                     <label>Cel</label>
-                                    <input id="cel" type="text" class="form-control" required>
+                                    <input id="cel" type="text" onkeyup="mascara('(##) #####-####', this, event)" class="form-control" required>
                                 </div>
 
                             </div>
@@ -555,7 +563,7 @@
 
         <!-- Edit Modal HTML JURIDICA -->
         <div id="addEmployeeModal-juridica" class="modal fade">
-            <div class="modal-dialog-centered ">
+            <div class="modal-dialog-centered">
                 <div class="modal-content">
                     <form>
                         <div class="modal-header">
@@ -575,15 +583,12 @@
                                         <label>Sobrenome</label>
                                         <input id="sobrenome" type="text" class="form-control" required>
                                     </div>
-    
                                 </div>
                                 <div class="col-md-3">
-                                    
                                     <div class="form-group">
                                         <label>Cel</label>
-                                        <input id="cel" type="text" class="form-control" required>
+                                        <input id="cel" type="text" onkeyup="mascara('(##) #####-####', this, event)" class="form-control" required>
                                     </div>
-    
                                 </div>
                                 <div class="col-md-3">
                                     
@@ -602,7 +607,8 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="Cpf" class="form-label">CNPJ</label>
-                                            <input type="text" name="cnpj" class="form-control" id="cnpj">
+                                            <input type="text" name="cnpj" onkeyup="mascara('##.###.###/####-##', this, event)" class="form-control" id="cnpj" onblur="validarCNPJ(this)">
+                                            <span id="cnpj-msg"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -744,7 +750,7 @@
                                     
                                     <div class="form-group">
                                         <label>Cel</label>
-                                        <input id="cel" type="text" class="form-control" required>
+                                        <input id="cel" onkeyup="mascara('(##) #####-####', this, event)" type="text" class="form-control" required>
                                     </div>
     
                                 </div>
@@ -765,7 +771,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="Cpf" class="form-label">CNPJ</label>
-                                            <input type="text" name="cnpj" class="form-control" id="cnpj">
+                                            <input type="text" name="cnpj" onkeyup="mascara('##.###.###/####-##', this, event)" class="form-control" id="cnpj">
                                     </div>
                                 </div>
                                 <div class="col-md-3">
