@@ -34,9 +34,9 @@
                   <div class="col-sm-6">
                       <h2>Tipos de <b>Oficinas</b></h2>
                   </div>
-                  <div class="col-sm-6">
+                  <div>
                       <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Adicionar Novo Tipo</span></a>
-                      <!--<a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Deletar</span></a>-->
+                      <input type="text" class="form-control" style="width: -webkit-fill-available;" oninput="CarregaTabelaFiltrada(this.value)" placeholder="Pesquise pelo Nome"></input>
                   </div>
               </div>
           </div>
@@ -52,7 +52,7 @@
                       <th>Nome</th>
                   </tr>
               </thead>
-              <tbody>
+              <tbody id="tabela-tbody">
                   <tr>
                       <!--<td>
                           <span class="custom-checkbox">
@@ -60,11 +60,11 @@
                               <label for="checkbox1"></label>
                           </span>
                       </td>-->
-                      <td>Aula</td>
+                      <!--<td>Aula</td>
                       <td class="alinha-edit-del">
                           <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                           <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                      </td>
+                      </td>-->
                   </tr>                    
                   <tr>
                   </tr> 

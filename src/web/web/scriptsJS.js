@@ -33,24 +33,31 @@ async function CadastraNovoTipodeOficina ()
 {
 	let URL = "http://localhost:3344/tipo-oficina/cadastrar-tipo-oficina";
   let nome = document.getElementById("NOME").value;
-	json = {
-		nome: nome
-	}
-	console.log(JSON.stringify(json));
-	let response = await fetch(URL,{
-		method: "POST",
-		headers: {'Content-Type': 'application/json'},
-		body : JSON.stringify(json)
-	});
-
-	if (response.ok){
-		console.log("Cadastrou");
-		document.getElementById("NOME").value = "";
-		RecuperaTipoOficina();
+	if (nome != "")
+	{
+		json = {
+			nome: nome
+		}
+		console.log(JSON.stringify(json));
+		let response = await fetch(URL,{
+			method: "POST",
+			headers: {'Content-Type': 'application/json'},
+			body : JSON.stringify(json)
+		});
+	
+		if (response.ok){
+			console.log("Cadastrou");
+			document.getElementById("NOME").value = "";
+			RecuperaTipoOficina();
+		}
+		else
+		{
+			console.log(response + '\n' + JSON.stringify(response))
+		}
 	}
 	else
 	{
-		console.log(response + '\n' + JSON.stringify(response))
+		alert("Algum Campo Importante está vazio, Preencha ele por favor.")
 	}
 }
 
@@ -94,6 +101,20 @@ function GETALL(data) {
 }
 
 
+function CarregaTabelaFiltrada (StringDoFiltro)
+{
+	let tabela = document.getElementById("tabela-tbody");
+	console.log(tabela);
+
+	if (tabela)
+		for (let i = 0; i < tabela.children.length; i++) 
+				if (tabela.children[i].children[1].innerHTML.toLowerCase().includes(StringDoFiltro.toLowerCase()))
+					tabela.children[i].style.display = "table-row";
+				else
+					tabela.children[i].style.display = "none";
+}
+
+
 function CarregaIdParaDelete (event)
 {
 	let id = event.parentNode.parentNode.firstElementChild.firstElementChild.id;
@@ -132,29 +153,34 @@ async function AlterarTipoOficina (event)
 {
 	let id = event.dataset.userId;
 	let nome = document.getElementById("MODAL_EDIT_Nome").value;
-
-	let URL = "http://localhost:3344/tipo-oficina/altera-tipo-oficina/"+id;
-	let json = {
-		nome : nome
-	}
-
-	let response = await fetch(URL,{
-		method : "PUT",
-		headers: {'Content-Type': 'application/json'},
-		body : JSON.stringify(json)
-	});
-
-	if (response.ok)
+	if (nome != "")
 	{
-		//alert('Tipo de oficina Alterada')
-		console.log("DEU CERTO");
-		RecuperaTipoOficina();
+		let URL = "http://localhost:3344/tipo-oficina/altera-tipo-oficina/"+id;
+		let json = {
+			nome : nome
+		}
+
+		let response = await fetch(URL,{
+			method : "PUT",
+			headers: {'Content-Type': 'application/json'},
+			body : JSON.stringify(json)
+		});
+
+		if (response.ok)
+		{
+			//alert('Tipo de oficina Alterada')
+			console.log("DEU CERTO");
+			RecuperaTipoOficina();
+		}
+		else
+		{
+			console.log(response + '\n' + JSON.stringify(response))
+		}
 	}
 	else
 	{
-		console.log(response + '\n' + JSON.stringify(response))
+		alert("Algum Campo Importante está vazio, Preencha ele por favor.");
 	}
-
 }
 
 
