@@ -94,6 +94,7 @@ function GETALL(data) {
 }
 
 
+
 function CarregaIdParaDelete (event)
 {
 	let id = event.parentNode.parentNode.firstElementChild.firstElementChild.id;
