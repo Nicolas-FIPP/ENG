@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendar Doação</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/agendar-doacao.css">
+
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title text-center">Agendar Doação</h5>
+                <form id="donationForm">
+                    <div class="form-group">
+                        <label for="name">Nome</label>
+                        <input type="text" class="form-control" id="name" placeholder="Digite seu nome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cpf">CPF</label>
+                        <input type="text" class="form-control" id="cpf" placeholder="Digite seu CPF" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dateTime">Data e Hora</label>
+                        <input type="datetime-local" class="form-control" id="dateTime" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="deliveryOption">Opção de Entrega</label>
+                        <select class="form-control" id="deliveryOption" required>
+                            <option value="" disabled selected>Selecione uma opção</option>
+                            <option value="direct">Entregar na ONG</option>
+                            <option value="pickup">ONG irá coletar</option>
+                        </select>
+                    </div>
+                    <div id="addressFields" style="display: none;">
+                        <div class="form-group">
+                            <label for="uf">UF</label>
+                            <input type="text" class="form-control" id="uf" placeholder="Digite seu Estado (UF)" maxlength="2">
+                        </div>
+                        <div class="form-group">
+                            <label for="cidade">Cidade</label>
+                            <input type="text" class="form-control" id="cidade" placeholder="Digite sua cidade">
+                        </div>
+                        <div class="form-group">
+                            <label for="rua">Rua</label>
+                            <input type="text" class="form-control" id="rua" placeholder="Digite sua rua">
+                        </div>
+                        <div class="form-group">
+                            <label for="bairro">Bairro</label>
+                            <input type="text" class="form-control" id="bairro" placeholder="Digite seu bairro">
+                        </div>
+                        <div class="form-group">
+                            <label for="complemento">Complemento</label>
+                            <input type="text" class="form-control" id="complemento" placeholder="Digite o complemento">
+                        </div>
+                        <div class="form-group">
+                            <label for="cep">CEP</label>
+                            <input type="text" class="form-control" id="cep" placeholder="Digite seu CEP" maxlength="8">
+                        </div>
+                        <div class="form-group">
+                            <label for="numero">Número</label>
+                            <input type="text" class="form-control" id="numero" placeholder="Digite o número">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Agendar Doação</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="js/agendar-doacao.js"></script>
+</body>
+</html>

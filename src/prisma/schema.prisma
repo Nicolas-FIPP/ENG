@@ -40,6 +40,7 @@ model despesa {
 }
 
 model doacao {
+
   id              Int               @id @default(autoincrement())
   data            DateTime      
   uf              String            @db.VarChar(2)
@@ -56,6 +57,7 @@ model doacao {
   itens_doacao    itens_doacao[]
 }
 
+
 model donativo {
   id              Int                   @id @default(autoincrement())
   desc            String?       
@@ -67,6 +69,7 @@ model donativo {
 }
 
 model evento {
+
   id                   Int            @id @default(autoincrement())
   nome                 String
   custo                Float   
@@ -86,6 +89,7 @@ model evento {
   despesa              despesa[]
   pessoa               pessoa?        @relation(fields: [pes_id_responsavel], references: [id])
   participante         participante[]
+
 }
 
 
@@ -108,6 +112,7 @@ model itens_doacao {
 
   @@id([doa_id, don_id])
 }
+
 
 
 
