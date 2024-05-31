@@ -1,6 +1,6 @@
 document.getElementById('deliveryOption').addEventListener('change', function() {
     const addressFields = document.getElementById('addressFields');
-    if (this.value === 'pickup') {
+    if (this.value === 'coleta') {
         addressFields.style.display = 'block';
     } else {
         addressFields.style.display = 'none';

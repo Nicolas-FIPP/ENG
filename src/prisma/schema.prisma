@@ -57,6 +57,28 @@ model doacao {
   itens_doacao    itens_doacao[]
 }
 
+model Donation {
+  id              Int      @id @default(autoincrement())
+  name            String
+  cpf             String
+  data        DateTime
+  delivery  DeliveryOption
+  uf              String?  @length(2)
+  cidade          String?
+  rua             String?
+  bairro          String?
+  complemento     String?
+  cep             String?  @length(8)
+  numero          String?
+
+  @@map("donations")
+}
+
+enum DeliveryOption {
+  entrega
+  coleta
+}
+
 
 model donativo {
   id              Int                   @id @default(autoincrement())
