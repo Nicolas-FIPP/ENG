@@ -57,21 +57,24 @@ model doacao {
   itens_doacao    itens_doacao[]
 }
 
-model Donation {
+model agenda_doacao {
   id              Int      @id @default(autoincrement())
   name            String
   cpf             String
+  tel             String   @default("")   @db.VarChar(11)
   data        DateTime
   delivery  DeliveryOption
-  uf              String?  @length(2)
+  uf              String?  @db.VarChar(2)
   cidade          String?
   rua             String?
   bairro          String?
   complemento     String?
-  cep             String?  @length(8)
+  cep             String? @db.VarChar(8)
   numero          String?
+  aprovado        Boolean @default(false)
+  ativo           Boolean @default(true)
 
-  @@map("donations")
+  @@map("agenda_doacao")
 }
 
 enum DeliveryOption {

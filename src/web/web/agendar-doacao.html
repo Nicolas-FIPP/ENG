@@ -20,7 +20,11 @@
                     </div>
                     <div class="form-group">
                         <label for="cpf">CPF</label>
-                        <input type="text" class="form-control" id="cpf" placeholder="Digite seu CPF" required>
+                        <input type="text" class="form-control" id="cpf" onkeyup="mascara('###.###.###-##',this,event)" onblur="validarCPF(this)" placeholder="Digite seu CPF" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tel">Celular</label>
+                        <input type="text" class="form-control" id="tel" onkeyup="mascara('(##) #####-####', this, event)" placeholder="Digite seu celular" >
                     </div>
                     <div class="form-group">
                         <label for="dateTime">Data e Hora</label>
@@ -36,12 +40,47 @@
                     </div>
                     <div id="addressFields" style="display: none;">
                         <div class="form-group">
-                            <label for="uf">UF</label>
-                            <input type="text" class="form-control" id="uf" placeholder="Digite seu Estado (UF)" maxlength="2">
+                            <label for="cep">CEP</label>
+                            <input type="text" class="form-control" id="cep" onkeyup="mascara('#####-###',this,event)" onblur="buscaCep()" placeholder="Digite seu CEP" maxlength="9">
                         </div>
                         <div class="form-group">
-                            <label for="cidade">Cidade</label>
-                            <input type="text" class="form-control" id="cidade" placeholder="Digite sua cidade">
+                            <label for="classEstate" class="form-label">Estado</label>
+                            <select class="form-control" name="uf" id="uf"  onchange="buscarCidadesDadoEstado()" style="border-color: red;">
+                              <option value="AC" selected>Acre</option>
+                              <option value="AL">Alagoas</option>
+                              <option value="AP">Amapá</option>
+                              <option value="AM">Amazonas</option>
+                              <option value="BA">Bahia</option>
+                              <option value="CE">Ceará</option>
+                              <option value="DF">Distrito Federal</option>
+                              <option value="ES">Espírito Santo</option>
+                              <option value="GO">Goiás</option>
+                              <option value="MA">Maranhão</option>
+                              <option value="MT">Mato Grosso</option>
+                              <option value="MS">Mato Grosso do Sul</option>
+                              <option value="MG">Minas Gerais</option>
+                              <option value="PA">Pará</option>
+                              <option value="PB">Paraíba</option>
+                              <option value="PR">Paraná</option>
+                              <option value="PE">Pernambuco</option>
+                              <option value="PI">Piauí</option>
+                              <option value="RJ">Rio de Janeiro</option>
+                              <option value="RN">Rio Grande do Norte</option>
+                              <option value="RS">Rio Grande do Sul</option>
+                              <option value="RO">Rondônia</option>
+                              <option value="RR">Roraima</option>
+                              <option value="SC">Santa Catarina</option>
+                              <option value="SP">São Paulo</option>
+                              <option value="SE">Sergipe</option>
+                              <option value="TO">Tocantins</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="cidade" class="form-label">Cidade</label>
+                                <select class="form-control" name="cidade" id="cidade" style="border-color: red;">
+                                <!--OS OPTIONS VÃO SER INSERIDOS AQUI PELO RETORNO DA API-->
+                                <option value="" disabled selected>Selecione uma opção</option>
+                                </select>
                         </div>
                         <div class="form-group">
                             <label for="rua">Rua</label>
@@ -55,10 +94,7 @@
                             <label for="complemento">Complemento</label>
                             <input type="text" class="form-control" id="complemento" placeholder="Digite o complemento">
                         </div>
-                        <div class="form-group">
-                            <label for="cep">CEP</label>
-                            <input type="text" class="form-control" id="cep" placeholder="Digite seu CEP" maxlength="8">
-                        </div>
+                        
                         <div class="form-group">
                             <label for="numero">Número</label>
                             <input type="text" class="form-control" id="numero" placeholder="Digite o número">

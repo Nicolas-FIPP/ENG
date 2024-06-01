@@ -1,6 +1,7 @@
 export interface Agendain{
     name:string;
     cpf:string;
+    tel:string;
     data:Date;
     delivery:string;
     uf?:string;
@@ -16,6 +17,7 @@ export interface Agendaout{
     id:number;
     name:string;
     cpf:string;
+    tel:string;
     data:Date;
     delivery:string;
     uf?:string;
