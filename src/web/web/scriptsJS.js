@@ -88,6 +88,12 @@ async function CadastraOficina ()
 	}
 }
 
+
+
+
+
+
+
 async function RecuperaOficina() {
 	let URL = ""
 
@@ -265,12 +271,13 @@ async function DeletaOficina (event)
 	
 	let URL = "http://localhost:3344/oficina/excluir-oficina/"+id;
 	let response = await fetch(URL,{
-		method : "DELETE"
+		method : "PUT"
 	})
 	if (response.ok)
 		console.log("Deu certo")
-	RecuperaTipoOficina();
+	RecuperaUsuario();
 }
+
 
 
 async function AlterarOficina (event)
@@ -332,6 +339,10 @@ async function AlterarOficina (event)
 	}
 
 }
+
+
+
+
 
 
 

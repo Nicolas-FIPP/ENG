@@ -36,4 +36,45 @@ export default class UsuarioModel{
         return verificacao;
     }
 
+    getById = async (id: number) => {
+        return await prisma.usuario.findUnique({
+            where:{
+                id: id
+            }
+        })
+    }
+
+    getAll = async () => {
+        return await prisma.usuario.findMany();
+    }
+
+    deleteLogico = async (id: number) => {
+        return await prisma.usuario.update({
+            where:{
+                id: id
+            },
+            data:{
+                status: false
+            }
+        })
+    }
+
+    alterarSenha = async(id: number, novaSenha: string) => {
+        return await prisma.usuario.update({
+            where:{
+                id: id
+            },
+            data:{
+                senha: novaSenha
+            }
+        })
+    }
+
+    getAllAdmins = async(nivel: number) => {
+        return await prisma.usuario.findMany({
+            where:{
+                nivel_acesso: nivel
+            }
+        })
+    }
 }

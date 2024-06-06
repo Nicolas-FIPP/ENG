@@ -63,6 +63,17 @@ export default class PessoaModel {
       }
     });
   }
+
+  getById = async (id: number) => {
+    return await prisma.pessoa.findUnique({
+      where:{
+        id: id
+      }
+    })
+  }
+
+  
+
   /*
 
   get = async (id: number) => {
