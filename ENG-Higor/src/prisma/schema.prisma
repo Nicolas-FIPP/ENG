@@ -1,0 +1,246 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  binaryTargets   = ["native", "darwin", "darwin-arm64", "linux-musl", "debian-openssl-1.1.x", "darwin"]
+  previewFeatures = ["interactiveTransactions"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model beneficio {
+  id              Int               @id @default(autoincrement())
+  nome            String            
+  dt_entrega      DateTime         
+  qtde            Int
+  criado_em       DateTime          @default(now())
+
+  pes_id          Int?
+  pessoa          pessoa?           @relation(fields: [pes_id], references: [id])
+  itens_beneficio itens_beneficio[]
+}
+
+model despesa {
+  id               Int           @id @default(autoincrement())
+  valor            Float       
+  dt_vencimento    DateTime      
+  dt_pagamento     DateTime      
+  criado_em        DateTime      @default(now())
+
+  tde_id           Int
+  usu_id           Int
+  eve_id           Int?
+  evento           evento?       @relation(fields: [eve_id], references: [id])
+  tipo_despesa     tipo_despesa  @relation(fields: [tde_id], references: [id])
+  usuario          usuario       @relation(fields: [usu_id], references: [id])
+}
+
+model doacao {
+  id              Int               @id @default(autoincrement())
+  data            DateTime      
+  uf              String            @db.VarChar(2)
+  cidade          String         
+  rua             String?        
+  bairro          String?        
+  complemento     String?        
+  cep             String            @db.VarChar(8)
+  numero          String?        
+  criado_em       DateTime          @default(now())
+
+  pes_id          Int
+  pessoa          pessoa            @relation(fields: [pes_id], references: [id])
+  itens_doacao    itens_doacao[]
+}
+
+model donativo {
+  id              Int                   @id @default(autoincrement())
+  desc            String?       
+  valor_total     Float?    
+  criado_em       DateTime          @default(now())
+   
+  itens_beneficio itens_beneficio[]
+  itens_doacao    itens_doacao[]
+}
+
+model evento {
+  id                   Int            @id @default(autoincrement())
+  nome                 String
+  custo                Float   
+  dt_ini               DateTime    
+  dt_fim               DateTime    
+  uf                   String         @db.VarChar(2)
+  cidade               String         
+  rua                  String?        
+  bairro               String?        
+  complemento          String?        
+  cep                  String         @db.VarChar(8)
+  numero               String?
+  criado_em            DateTime       @default(now())
+
+
+  pes_id_responsavel   Int?
+  despesa              despesa[]
+  pessoa               pessoa?        @relation(fields: [pes_id_responsavel], references: [id])
+  participante         participante[]
+}
+
+
+model itens_beneficio {
+  don_id    Int
+  ben_id    Int
+  beneficio beneficio @relation(fields: [ben_id], references: [id])
+  donativo  donativo  @relation(fields: [don_id], references: [id])
+
+  @@id([don_id, ben_id])
+}
+
+model itens_doacao {
+  doa_id       Int
+  don_id       Int
+  itsdoa_valor Decimal? 
+  itsdoa_qtde  Int?
+  doacao       doacao   @relation(fields: [doa_id], references: [id])
+  donativo     donativo @relation(fields: [don_id], references: [id])
+
+  @@id([doa_id, don_id])
+}
+
+
+
+model matricula {
+  id               Int            @id @default(autoincrement())
+  criado_em        DateTime       @default(now())
+
+  pes_id           Int
+  ofi_id           Int?
+  oficina          oficina?       @relation(fields: [ofi_id], references: [id])
+  fisica           fisica         @relation(fields: [pes_id], references: [pes_id])
+}
+
+model oficina {
+  id                    Int           @id @default(autoincrement())
+  limite                Int
+  disciplina            String       
+  sala                  Int
+  dt_ini                DateTime     
+  dt_fim                DateTime     
+  dias_funcionamento    String       
+  criado_em             DateTime       @default(now())
+
+  pes_id                 Int
+  tof_id                 Int
+  matricula              matricula[]
+  pessoa                 pessoa        @relation(fields: [pes_id], references: [id])
+  tipo_oficina           tipo_oficina  @relation(fields: [tof_id], references: [id])
+}
+
+model parametrizacao {
+  pes_id             Int      @id
+  par_logo_grande    String?  
+  par_logo_pequeno   String?  
+  juridica           juridica @relation(fields: [pes_id], references: [pes_id])
+  nome               String
+  cnpj               String
+  area_atuacao       String
+  endereco           String
+  rua                String
+  numero             String
+  complemento        String?
+  bairro             String
+  cidade             String
+  estado             String
+  cep                String
+  telefone           String
+  email              String
+}
+
+
+model participante {
+  pes_id Int
+  eve_id Int
+  evento evento @relation(fields: [eve_id], references: [id])
+  fisica fisica @relation(fields: [pes_id], references: [pes_id])
+
+  @@id([pes_id, eve_id])
+}
+
+model pessoa {
+  id              Int         @id @default(autoincrement())
+  nome            String      
+  tel             String      @unique @db.VarChar(11)
+  status          Boolean     @default(true)
+  email           String      @unique
+  uf              String      @db.VarChar(2)
+  cidade          String         
+  rua             String?        
+  bairro          String?        
+  complemento     String?        
+  cep             String      @db.VarChar(8)
+  numero          String?
+  criado_em       DateTime    @default(now())
+
+  beneficio       beneficio[]
+  doacao          doacao[]
+  evento          evento[]
+  oficina         oficina[]
+
+    fisica          fisica?
+    juridica        juridica?
+}
+
+model juridica {
+  pes_id               Int             @id 
+  cnpj                 String          @unique @db.VarChar(14)
+  insc_estadual        String          @unique
+  site                 String?         @unique
+  razao_social         String          @unique
+
+  parametrizacao       parametrizacao?
+  pessoa   pessoa @relation(fields: [pes_id], references: [id])
+}
+
+model fisica {
+  pes_id        Int              @id 
+  cpf           String           @db.VarChar(11) @unique
+  dt_nasc       DateTime       
+  sexo          String           @db.VarChar(1)
+  rg            String           @db.VarChar(9)  @unique
+
+  matricula     matricula[]
+  participante  participante[]
+  usuario       usuario?
+  pessoa   pessoa @relation(fields: [pes_id], references: [id])
+}
+
+
+model tipo_despesa {
+  id                   Int            @id @default(autoincrement())
+  nome                 String    
+  criado_em            DateTime       @default(now())
+
+  despesa  despesa[]
+}
+
+model tipo_oficina {
+  id                   Int          @id @default(autoincrement())
+  nome                 String       
+  criado_em            DateTime     @default(now())
+
+  oficina  oficina[]
+}
+
+model usuario {
+  id              Int            @id @default(autoincrement())
+  senha           String         
+  nivel_acesso    Int
+  status          Boolean        @default(true)
+  criado_em       DateTime       @default(now())
+
+  pes_id           Int           @unique
+  despesa          despesa[]
+  fisica           fisica        @relation(fields: [pes_id], references: [pes_id])
+}
