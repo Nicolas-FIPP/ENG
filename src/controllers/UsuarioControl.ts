@@ -5,7 +5,7 @@ import PessoaModel from "models/PessoaModel";
 import UsuarioModel from "models/UsuarioModel";
 
 const jwt = require('jsonwebtoken');
-
+const bcrypt = require('bcrypt');
 
 const usuarioModel = new UsuarioModel();
 const fisicaModel = new FisicaModel();
@@ -24,23 +24,23 @@ export default class UsuarioControl{
             
             const fisica = await fisicaModel.getByCpf(usuario.cpf);
             if(!fisica){
-                return res.status(404).send({message: "Cadastro de pessoa não encontrado."});
+                return res.status(404).json({message: "Cadastro de pessoa não encontrado."});
             }
             
             const usuarioExistente : UsuarioOut | null = await usuarioModel.getByFisicaId(fisica.pes_id);
             if(usuarioExistente){
-                return res.status(500).send({message: "A pessoa indicada já possui um usuário criado no sistema."});
+                return res.status(400).json({message: "A pessoa indicada já possui um usuário criado no sistema."});
             }
             usuario.pes_id = fisica.pes_id;
             const newUsuario : UsuarioOut = await usuarioModel.create(usuario);
             if(!newUsuario){
-                return res.status(500).send({message: "Falha ao criar usuário."});
+                return res.status(500).json({message: "Falha ao criar usuário."});
             }
 
-            return res.status(201).send({message: "Usuário criado."});
+            return res.status(201).json({message: "Usuário criado."});
         }catch(e){
             console.log(e);
-            return res.status(500).send({message: "Falha ao criar usuário."});
+            return res.status(500).json({message: "Falha ao criar usuário."});
         }
     };
 
@@ -52,26 +52,26 @@ export default class UsuarioControl{
         console.log(usuario)
         const fisica = await fisicaModel.getByCpf(usuario.cpf);
         if(!fisica){
-            return res.status(500).send({message: "CPF não cadastrado. Faça o cadastro de pessoa."});
+            return res.status(500).json({message: "CPF não cadastrado. Faça o cadastro de pessoa."});
         }
 
         const usuarioDb = await usuarioModel.getByFisicaId(fisica.pes_id);
         if(!usuarioDb){
-            return res.status(500).send({message: "CPF e/ou senha inválidos."});
+            return res.status(500).json({message: "CPF e/ou senha inválidos."});
         }
 
         const pessoa = await pessoaModel.getById(usuarioDb.pes_id);
         if(!pessoa?.status){
-            return res.status(500).send({message: "Cadastro de PESSOA inativo."});
+            return res.status(500).json({message: "Cadastro de PESSOA inativo."});
         }
 
         const verificaSenha: boolean = await usuarioModel.verificaSenha(usuario.senha, usuarioDb.senha); 
         if(!verificaSenha){
-            return res.status(500).send({message: "CPF e/ou senha inválidos."});
+            return res.status(500).json({message: "CPF e/ou senha inválidos."});
         }
 
         if(!usuarioDb.status){
-            return res.status(500).send({message: "Usuário inativo."});
+            return res.status(500).json({message: "Usuário inativo."});
         }
       
         const secret = process.env.SECRET_JWT;
@@ -89,13 +89,13 @@ export default class UsuarioControl{
             const usuario = await usuarioModel.getById(Number(req.params.id));
 
             if(!usuario){
-                return res.status(404).send({message: "Usuário não encontrado."});
+                return res.status(404).json({message: "Usuário não encontrado."});
             }
 
             return res.status(200).json(usuario);
 
         }catch(error){
-            return res.status(500).send({message: "Não foi possível obter o usuário."});
+            return res.status(500).json({message: "Não foi possível obter o usuário."});
         }
     }
 
@@ -107,7 +107,7 @@ export default class UsuarioControl{
             const usuarios = await usuarioModel.getAll();
 
             if(!usuarios){
-                return res.status(404).send({message: "Não há usuários para listar."});
+                return res.status(404).json({message: "Não há usuários para listar."});
             }
         
             const usuariosAtivos = usuarios.filter(usuario => usuario.status);
@@ -119,7 +119,7 @@ export default class UsuarioControl{
 
             return res.status(200).json(usuariosAtivos);
         }catch(error){
-            return res.status(500).send({message: "Não foi possível obter os usuários."});
+            return res.status(500).json({message: "Não foi possível obter os usuários."});
         }
     }
 
@@ -130,15 +130,50 @@ export default class UsuarioControl{
 
         try{
             console.log(req.params.id)
-            const usuario = await usuarioModel.deleteLogico(Number(req.params.id));
-
+            console.log("vvvvvvvvvvvvvvvv")
+            
+            const usuario = await usuarioModel.getById(Number(req.params.id));
             if(!usuario){
-                return res.status(404).send({message: "Usuário não encontrado."});
+                return res.status(404).json({message: "Usuário não encontrado."});
+            }
+            
+            if(usuario.nivel_acesso === 1){
+                const admins = await usuarioModel.getAllAdmins(1);
+                if(admins.length === 1){
+                    return res.status(400).json({message: "Não é possível excluir todos os admins."});
+                }
             }
 
-            return res.status(200).send({message: "Usuário foi inativado."});
+            const usuarioDelete = await usuarioModel.deleteLogico(Number(req.params.id));
+      
+            return res.status(200).json({message: "Usuário foi inativado."});
         }catch(error){
-            return res.status(500).send({message: "Não foi possível deletar o usuário."});
+            return res.status(500).json({message: "Não foi possível deletar o usuário."});
         }
+    }
+
+    alterarSenha = async(req: Request, res: Response) => {
+        /*if(req.body.nivel !== 1){
+            return res.status(401).send({message: "Não autorizado."});
+        }*/
+
+        const id = req.body.id;
+        const novaSenha = req.body.nova_senha;
+        
+        const usuario = await usuarioModel.getById(id);
+        if(!usuario){
+            return res.status(404).send({message: "Usuário não encontrado."});
+        }
+
+        /*const match = await bcrypt.compare(novaSenha, usuario.senha);
+        if(!match){
+            return res.status(400).send({message: "A senha tual está incorreta."});
+        }*/
+        await usuarioModel.alterarSenha(id, novaSenha);
+
+        //Hash na nova senha
+
+        console.log(novaSenha)
+        return res.status(200).json({message: "Senha alterada."});
     }
 }

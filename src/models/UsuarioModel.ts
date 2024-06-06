@@ -58,4 +58,23 @@ export default class UsuarioModel{
             }
         })
     }
+
+    alterarSenha = async(id: number, novaSenha: string) => {
+        return await prisma.usuario.update({
+            where:{
+                id: id
+            },
+            data:{
+                senha: novaSenha
+            }
+        })
+    }
+
+    getAllAdmins = async(nivel: number) => {
+        return await prisma.usuario.findMany({
+            where:{
+                nivel_acesso: nivel
+            }
+        })
+    }
 }

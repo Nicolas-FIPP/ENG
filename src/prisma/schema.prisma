@@ -26,6 +26,7 @@ model beneficio {
 
 model despesa {
   id               Int           @id @default(autoincrement())
+  nome             String
   valor            Float       
   dt_vencimento    DateTime      
   dt_pagamento     DateTime      
@@ -205,7 +206,7 @@ model fisica {
 
 model tipo_despesa {
   id                   Int            @id @default(autoincrement())
-  nome                 String    
+  nome                 String         @unique
   criado_em            DateTime       @default(now())
 
   despesa  despesa[]

@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="style.css">
-<script src="scriptUsuario.js"></script>
+<script src="scriptTipoDespesa.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
@@ -18,7 +18,7 @@
   <nav class="navbar navbar-inverse">
       <div class="container-fluid">
           <div class="navbar-header">
-              <a class="navbar-brand" href="#">Gerenciar usuários</a>
+              <a class="navbar-brand" href="#">Gerenciar Tipos de Despesas</a>
           </div>
           <ul class="nav navbar-nav navbar-right">
               <li><a href="#">Cadastros</a></li>
@@ -32,10 +32,10 @@
           <div class="table-title">
               <div class="row">
                   <div class="col-sm-6">
-                      <h2><b>Usuários</b></h2>
+                      <h2><b>Tipos de Despesas</b></h2>
                   </div>
                   <div class="col-sm-6">
-                      <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Adicionar Novo Usuário</span></a>
+                      <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Adicionar Novo Tipo de Despesa</span></a>
                       <!--<a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Deletar</span></a>-->
                   </div>
               </div>
@@ -49,7 +49,7 @@
                               <label for="selectAll"></label>
                           </span>-->
                       </th>
-                      <th>CPF</th>
+                      <th>Nome</th>
                   </tr>
               </thead>
               <tbody>
@@ -60,7 +60,7 @@
                               <label for="checkbox1"></label>
                           </span>
                       </td>-->
-                      <td>Usuário</td>
+                      <td>Tipo de Despesa</td>
                       <td class="alinha-edit-del">
                           <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                           <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
@@ -90,20 +90,18 @@
           <div class="modal-content">
               <form>
                   <div class="modal-header">                        
-                      <h4 class="modal-title">Adicionar Usuário</h4>
+                      <h4 class="modal-title">Adicionar Tipo de Despesa</h4>
                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                   </div>
                   <div class="modal-body">                    
                       <div class="form-group">
-                          <label>CPF</label>
-                          <input id="cpf" type="text" class="form-control" required>
-                          <label>Senha</label>
-                          <input id="senha" type="text" class="form-control" required>
+                          <label>Nome</label>
+                          <input id="nome" type="text" class="form-control" required>
                       </div>                   
                   </div>
                   <div class="modal-footer">
                       <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-                      <input type="button" class="btn btn-success" onclick="CadastrarUsuario()" value="Salvar">
+                      <input type="button" class="btn btn-success" onclick="CadastrarTipoDespesa()" value="Salvar">
                   </div>
               </form>
           </div>
@@ -115,18 +113,18 @@
           <div class="modal-content">
               <form>
                   <div class="modal-header">                        
-                      <h4 class="modal-title">Alterar Senha</h4>
+                      <h4 class="modal-title">Alterar Nome</h4>
                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                   </div>
                   <div class="modal-body">                    
                       <div class="form-group">
-                          <label>Nova senha</label>
-                          <input id="nova_senha" type="text" class="form-control" required>
+                          <label>Novo Nome</label>
+                          <input id="novo_nome" type="text" class="form-control" required>
                       </div>                 
                   </div>
                   <div class="modal-footer">
                       <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-                      <input type="submit" class="btn btn-warning" id="MODAL_EDIT_Id" data-user-id="" onclick="AlterarSenha(this)" value="Alterar">
+                      <input type="submit" class="btn btn-warning" id="MODAL_EDIT_Id" data-user-id="" onclick="AlterarTipoDespesa(this)" value="Alterar">
                   </div>
               </form>
           </div>
@@ -139,7 +137,7 @@
               <form>
                   <div class="modal-header">                        
                       <h4 class="modal-title">Deletar</h4>
-                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> 
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                   </div>
                   <div class="modal-body">                    
                       <p>Você tem certeza que Deseja DELETAR o(s) Registro(s) Selecionado(s) ?</p>
@@ -147,7 +145,7 @@
                   </div>
                   <div class="modal-footer">
                       <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-                      <input type="submit" class="btn btn-danger" id="MODAL_DELETE_Id" data-user-id="" onclick="DeletarUsuario(this)" value="Deletar"> 
+                      <input type="submit" class="btn btn-danger" id="MODAL_DELETE_Id" data-user-id="" onclick="DeletarTipoDespesa(this)" value="Deletar"> 
                   </div>
               </form>
           </div>

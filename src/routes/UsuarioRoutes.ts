@@ -25,6 +25,7 @@ routes.get('/get-todos-usuarios', usuarioControl.getAll); //autenticacaoToken
 // Rota para excluir logicamente um usuário
 routes.put('/inativar-usuario/:id', usuarioControl.inativar); //autenticacaoToken
 
-
+// Rota para alterar senha
+routes.post('/alterar-senha', usuarioControl.alterarSenha);
 
 export default routes;
