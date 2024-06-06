@@ -7,6 +7,8 @@ const routes = Router();
 const oficinaControl = new OficinaController();
 
 routes.post('/cadastrar-oficina', oficinaControl.create);
+
+routes.post('/cadatrar-matriculado-oficina', oficinaControl.cadastroMatriculado);
 routes.get('/listar-todos-oficina', oficinaControl.getAll);
 routes.get('/:id', oficinaControl.get);
 routes.put('/alterar-oficina/:id', oficinaControl.update, );

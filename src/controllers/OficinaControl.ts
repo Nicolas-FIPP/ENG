@@ -2,10 +2,12 @@ import { Request, Response } from "express";
 import OficinaModel from "models/Oficina";
 import { TipoOficinaIn, TipoOficinaOut } from 'dtos/TipoOficinaDTO';
 import { OficinaIn, OficinaOut } from "dtos/OficinaDTO";
+import MatriculaModel from "models/matriculaModel";
+import { MatriculaDTO } from "dtos/Oficina/matriculaDTO";
 
 const oficinaModel = new OficinaModel();
 
-
+const matriculaModel = new MatriculaModel ()
 
 
 export function verificarCamposPreenchidos(oficina: OficinaIn): boolean {
@@ -131,4 +133,21 @@ export default class OficinaController {
       });
     }
   };
+
+   cadastroMatriculado = async (req: Request, res: Response) => {
+
+    const {pes_id,ofi_id} = req.body
+
+    if(pes_id == null || ofi_id == null){
+      res.status(400).json({message: 'Faltando infos'});
+    } 
+
+
+    const criado_em = new Date()
+  
+    await matriculaModel.create({criado_em,pes_id,ofi_id})
+
+
+    res.status(200).json({})
+  }
 }
