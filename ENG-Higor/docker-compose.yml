@@ -1,0 +1,53 @@
+version: "3.8"
+
+services:
+  db:
+    container_name: db
+    image: postgres:15
+    restart: always
+    expose:
+      - 5432
+    ports:
+      - 5432:5432
+    networks:
+      - ong
+    environment:
+      - POSTGRES_DB=ong
+      - POSTGRES_USER=ong
+      - POSTGRES_PASSWORD=ong123
+    healthcheck:
+      test: ["CMD-SHELL","pg_isready -U ong"]
+      interval: 1s
+      timeout: 20s
+      retries: 5
+      start_period: 2s
+
+  web:
+    container_name: web
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: yarn dev
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    expose:
+      - 3344
+      - 5555
+    ports:
+      - 3344:3344
+      - 5555:5555
+    networks:
+      - ong
+    links:
+      - db
+    env_file:
+      - .env
+    platform: "linux/amd64"
+    depends_on:
+      - db 
+
+
+networks:
+  ong:
+    driver: bridge  
