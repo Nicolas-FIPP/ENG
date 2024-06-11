@@ -31,12 +31,15 @@ routes.delete('/excluir-tipo/:id', tipoDespesaControl.delete)
 
 
 // Rota para listar todas as despesas
-routes.get('/todas-despesas',)  
+routes.get('/todas-despesas', despesaControl.getAll)  
 
 // Rota para cadastrar despesa
 routes.post('/cadastrar-despesa', despesaControl.create);
 
 // Rota para alterar despesa]
 routes.post('/alterar-despesa', despesaControl.alterar);
+
+// Rota para excluir uma despesa
+routes.delete('/excluir-despesa', despesaControl.deletar)
 
 export default routes;

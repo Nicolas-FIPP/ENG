@@ -13,13 +13,13 @@ export default class DespesaControl{
              despesa.dt_pagamento = new Date(despesa.dt_pagamento);
              despesa.dt_vencimento = new Date(despesa.dt_vencimento);
 
-            const despesaOut = despesaModel.create(despesa);
+            const despesaOut = await despesaModel.create(despesa);
 
             if(!despesaOut){
                 return res.status(400).json({message: "Falha ao criar Despesa."});
             }
 
-            return res.status(200).json(despesaOut); 
+            return res.status(201).json(despesaOut); 
         }
         catch(error){
             return res.status(500).json({message: "Falha ao criar Despesa."});
@@ -33,7 +33,7 @@ export default class DespesaControl{
             despesa.dt_pagamento = new Date(despesa.dt_pagamento);
             despesa.dt_vencimento = new Date(despesa.dt_vencimento);
 
-            const despesaOut = despesaModel.update(despesa);
+            const despesaOut = await despesaModel.update(despesa);
 
             if(!despesaOut){
                 return res.status(400).json({message: "Falha ao criar Despesa."});
@@ -43,6 +43,33 @@ export default class DespesaControl{
         }catch(error){
             return res.status(500).json({message: "Falha ao alterar Despesa."});
 
+        }
+    }
+
+    deletar = async(req: Request, res: Response) => {
+        try{
+            const id = req.body.des_id;
+
+            const despesa = await despesaModel.delete(id);
+
+            if(!despesa){
+                return res.status(400).json({message: "Falha ao excluir Despesa."});
+            }
+            return res.status(200).json(); 
+
+        }catch(error){
+            return res.status(500).json({message: "Falha ao excluir Despesa."});
+        }
+    }
+
+    getAll = async(req: Request, res: Response) => {
+        try{
+            const despesas = await despesaModel.getAll();
+
+            return res.status(200).json(despesas); 
+
+        }catch(error){
+            return res.status(500).json({message: "Falha ao listar Despesas."});
         }
     }
 }

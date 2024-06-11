@@ -34,6 +34,18 @@ export default class DespesaModel{
             }
         })
     }
+
+    delete = async(id: number) => {
+        return await prisma.despesa.delete({
+            where:{
+                id: id
+            }
+        })
+    }
+
+    getAll = async() => {
+        return await prisma.despesa.findMany();
+    }
     
 }
  
