@@ -13,6 +13,7 @@ CREATE TABLE "beneficio" (
 -- CreateTable
 CREATE TABLE "despesa" (
     "id" SERIAL NOT NULL,
+    "nome" TEXT NOT NULL,
     "valor" DOUBLE PRECISION NOT NULL,
     "dt_vencimento" TIMESTAMP(3) NOT NULL,
     "dt_pagamento" TIMESTAMP(3) NOT NULL,
@@ -72,17 +73,6 @@ CREATE TABLE "evento" (
 );
 
 -- CreateTable
-CREATE TABLE "fisica" (
-    "pes_id" INTEGER NOT NULL,
-    "cpf" VARCHAR(11) NOT NULL,
-    "dt_nasc" TIMESTAMP(3) NOT NULL,
-    "sexo" VARCHAR(1) NOT NULL,
-    "rg" VARCHAR(9) NOT NULL,
-
-    CONSTRAINT "fisica_pkey" PRIMARY KEY ("pes_id")
-);
-
--- CreateTable
 CREATE TABLE "itens_beneficio" (
     "don_id" INTEGER NOT NULL,
     "ben_id" INTEGER NOT NULL,
@@ -98,17 +88,6 @@ CREATE TABLE "itens_doacao" (
     "itsdoa_qtde" INTEGER,
 
     CONSTRAINT "itens_doacao_pkey" PRIMARY KEY ("doa_id","don_id")
-);
-
--- CreateTable
-CREATE TABLE "juridica" (
-    "pes_id" INTEGER NOT NULL,
-    "cnpj" VARCHAR(14) NOT NULL,
-    "insc_estadual" TEXT NOT NULL,
-    "site" TEXT,
-    "razao_social" TEXT NOT NULL,
-
-    CONSTRAINT "juridica_pkey" PRIMARY KEY ("pes_id")
 );
 
 -- CreateTable
@@ -174,6 +153,28 @@ CREATE TABLE "pessoa" (
 );
 
 -- CreateTable
+CREATE TABLE "juridica" (
+    "pes_id" INTEGER NOT NULL,
+    "cnpj" VARCHAR(14) NOT NULL,
+    "insc_estadual" TEXT NOT NULL,
+    "site" TEXT,
+    "razao_social" TEXT NOT NULL,
+
+    CONSTRAINT "juridica_pkey" PRIMARY KEY ("pes_id")
+);
+
+-- CreateTable
+CREATE TABLE "fisica" (
+    "pes_id" INTEGER NOT NULL,
+    "cpf" VARCHAR(11) NOT NULL,
+    "dt_nasc" TIMESTAMP(3) NOT NULL,
+    "sexo" VARCHAR(1) NOT NULL,
+    "rg" VARCHAR(9) NOT NULL,
+
+    CONSTRAINT "fisica_pkey" PRIMARY KEY ("pes_id")
+);
+
+-- CreateTable
 CREATE TABLE "tipo_despesa" (
     "id" SERIAL NOT NULL,
     "nome" TEXT NOT NULL,
@@ -204,10 +205,10 @@ CREATE TABLE "usuario" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "fisica_cpf_key" ON "fisica"("cpf");
+CREATE UNIQUE INDEX "pessoa_tel_key" ON "pessoa"("tel");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "fisica_rg_key" ON "fisica"("rg");
+CREATE UNIQUE INDEX "pessoa_email_key" ON "pessoa"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "juridica_cnpj_key" ON "juridica"("cnpj");
@@ -222,10 +223,13 @@ CREATE UNIQUE INDEX "juridica_site_key" ON "juridica"("site");
 CREATE UNIQUE INDEX "juridica_razao_social_key" ON "juridica"("razao_social");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "pessoa_tel_key" ON "pessoa"("tel");
+CREATE UNIQUE INDEX "fisica_cpf_key" ON "fisica"("cpf");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "pessoa_email_key" ON "pessoa"("email");
+CREATE UNIQUE INDEX "fisica_rg_key" ON "fisica"("rg");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "tipo_despesa_nome_key" ON "tipo_despesa"("nome");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "usuario_pes_id_key" ON "usuario"("pes_id");
@@ -280,6 +284,12 @@ ALTER TABLE "participante" ADD CONSTRAINT "participante_eve_id_fkey" FOREIGN KEY
 
 -- AddForeignKey
 ALTER TABLE "participante" ADD CONSTRAINT "participante_pes_id_fkey" FOREIGN KEY ("pes_id") REFERENCES "fisica"("pes_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "juridica" ADD CONSTRAINT "juridica_pes_id_fkey" FOREIGN KEY ("pes_id") REFERENCES "pessoa"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "fisica" ADD CONSTRAINT "fisica_pes_id_fkey" FOREIGN KEY ("pes_id") REFERENCES "pessoa"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "usuario" ADD CONSTRAINT "usuario_pes_id_fkey" FOREIGN KEY ("pes_id") REFERENCES "fisica"("pes_id") ON DELETE RESTRICT ON UPDATE CASCADE;
