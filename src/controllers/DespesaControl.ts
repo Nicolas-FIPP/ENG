@@ -9,9 +9,11 @@ export default class DespesaControl{
         
         try{
             const despesa = req.body;
-            
-             despesa.dt_pagamento = new Date(despesa.dt_pagamento);
-             despesa.dt_vencimento = new Date(despesa.dt_vencimento);
+
+            console.log(despesa)
+            despesa.valor = Number(despesa.valor)
+            despesa.dt_pagamento = new Date(despesa.dt_pagamento);
+            despesa.dt_vencimento = new Date(despesa.dt_vencimento);
 
             const despesaOut = await despesaModel.create(despesa);
 
@@ -30,8 +32,13 @@ export default class DespesaControl{
         try{
             const despesa = req.body;
 
+            despesa.valor = Number(despesa.valor);
+            despesa.tde_id = Number(despesa.tde_id);
+            despesa.usu_id = Number(despesa.usu_id);
+            despesa.des_id = Number(despesa.des_id);
             despesa.dt_pagamento = new Date(despesa.dt_pagamento);
             despesa.dt_vencimento = new Date(despesa.dt_vencimento);
+            console.log(despesa)
 
             const despesaOut = await despesaModel.update(despesa);
 
@@ -48,14 +55,16 @@ export default class DespesaControl{
 
     deletar = async(req: Request, res: Response) => {
         try{
-            const id = req.body.des_id;
+            const id = Number(req.params.id);
 
+            console.log(id);
+            
             const despesa = await despesaModel.delete(id);
 
             if(!despesa){
                 return res.status(400).json({message: "Falha ao excluir Despesa."});
             }
-            return res.status(200).json(); 
+            return res.status(200).json({message: "Despesa excluída"}); 
 
         }catch(error){
             return res.status(500).json({message: "Falha ao excluir Despesa."});

@@ -22,7 +22,7 @@ export default class DespesaModel{
     update = async(despesa: DespesaUpdate) => {
         return await prisma.despesa.update({
             where:{
-                id: despesa.id
+                id: despesa.des_id
             },
             data:{
                 nome: despesa.nome,

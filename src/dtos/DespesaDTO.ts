@@ -9,7 +9,7 @@ export interface DespesaIn{
 
 
 export interface DespesaUpdate{
-    id: number,
+    des_id: number,
     nome: string,
     valor: number,
     dt_vencimento: Date,

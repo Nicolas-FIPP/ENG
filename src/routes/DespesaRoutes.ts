@@ -40,6 +40,6 @@ routes.post('/cadastrar-despesa', despesaControl.create);
 routes.post('/alterar-despesa', despesaControl.alterar);
 
 // Rota para excluir uma despesa
-routes.delete('/excluir-despesa', despesaControl.deletar)
+routes.delete('/excluir-despesa/:id', despesaControl.deletar)
 
 export default routes;
