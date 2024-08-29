@@ -27,11 +27,20 @@ export default class EventoModel {
       data : evento
     });
   };
-/*
+
   getAll = async () => {
-    return await prisma.evento.findMany();
-  }*/
-/*
+    return await prisma.evento.findMany({
+      include: {
+        pessoa: {
+          select: {
+            id: true,
+            nome: true,
+          },
+        },
+      },
+    });
+  }
+
   get = async (id: number) => {
     return await prisma.evento.findUnique({
       where: {
@@ -57,5 +66,5 @@ export default class EventoModel {
         ...evento
       }
     })
-  }*/
+  }
 };

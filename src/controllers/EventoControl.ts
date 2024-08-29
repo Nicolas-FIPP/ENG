@@ -1,9 +1,7 @@
 import { EventoIn, EventoOut } from "dtos/EventoDTO";
-import { TipoOficinaOut, TipoOficinaIn } from "dtos/TipoOficinaDTO";
+import { TipoOficinaIn, TipoOficinaOut } from "dtos/TipoOficinaDTO";
 import { Request, Response } from "express";
 import EventoModel from "models/EventoModel";
-//import TipoOficinaModel from "models/TipoOficinaModel";
-//import { TipoOficinaIn, TipoOficinaOut } from 'dtos/TipoOficinaDTO';
 
 const eventoModel = new EventoModel();
 
@@ -42,39 +40,39 @@ export default class EventoControl {
       });
     }
   };
-/*
+
   get = async (req: Request, res: Response) => {
     try {
       const id: number = parseInt(req.params.id);
       console.log(id);
-      let newTipoOficina: TipoOficinaOut | null = await tipooficinaModel.get(id);
+      let newEvento: EventoOut | null = await eventoModel.get(id);
 
-      if (newTipoOficina) {
-        res.status(200).json(newTipoOficina);
+      if (newEvento) {
+        res.status(200).json(newEvento);
       } else {
         res.status(404).json({
           error: "USR-06",
-          message: "Tipo_Oficina not found.",
+          message: "Evento not found.",
         });
       }
     } catch (e) {
-      console.log("Failed to get Tipo_Oficina", e);
+      console.log("Failed to get Evento", e);
       res.status(500).send({
         error: "USR-02",
-        message: "Failed to get Tipo_Oficina",
+        message: "Failed to get Evento",
       });
     }
   };
 
   getAll = async (req: Request, res: Response) => {
     try {
-      const Tipo_Oficina_s: TipoOficinaOut[] | null = await tipooficinaModel.getAll();
-      res.status(200).json(Tipo_Oficina_s);
+      const Evento_s: EventoOut[] | null = await eventoModel.getAll();
+      res.status(200).json(Evento_s);
     } catch (e) {
-      console.log("Failed to get all Tipo_Oficina_s", e);
+      console.log("Failed to get all Evento_s", e);
       res.status(500).send({
         error: "USR-03",
-        message: "Failed to get all Tipo_Oficina_s",
+        message: "Failed to get all Evento_s",
       });
     }
   };
@@ -82,25 +80,29 @@ export default class EventoControl {
   update = async (req: Request, res: Response) => {
     try {
       const id: number = parseInt(req.params.id);
-      const updateTipoOficina: TipoOficinaIn = req.body;
-      const TipoOficinaUpdated: TipoOficinaOut | null = await tipooficinaModel.update(
-        id,
-        updateTipoOficina
-      );
+      console.log("O ID AI = ",id);
+      console.log("O QUE VEIO DO BODY UPDATE = ",req.body);
+      const updateEvento: EventoIn = req.body;
 
-      if (TipoOficinaUpdated) {
-        res.status(200).json(TipoOficinaUpdated);
+      updateEvento.dt_ini = new Date(updateEvento.dt_ini);
+      updateEvento.dt_fim = new Date(updateEvento.dt_fim);
+      console.log("OBJETO CONVERTIDO UPDATE = ",updateEvento);
+
+      const EventoUpdated: EventoOut | null = await eventoModel.update(id, updateEvento);
+
+      if (EventoUpdated) {
+        res.status(200).json(EventoUpdated);
       } else {
         res.status(404).json({
           error: "USR-06",
-          message: "Tipo_Oficina not found.",
+          message: "Evento not found.",
         });
       }
     } catch (e) {
-      console.log("Failed to update Tipo_Oficina", e);
+      console.log("Failed to update Evento", e);
       res.status(500).send({
         error: "USR-04",
-        message: "Failed to update Tipo_Oficina",
+        message: "Failed to update Evento",
       });
     }
   };
@@ -108,14 +110,14 @@ export default class EventoControl {
   delete = async (req: Request, res: Response) => {
     try {
       const id: number = parseInt(req.params.id);
-      const TipoOficinaDeleted = await tipooficinaModel.delete(id);
-      res.status(204).json(TipoOficinaDeleted);
+      const EventoDeleted = await eventoModel.delete(id);
+      res.status(204).json(EventoDeleted);
     } catch (e) {
-      console.log("Failed to delete Tipo_Oficina", e);
+      console.log("Failed to delete Evento", e);
       res.status(500).send({
         error: "USR-05",
-        message: "Failed to delete Tipo_Oficina",
+        message: "Failed to delete Evento",
       });
     }
-  };*/
+  };
 }

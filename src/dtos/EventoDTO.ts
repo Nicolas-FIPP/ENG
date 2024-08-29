@@ -29,5 +29,9 @@ export interface EventoOut {
   complemento?: string | null;
   cep: string;
   numero?: string | null;
-  pes_id_responsavel: number | null;
+  //pes_id_responsavel: number | null;
+  pessoa?: {
+    id: number;
+    nome: string;
+  } | null;
 }
