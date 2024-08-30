@@ -3,3 +3,7 @@ export interface MatriculaDTO{
     pes_id: number;
     ofi_id: number;
 }
+export interface MatriculaNomeDTO{
+    pes_id: number
+    nome?:string
+}

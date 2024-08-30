@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Oficina</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        .form-container {
+            width: 100%;
+            max-width: 500px; /* Aumentado para maior tamanho da caixa */
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+            transition: border 0.3s, box-shadow 0.3s;
+        }
+        input:focus, select:focus, button:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+        button {
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            font-weight: bold;
+            border: none;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #searchResults {
+            border: 1px solid #ccc;
+            max-height: 150px;
+            overflow-y: auto;
+            margin-top: 5px;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .search-result {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.3s;
+        }
+        .search-result:hover {
+            background-color: #f0f0f0;
+        }
+        .oficina-container {
+            width: 100%;
+            max-width: 900px; /* Aumentado para maior tamanho da caixa */
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        .oficina-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .oficina-header h3 {
+            margin: 0;
+        }
+        .oficina-header button {
+            background-color: transparent;
+            border: none;
+            color: #007bff;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .oficina-header button:hover {
+            text-decoration: underline;
+        }
+        .matricula-list {
+            display: none;
+            margin-top: 15px;
+            padding-left: 20px;
+        }
+        .matricula-item {
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+        }
+        .filter-input {
+            margin-bottom: 20px;
+            padding: 10px;
+            width: 50%; /* Reduzido para menor largura da barra de filtro */
+            max-width: 400px; /* Limite máximo de largura */
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+            transition: border 0.3s, box-shadow 0.3s;
+        }
+        .filter-input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+        .no-matriculas {
+            padding: 10px;
+            text-align: center;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <form id="cadastroForm">
+            <div class="form-group">
+                <label for="oficina">Oficina:</label>
+                <select id="oficina" name="oficina">
+                    <!-- Oficinas serão carregadas dinamicamente -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="pesquisaNome">Pesquisar Nome:</label>
+                <input type="text" id="pesquisaNome" placeholder="Digite um nome">
+                <div id="searchResults"></div>
+            </div>
+            <input type="hidden" id="nomeSelecionado" name="nomeSelecionado">
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+
+    <input type="text" id="filterOficinas" class="filter-input" placeholder="Filtrar oficinas...">
+    <div id="oficinasContainer"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const oficinasContainer = document.getElementById('oficinasContainer');
+            const filterOficinas = document.getElementById('filterOficinas');
+            const pesquisaNome = document.getElementById('pesquisaNome');
+            const searchResults = document.getElementById('searchResults');
+
+            let oficinasData = [];
+            let allNomes = [];
+
+            // Função para carregar oficinas
+            const loadOficinas = async () => {
+                try {
+                    const response = await fetch('http://localhost:3344/oficina/listar-tudo', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    const data = await response.json();
+                    oficinasData = data;
+                    console.log('Oficinas carregadas:', oficinasData); // Debug
+                    renderOficinas(oficinasData);
+                    
+                    // Carrega as oficinas no select do formulário
+                    const oficinaSelect = document.getElementById('oficina');
+                    data.forEach(oficina => {
+                        const option = document.createElement('option');
+                        option.value = oficina.id; // Use disciplina como valor porque o ID não está especificado
+                        option.textContent = oficina.disciplina;
+                        oficinaSelect.appendChild(option);
+                    });
+                } catch (error) {
+                    console.error('Erro ao carregar oficinas:', error);
+                }
+            };
+
+            // Função para carregar nomes
+            const loadNomes = async () => {
+                try {
+                    const response = await fetch('http://localhost:3344/pessoa/mostrar-todas-pessoas');
+                    allNomes = await response.json();
+                    console.log('Nomes carregados:', allNomes); // Debug
+                } catch (error) {
+                    console.error('Erro ao carregar nomes:', error);
+                }
+            };
+
+            // Função para renderizar oficinas
+            const renderOficinas = (data) => {
+                oficinasContainer.innerHTML = '';
+                data.forEach(oficina => {
+                    const oficinaDiv = document.createElement('div');
+                    oficinaDiv.className = 'oficina-container';
+                    oficinaDiv.innerHTML = `
+                        <div class="oficina-header" onclick="toggleMatriculas('${oficina.disciplina}')">
+                            <h3>${oficina.disciplina}</h3>
+                            <button>Mostrar Matrículas</button>
+                        </div>
+                        <input type="text" placeholder="Filtrar matrículas..." oninput="filterMatriculas('${oficina.disciplina}', this.value)">
+                        <div class="matricula-list" id="matriculas-${oficina.disciplina}">
+                            ${oficina.matricula.length > 0 ? 
+                                oficina.matricula.map(matricula => `
+                                    <div class="matricula-item" data-nome="${matricula.fisica.pessoa.nome.toLowerCase()}">
+                                        <span>${matricula.fisica.pessoa.nome}</span>
+                                        <button onclick="deleteMatricula(${matricula.id})">Apagar</button>
+                                    </div>
+                                `).join('') 
+                                : `<div class="no-matriculas">Sem matrículas disponíveis</div>`
+                            }
+                        </div>
+                    `;
+                    oficinasContainer.appendChild(oficinaDiv);
+                });
+            };
+
+            // Função para alternar exibição de matrículas
+            window.toggleMatriculas = (oficinaDisciplina) => {
+                const matriculaList = document.getElementById(`matriculas-${oficinaDisciplina}`);
+                matriculaList.style.display = matriculaList.style.display === 'none' ? 'block' : 'none';
+            };
+
+            // Função para filtrar matrículas
+            window.filterMatriculas = (oficinaDisciplina, query) => {
+                const matriculaList = document.getElementById(`matriculas-${oficinaDisciplina}`);
+                const items = matriculaList.querySelectorAll('.matricula-item');
+                query = query.toLowerCase();
+
+                items.forEach(item => {
+                    const nome = item.dataset.nome;
+                    item.style.display = nome.includes(query) ? '' : 'none';
+                });
+            };
+
+            // Função para deletar matrícula
+            window.deleteMatricula = async (matriculaId) => {
+                if (confirm('Você realmente deseja apagar esta matrícula?')) {
+                    try {
+                        const response = await fetch(`http://localhost:3344/oficina/excluir-matricula/${matriculaId}`, {
+                            method: 'DELETE'
+                        });
+                        if (response.ok) {
+                            alert('Matrícula apagada com sucesso');
+                            loadOficinas(); // Recarrega as oficinas e matrículas
+                        } else {
+                            alert('Erro ao apagar matrícula');
+                        }
+                    } catch (error) {
+                        console.error('Erro ao apagar matrícula:', error);
+                    }
+                }
+            };
+
+            // Filtrar oficinas conforme digitado
+            filterOficinas.addEventListener('input', () => {
+                const query = filterOficinas.value.toLowerCase();
+                const filteredOficinas = query
+                    ? oficinasData.filter(oficina => oficina.disciplina.toLowerCase().includes(query))
+                    : oficinasData; // Se o campo de pesquisa estiver vazio, mostrar todas as oficinas
+                renderOficinas(filteredOficinas);
+            });
+
+            // Filtrar nomes conforme digitado
+            pesquisaNome.addEventListener('input', () => {
+                const query = pesquisaNome.value.toLowerCase();
+                searchResults.innerHTML = '';
+
+                if (query.length > 0) {
+                    const filteredNomes = allNomes.filter(nome => nome.nome.toLowerCase().includes(query));
+                    filteredNomes.forEach(nome => {
+                        const resultDiv = document.createElement('div');
+                        resultDiv.className = 'search-result';
+                        resultDiv.textContent = nome.nome;
+                        resultDiv.onclick = () => {
+                            document.getElementById('nomeSelecionado').value = nome.id;
+                            searchResults.innerHTML = ''; // Limpa os resultados
+                            pesquisaNome.value = nome.nome; // Preenche o campo de pesquisa com o nome selecionado
+                        };
+                        searchResults.appendChild(resultDiv);
+                    });
+                }
+            });
+
+            // Envia o formulário de cadastro
+            document.getElementById('cadastroForm').addEventListener('submit', async (event) => {
+                event.preventDefault();
+                const oficinaId = document.getElementById('oficina').value;
+                const nomeId = document.getElementById('nomeSelecionado').value;
+                if (oficinaId && nomeId) {
+                    try {
+                        const response = await fetch('http://localhost:3344/oficina/cadatrar-matriculado-oficina', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ ofi_id: oficinaId, pes_id: nomeId })
+                        });
+                        if (response.ok) {
+                            alert('Cadastro realizado com sucesso');
+                            loadOficinas(); // Recarrega as oficinas e matrículas
+                        } else if (response.status === 400) {
+                            alert('Pessoa já cadastrada');
+                        } else {
+                            alert('Erro ao realizar cadastro');
+                        }
+                    } catch (error) {
+                        console.error('Erro ao realizar cadastro:', error);
+                    }
+                } else {
+                    alert('Por favor, selecione uma oficina e um nome.');
+                }
+            });
+
+            // Carrega dados na inicialização
+            loadOficinas();
+            loadNomes();
+        });
+    </script>
+</body>
+</html>

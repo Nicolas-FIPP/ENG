@@ -42,4 +42,39 @@ export default class OficinaModel {
       }
     })
   }
+
+  getListatodasOficinasComMatriculadosENomes = async () => {
+    return await prisma.oficina.findMany({
+      select: {
+        id:true,
+        disciplina: true, 
+        matricula: {
+          select: {
+            id: true, 
+            
+            fisica: {
+              select: {
+                pessoa: {
+                  select: {
+                    nome: true, 
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+  };
+
+  deleteMatricula  = async (id: number) => {
+    return await prisma.matricula.delete({
+      where: {
+        id
+      }
+    })
+  }
+  
+  
+  
 };
