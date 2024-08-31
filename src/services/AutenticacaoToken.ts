@@ -1,12 +1,11 @@
-import { NextFunction, Request, Response } from "express";
+/*import { NextFunction, Request, Response } from "express";
 import UsuarioModel from "models/UsuarioModel";
-
-
 
 const jwt = require('jsonwebtoken');
 
 type jwtPayLoad = {
     id: number;
+    nivel: number;
 }
 
 export async function autenticacaoToken(req: Request, res: Response, next: NextFunction){
@@ -18,7 +17,10 @@ export async function autenticacaoToken(req: Request, res: Response, next: NextF
     }
 
     const token = authorization.split(' ')[1];
-    const { id } = jwt.verify(token, process.env.SECRET_JWT) as jwtPayLoad;
+    
+
+    const { id, nivel } = jwt.verify(token, process.env.SECRET_JWT) as jwtPayLoad;
+
 
     const usuario = await usuarioModel.getById(id);
 
@@ -27,6 +29,7 @@ export async function autenticacaoToken(req: Request, res: Response, next: NextF
     }
 
     req.body.id = id;
+    req.body.nivel = nivel;
     next();
 
-}
+}*/

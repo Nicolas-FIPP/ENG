@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabelas de Agendamento</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="mt-5" style="padding: 64px;">
+        <h2>Pendentes</h2>
+        <table class="table table-striped" id="pendingTable">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Data</th>
+                    <th>Opção de Entrega</th>
+                    <th>UF</th>
+                    <th>Celular</th>
+                    <th>Cidade</th>
+                    <th>Rua</th>
+                    <th>Bairro</th>
+                    <th>Complemento</th>
+                    <th>CEP</th>
+                    <th>Número</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Linhas serão adicionadas dinamicamente aqui -->
+            </tbody>
+        </table>
+
+        <h2 class="mt-5">Aceitos</h2>
+        <table class="table table-striped" id="acceptedTable">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Data</th>
+                    <th>Opção de Entrega</th>
+                    <th>UF</th>
+                    <th>Celular</th>
+                    <th>Cidade</th>
+                    <th>Rua</th>
+                    <th>Bairro</th>
+                    <th>Complemento</th>
+                    <th>CEP</th>
+                    <th>Número</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Linhas serão adicionadas dinamicamente aqui -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Função para buscar dados pendentes do servidor e preencher a tabela
+        function loadPendingData() {
+            fetch('http://localhost:3344/agenda/')
+                .then(response => response.json())
+                .then(data => {
+                    const tableBody = document.getElementById('pendingTable').getElementsByTagName('tbody')[0];
+                    data.forEach(item => {
+                        const newRow = tableBody.insertRow();
+                        newRow.innerHTML = `
+                            <td>${item.name}</td>
+                            <td>${item.cpf}</td>
+                            <td>${formatarData(item.data)}</td>
+                            <td>${item.delivery}</td>
+                            <td>${item.uf}</td>
+                            <td>${item.tel}</td>
+                            <td>${item.cidade}</td>
+                            <td>${item.rua}</td>
+                            <td>${item.bairro}</td>
+                            <td>${item.complemento}</td>
+                            <td>${item.cep}</td>
+                            <td>${item.numero}</td>
+                            <td>
+                                <button class="btn btn-success btn-sm mr-2" onclick="aceitarItem(${item.id}, '${item.name}', '${item.tel}')">Aceitar</button>
+                                <button class="btn btn-danger btn-sm" onclick="rejeitarItem(${item.id})">Recusar</button>
+                            </td>
+                        `;
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Função para buscar dados aceitos do servidor e preencher a tabela
+        function loadAcceptedData() {
+            fetch('http://localhost:3344/agenda/aceita')
+                .then(response => response.json())
+                .then(data => {
+                    const tableBody = document.getElementById('acceptedTable').getElementsByTagName('tbody')[0];
+                    data.forEach(item => {
+                        const newRow = tableBody.insertRow();
+                        newRow.innerHTML = `
+                            <td>${item.name}</td>
+                            <td>${item.cpf}</td>
+                            <td>${formatarData(item.data)}</td>
+                            <td>${item.delivery}</td>
+                            <td>${item.uf}</td>
+                            <td>${item.tel}</td>
+                            <td>${item.cidade}</td>
+                            <td>${item.rua}</td>
+                            <td>${item.bairro}</td>
+                            <td>${item.complemento}</td>
+                            <td>${item.cep}</td>
+                            <td>${item.numero}</td>
+                        `;
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Função para aceitar um item
+        function aceitarItem(id,nome,cel) {
+            fetch(`http://localhost:3344/agenda/aprovar/${id}`, { method: 'PUT' })
+                .then(response => {
+                    if (response.ok) {
+                        enviarsms(cel, nome);
+                       // location.reload();
+                    } else {
+                        console.error('Failed to accept item');
+                    }
+                });
+        }
+        function formatarData(dataString) {
+            
+            const data = new Date(dataString);
+            
+           
+            const dia = String(data.getDate()).padStart(2, '0');
+            const mes = String(data.getMonth() + 1).padStart(2, '0');
+            const ano = data.getFullYear();
+            const hora = String(data.getHours()).padStart(2, '0');
+            const minutos = String(data.getMinutes()).padStart(2, '0');
+
+            return `${dia}/${mes}/${ano} ${hora}:${minutos}`;
+        }
+
+        // Função para recusar um item
+        function rejeitarItem(id) {
+            fetch(`http://localhost:3344/agenda/recusar/${id}`, { method: 'PUT' })
+                .then(response => {
+                    if (response.ok) {
+                        location.reload();
+                    } else {
+                        console.error('Failed to reject item');
+                    }
+                });
+        }
+
+                // Função para enviar SMS usando Twilio
+        function enviarsms(cel, nome) {
+            const numeroLimpo = cel.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+            cel = `+55${numeroLimpo}`;
+            console.log(cel);
+            console.log("entrei");
+            fetch('http://localhost:3344/agenda/sms', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    to: cel,
+                    message: `Olá ${nome}, sua doação foi aceita! Muito obrigado por sua contribuição.`
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('SMS enviado com sucesso!');
+                } else {
+                    console.error('Falha ao enviar SMS');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        // Carrega os dados ao carregar a página
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPendingData();
+            loadAcceptedData();
+        });
+    </script>
+</body>
+</html>

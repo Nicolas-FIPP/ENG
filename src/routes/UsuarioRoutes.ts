@@ -13,8 +13,19 @@ routes.post('/cadastrar', usuarioControl.create);
 // Rota para logar
 routes.post('/login', usuarioControl.login)
 
-// Rota para retornar um usuario pelo token TESTE
-routes.get('/get-usuario', autenticacaoToken, )
 
+
+
+// Rota pra obterum usuário pelo id
+routes.get('/get-usuario/:id', autenticacaoToken, usuarioControl.get)
+
+// Rota para listar todos os usuários
+routes.get('/get-todos-usuarios', usuarioControl.getAll); //autenticacaoToken
+
+// Rota para excluir logicamente um usuário
+routes.put('/inativar-usuario/:id', usuarioControl.inativar); //autenticacaoToken
+
+// Rota para alterar senha
+routes.post('/alterar-senha', usuarioControl.alterarSenha);
 
 export default routes;

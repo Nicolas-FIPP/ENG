@@ -20,10 +20,8 @@ export default class PessoaController {
         if (pessoa.cpf && pessoa.pessoaFisica) {
           pessoa.cpf = pessoa.cpf.replace(/[^\d]/g, '');
           if (pessoaFisicaModel.validaCpf(pessoa.cpf)) {
-           
-  
+
             const newPessoa: pessoaOut = await pessoaModel.create(pessoa);
-  
             const pessoaFisica: PessoaFisicaIn = {
               id: newPessoa.id,
               cpf: pessoa.cpf,
@@ -76,7 +74,10 @@ export default class PessoaController {
 
 
 
-   getAll = async (req: Request, res: Response) => {
+
+  getAll = async (req: Request,res: Response) => {
+    
+
     try {
       const pessoas = await pessoaModel.getAll();
       console.log(pessoas[0])
@@ -89,6 +90,20 @@ export default class PessoaController {
       });
     }
   };
+  /*
+
+  getAll = async (req: Request, res: Response) => {
+    try {
+      const Tipo_Oficina_s: TipoOficinaOut[] | null = await tipooficinaModel.getAll();
+      res.status(200).json(Tipo_Oficina_s);
+    } catch (e) {
+      console.log("Failed to get all Tipo_Oficina_s", e);
+      res.status(500).send({
+        error: "USR-03",
+        message: "Failed to get all Tipo_Oficina_s",
+      });
+    }
+  };*/
   
 
   update = async (req: Request, res: Response) => {
