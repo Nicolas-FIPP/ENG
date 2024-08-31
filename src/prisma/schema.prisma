@@ -41,6 +41,7 @@ model despesa {
 }
 
 model doacao {
+
   id              Int               @id @default(autoincrement())
   data            DateTime      
   uf              String            @db.VarChar(2)
@@ -57,6 +58,32 @@ model doacao {
   itens_doacao    itens_doacao[]
 }
 
+model agenda_doacao {
+  id              Int      @id @default(autoincrement())
+  name            String
+  cpf             String
+  tel             String   @default("")   @db.VarChar(11)
+  data        DateTime
+  delivery  DeliveryOption
+  uf              String?  @db.VarChar(2)
+  cidade          String?
+  rua             String?
+  bairro          String?
+  complemento     String?
+  cep             String? @db.VarChar(8)
+  numero          String?
+  aprovado        Boolean @default(false)
+  ativo           Boolean @default(true)
+
+  @@map("agenda_doacao")
+}
+
+enum DeliveryOption {
+  entrega
+  coleta
+}
+
+
 model donativo {
   id              Int                   @id @default(autoincrement())
   desc            String?       
@@ -68,6 +95,7 @@ model donativo {
 }
 
 model evento {
+
   id                   Int            @id @default(autoincrement())
   nome                 String
   custo                Float   
@@ -87,6 +115,7 @@ model evento {
   despesa              despesa[]
   pessoa               pessoa?        @relation(fields: [pes_id_responsavel], references: [id])
   participante         participante[]
+
 }
 
 
@@ -109,6 +138,7 @@ model itens_doacao {
 
   @@id([doa_id, don_id])
 }
+
 
 
 

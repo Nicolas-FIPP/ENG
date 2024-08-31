@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendar Doação</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/agendar-doacao.css">
+
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title text-center">Agendar Doação</h5>
+                <form id="donationForm">
+                    <div class="form-group">
+                        <label for="name">Nome</label>
+                        <input type="text" class="form-control" id="name" placeholder="Digite seu nome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cpf">CPF</label>
+                        <input type="text" class="form-control" id="cpf" onkeyup="mascara('###.###.###-##',this,event)" onblur="validarCPF(this)" placeholder="Digite seu CPF" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tel">Celular</label>
+                        <input type="text" class="form-control" id="tel" onkeyup="mascara('(##) #####-####', this, event)" placeholder="Digite seu celular" >
+                    </div>
+                    <div class="form-group">
+                        <label for="dateTime">Data e Hora</label>
+                        <input type="datetime-local" class="form-control" id="dateTime" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="deliveryOption">Opção de Entrega</label>
+                        <select class="form-control" id="deliveryOption" required>
+                            <option value="" disabled selected>Selecione uma opção</option>
+                            <option value="entrega">Entregar na ONG</option>
+                            <option value="coleta">ONG irá coletar</option>
+                        </select>
+                    </div>
+                    <div id="addressFields" style="display: none;">
+                        <div class="form-group">
+                            <label for="cep">CEP</label>
+                            <input type="text" class="form-control" id="cep" onkeyup="mascara('#####-###',this,event)" onblur="buscaCep()" placeholder="Digite seu CEP" maxlength="9">
+                        </div>
+                        <div class="form-group">
+                            <label for="classEstate" class="form-label">Estado</label>
+                            <select class="form-control" name="uf" id="uf"  onchange="buscarCidadesDadoEstado()" style="border-color: red;">
+                              <option value="AC" selected>Acre</option>
+                              <option value="AL">Alagoas</option>
+                              <option value="AP">Amapá</option>
+                              <option value="AM">Amazonas</option>
+                              <option value="BA">Bahia</option>
+                              <option value="CE">Ceará</option>
+                              <option value="DF">Distrito Federal</option>
+                              <option value="ES">Espírito Santo</option>
+                              <option value="GO">Goiás</option>
+                              <option value="MA">Maranhão</option>
+                              <option value="MT">Mato Grosso</option>
+                              <option value="MS">Mato Grosso do Sul</option>
+                              <option value="MG">Minas Gerais</option>
+                              <option value="PA">Pará</option>
+                              <option value="PB">Paraíba</option>
+                              <option value="PR">Paraná</option>
+                              <option value="PE">Pernambuco</option>
+                              <option value="PI">Piauí</option>
+                              <option value="RJ">Rio de Janeiro</option>
+                              <option value="RN">Rio Grande do Norte</option>
+                              <option value="RS">Rio Grande do Sul</option>
+                              <option value="RO">Rondônia</option>
+                              <option value="RR">Roraima</option>
+                              <option value="SC">Santa Catarina</option>
+                              <option value="SP">São Paulo</option>
+                              <option value="SE">Sergipe</option>
+                              <option value="TO">Tocantins</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="cidade" class="form-label">Cidade</label>
+                                <select class="form-control" name="cidade" id="cidade" style="border-color: red;">
+                                <!--OS OPTIONS VÃO SER INSERIDOS AQUI PELO RETORNO DA API-->
+                                <option value="" disabled selected>Selecione uma opção</option>
+                                </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="rua">Rua</label>
+                            <input type="text" class="form-control" id="rua" placeholder="Digite sua rua">
+                        </div>
+                        <div class="form-group">
+                            <label for="bairro">Bairro</label>
+                            <input type="text" class="form-control" id="bairro" placeholder="Digite seu bairro">
+                        </div>
+                        <div class="form-group">
+                            <label for="complemento">Complemento</label>
+                            <input type="text" class="form-control" id="complemento" placeholder="Digite o complemento">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="numero">Número</label>
+                            <input type="text" class="form-control" id="numero" placeholder="Digite o número">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Agendar Doação</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="js/agendar-doacao.js"></script>
+</body>
+</html>

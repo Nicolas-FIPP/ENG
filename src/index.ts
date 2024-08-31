@@ -7,6 +7,7 @@ import despesaRoutes from "routes/DespesaRoutes"
 import usuarioRoutes from "routes/UsuarioRoutes"
 import pessoaRoutes from "routes/PessoaRoutes"
 import oficinaRoutes from "routes/OficinaRoutes"
+import agendaRoutes from "routes/AgendaRoutes"
 DateTime.local().setZone("America/Sao_Paulo");
 
 const app = express();
@@ -20,11 +21,12 @@ app.get("/", (req, res) => {
 });
 //app.use("/users", authentication, usersRoutes);
 //app.use("/users", usersRoutes);
-app.use("/tipo-oficina", tipooficinaRoutes);
-app.use("/despesa", despesaRoutes)
-app.use("/usuario", usuarioRoutes);
+//app.use("/tipo-oficina", tipooficinaRoutes);
+//app.use("/despesa", despesaRoutes)
+//app.use("/usuario", usuarioRoutes);
 app.use("/pessoa", pessoaRoutes);
-app.use("/oficina", oficinaRoutes);
+app.use("/agenda", agendaRoutes);
+//app.use("/oficina", oficinaRoutes);
 
 
 

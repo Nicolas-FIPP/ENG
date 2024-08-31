@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+/*import { NextFunction, Request, Response } from "express";
 import UsuarioModel from "models/UsuarioModel";
 
 const jwt = require('jsonwebtoken');
@@ -32,4 +32,4 @@ export async function autenticacaoToken(req: Request, res: Response, next: NextF
     req.body.nivel = nivel;
     next();
 
-}
+}*/
