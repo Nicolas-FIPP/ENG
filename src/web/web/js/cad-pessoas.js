@@ -487,7 +487,7 @@ async function buscarCidadesDadoEstado4() {
 
 
   async function recuperaDados() {
-   let URL = "http://localhost:3344/pessoa/";
+   let URL = "http://localhost:3344/pessoa/allpessoas";
    let response = await fetch(URL, {
        method: "GET",
        headers: { 'Content-Type': 'application/json' },
