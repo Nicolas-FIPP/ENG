@@ -1,4 +1,5 @@
 import { TipoOficinaOut } from "dtos/TipoOficinaDTO"
+import { MatriculaDTO, MatriculaNomeDTO } from "./Oficina/matriculaDTO"
 
 export interface OficinaIn{
   id: number                   
@@ -27,4 +28,9 @@ export interface OficinaOut{
     criado_em: Date            
           
   
+  }
+
+  export interface  OficinaeMatriculados{
+    disciplina: string
+    matriculados: MatriculaNomeDTO[]  
   }

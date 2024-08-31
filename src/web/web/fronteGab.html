@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Despesas</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+        .table-wrapper {
+            margin: 30px;
+        }
+        .table-title {
+            padding-bottom: 10px;
+            margin: 0 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h2><b>Gerenciamento de Despesas</b></h2>
+                    </div>
+                    <div class="col-sm-6">
+                        <a href="#addExpenseModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Adicionar Despesa</span></a>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Valor</th>
+                        <th>Data de Vencimento</th>
+                        <th>Data de Pagamento</th>
+                        <th>Tipo de Despesa</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="expenseList">
+                    <!-- Lista de despesas -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal para Adicionar Despesa -->
+    <div id="addExpenseModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="expenseForm">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Adicionar Despesa</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Nome</label>
+                            <input type="text" id="nome" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Valor</label>
+                            <input type="number" id="valor" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Data de Vencimento</label>
+                            <input type="date" id="dataVencimento" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Data de Pagamento</label>
+                            <input type="date" id="dataPagamento" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Tipo de Despesa</label>
+                            <select id="tipoDespesa" class="form-control" required>
+                                <option value="">Selecione um Tipo de Despesa</option>
+                                <!-- Opções de tipos de despesa serão preenchidas via JavaScript -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+                        <input type="submit" class="btn btn-success" value="Salvar">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Editar Despesa -->
+    <div id="editExpenseModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="editExpenseForm">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Editar Despesa</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="editId">
+                        <div class="form-group">
+                            <label>Nome</label>
+                            <input type="text" id="editNome" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Valor</label>
+                            <input type="number" id="editValor" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Data de Vencimento</label>
+                            <input type="date" id="editDataVencimento" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Data de Pagamento</label>
+                            <input type="date" id="editDataPagamento" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Tipo de Despesa</label>
+                            <select id="editTipoDespesa" class="form-control" required>
+                                <!-- Opções de tipos de despesa serão preenchidas via JavaScript -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+                        <input type="submit" class="btn btn-warning" value="Salvar Alterações">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Deletar Despesa -->
+    <div id="deleteExpenseModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="deleteExpenseForm">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Deletar Despesa</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Você tem certeza que deseja deletar esta despesa?</p>
+                        <p class="text-warning"><small>Essa ação não pode ser desfeita.</small></p>
+                        <input type="hidden" id="deleteId">
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+                        <input type="submit" class="btn btn-danger" value="Deletar">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            fetchDespesas();
+            fetchTiposDespesa();
+
+            document.getElementById('expenseForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                adicionarDespesa();
+            });
+
+            document.getElementById('editExpenseForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                editarDespesa();
+            });
+
+            document.getElementById('deleteExpenseForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                deletarDespesa();
+            });
+        });
+
+        function getToken() {
+            return localStorage.getItem('token');
+        }
+
+        function fetchDespesas() {
+            fetch('/api/despesas', {
+                headers: {
+                    'Authorization': 'Bearer ' + getToken()
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const expenseList = document.getElementById('expenseList');
+                expenseList.innerHTML = '';
+                data.forEach(despesa => {
+                    expenseList.innerHTML += `
+                        <tr>
+                            <td>${despesa.nome}</td>
+                            <td>${despesa.valor}</td>
+                            <td>${despesa.dataVencimento}</td>
+                            <td>${despesa.dataPagamento || ''}</td>
+                            <td>${despesa.tipoDespesa.nome}</td>
+                            <td>
+                                <a href="#editExpenseModal" class="edit" data-toggle="modal" onclick="carregarDadosDespesa(${despesa.id})"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                                <a href="#deleteExpenseModal" class="delete" data-toggle="modal" onclick="setDeleteId(${despesa.id})"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                            </td>
+                        </tr>
+                    `;
+                });
+            })
+            .catch(error => console.error('Error fetching expenses:', error));
+        }
+
+        function fetchTiposDespesa() {
+            fetch('/api/tiposDespesas', {
+                headers: {
+                    'Authorization': 'Bearer ' + getToken()
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const tipoDespesaSelect = document.getElementById('tipoDespesa');
+                const editTipoDespesaSelect = document.getElementById('editTipoDespesa');
+                tipoDespesaSelect.innerHTML = '<option value="">Selecione um Tipo de Despesa</option>';
+                editTipoDespesaSelect.innerHTML = '<option value="">Selecione um Tipo de Despesa</option>';
+                data.forEach(tipoDespesa => {
+                    tipoDespesaSelect.innerHTML += `<option value="${tipoDespesa.id}">${tipoDespesa.nome}</option>`;
+                    editTipoDespesaSelect.innerHTML += `<option value="${tipoDespesa.id}">${tipoDespesa.nome}</option>`;
+                });
+            })
+            .catch(error => console.error('Error fetching expense types:', error));
+        }
+
+        function adicionarDespesa() {
+            const nome = document.getElementById('nome').value;
+            const valor = document.getElementById('valor').value;
+            const dataVencimento = document.getElementById('dataVencimento').value;
+            const dataPagamento = document.getElementById('dataPagamento').value;
+            const tipoDespesaId = document.getElementById('tipoDespesa').value;
+
+            fetch('/api/despesas', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + getToken()
+                },
+                body: JSON.stringify({
+                    nome, valor, dataVencimento, dataPagamento, tipoDespesaId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                fetchDespesas();
+                $('#addExpenseModal').modal('hide');
+            })
+            .catch(error => console.error('Error adding expense:', error));
+        }
+
+        function carregarDadosDespesa(id) {
+            fetch(`/api/despesas/${id}`, {
+                headers: {
+                    'Authorization': 'Bearer ' + getToken()
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('editId').value = data.id;
+                document.getElementById('editNome').value = data.nome;
+                document.getElementById('editValor').value = data.valor;
+                document.getElementById('editDataVencimento').value = data.dataVencimento;
+                document.getElementById('editDataPagamento').value = data.dataPagamento;
+                document.getElementById('editTipoDespesa').value = data.tipoDespesaId;
+            })
+            .catch(error => console.error('Error fetching expense data:', error));
+        }
+
+        function editarDespesa() {
+            const id = document.getElementById('editId').value;
+            const nome = document.getElementById('editNome').value;
+            const valor = document.getElementById('editValor').value;
+            const dataVencimento = document.getElementById('editDataVencimento').value;
+            const dataPagamento = document.getElementById('editDataPagamento').value;
+            const tipoDespesaId = document.getElementById('editTipoDespesa').value;
+
+            fetch(`/api/despesas/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + getToken()
+                },
+                body: JSON.stringify({
+                    nome, valor, dataVencimento, dataPagamento, tipoDespesaId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                fetchDespesas();
+                $('#editExpenseModal').modal('hide');
+            })
+            .catch(error => console.error('Error editing expense:', error));
+        }
+
+        function setDeleteId(id) {
+            document.getElementById('deleteId').value = id;
+        }
+
+        function deletarDespesa() {
+            const id = document.getElementById('deleteId').value;
+
+            fetch(`/api/despesas/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer ' + getToken()
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                fetchDespesas();
+                $('#deleteExpenseModal').modal('hide');
+            })
+            .catch(error => console.error('Error deleting expense:', error));
+        }
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>

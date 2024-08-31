@@ -1,11 +1,15 @@
 import { Request, Response } from "express";
 import OficinaModel from "models/Oficina";
 import { TipoOficinaIn, TipoOficinaOut } from 'dtos/TipoOficinaDTO';
-import { OficinaIn, OficinaOut } from "dtos/OficinaDTO";
-
+import { OficinaeMatriculados, OficinaIn, OficinaOut } from "dtos/OficinaDTO";
+import MatriculaModel from "models/matriculaModel";
+import { MatriculaDTO } from "dtos/Oficina/matriculaDTO";
+import PessoaController from "./PessoaController";
+import PessoaModel from "models/PessoaModel";
+import { PrismaClient } from "@prisma/client"
 const oficinaModel = new OficinaModel();
 
-
+const matriculaModel = new MatriculaModel ()
 
 
 export function verificarCamposPreenchidos(oficina: OficinaIn): boolean {
@@ -131,4 +135,54 @@ export default class OficinaController {
       });
     }
   };
+
+   cadastroMatriculado = async (req: Request, res: Response) => {
+
+    let {pes_id,ofi_id} = req.body
+
+
+
+    if(pes_id == null || ofi_id == null){
+      res.status(400).json({message: 'Faltando infos'});
+    } 
+
+    pes_id = parseInt(pes_id)
+    ofi_id = parseInt(ofi_id)
+
+
+    const criado_em = new Date()
+    
+
+    const prisma = new PrismaClient();
+    console.log(req.body)
+    const jaCadastrou =  await matriculaModel.jaCadastrou(pes_id,ofi_id)
+    console.log(jaCadastrou)
+    if (jaCadastrou !== null){
+      return res.status(400).json({})
+    }
+
+    await matriculaModel.create({criado_em,pes_id,ofi_id  })
+
+    console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+    return res.status(200).json({})
+  }
+
+
+  mostrarMatriculascomoficinas = async (req: Request, res: Response) => {
+    
+    
+    const pessoas= await oficinaModel.getListatodasOficinasComMatriculadosENomes()
+    res.status(200).json(pessoas)
+
+  }
+
+
+  deletarmatricula = async (req: Request, res: Response) => {
+    
+    
+    const id: number = parseInt(req.params.id);
+    const matricula = await oficinaModel.deleteMatricula(id);
+    res.status(204).json(matricula);
+
+  }
 }

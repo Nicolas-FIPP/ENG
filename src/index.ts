@@ -28,7 +28,4 @@ app.use("/pessoa", pessoaRoutes);
 app.use("/agenda", agendaRoutes);
 //app.use("/oficina", oficinaRoutes);
 
-
-
-
 app.listen(process.env.PORT || 3344);
