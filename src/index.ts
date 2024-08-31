@@ -21,11 +21,11 @@ app.get("/", (req, res) => {
 });
 //app.use("/users", authentication, usersRoutes);
 //app.use("/users", usersRoutes);
-//app.use("/tipo-oficina", tipooficinaRoutes);
-//app.use("/despesa", despesaRoutes)
-//app.use("/usuario", usuarioRoutes);
+app.use("/tipo-oficina", tipooficinaRoutes);
+app.use("/despesa", despesaRoutes)
+app.use("/usuario", usuarioRoutes);
 app.use("/pessoa", pessoaRoutes);
 app.use("/agenda", agendaRoutes);
-//app.use("/oficina", oficinaRoutes);
+app.use("/oficina", oficinaRoutes);
 
 app.listen(process.env.PORT || 3344);

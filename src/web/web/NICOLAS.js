@@ -224,7 +224,7 @@ async function CarregaIdParaUpdateOficina(event) {
 
         // Populando os selects
         await populateSelect("tipo_oficinaEDIT", "http://localhost:3344/tipo-oficina/todos-tipos-oficinas");
-        await populateSelect("pessoaEDIT", "http://localhost:3344/pessoa/mostrar-todas-pessoas");
+        await populateSelect("pessoaEDIT", "http://localhost:3344/pessoa/allpessoas");
 
         // Seleciona o valor correto
         document.getElementById("tipo_oficinaEDIT").value = infos.tof_id;
@@ -374,7 +374,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function preencherTiposProblemas() {
         
-        fetch('http://localhost:3344/pessoa/mostrar-todas-pessoas')
+        fetch('http://localhost:3344/pessoa/allpessoas')
             .then(response => response.json())
             .then(data => {
              var selectTipoProblema = document.getElementById('pessoa');

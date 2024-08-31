@@ -22,11 +22,13 @@
   },
   "dependencies": {
     "@prisma/client": "^5.15.0",
+    "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
     "swagger-ui-express": "^4.5.0",
+    "twilio": "^5.2.3",
     "yarn": "^1.22.22"
   },
   "prisma": {

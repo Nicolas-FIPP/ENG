@@ -202,7 +202,7 @@
             // Função para carregar nomes
             const loadNomes = async () => {
                 try {
-                    const response = await fetch('http://localhost:3344/pessoa/mostrar-todas-pessoas');
+                    const response = await fetch('http://localhost:3344/pessoa/allpessoas');
                     allNomes = await response.json();
                     console.log('Nomes carregados:', allNomes); // Debug
                 } catch (error) {
