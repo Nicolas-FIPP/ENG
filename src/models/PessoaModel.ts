@@ -40,6 +40,8 @@ export default class PessoaModel {
 
 /*
 include: {
+      where:{status:true},
+      include: {
         fisica: true,
         juridica: true,
         beneficio: true,
@@ -68,6 +70,17 @@ include: {
       }
     });
   }
+
+  getById = async (id: number) => {
+    return await prisma.pessoa.findUnique({
+      where:{
+        id: id
+      }
+    })
+  }
+
+  
+
   /*
 
   get = async (id: number) => {

@@ -18,4 +18,23 @@ export default class TipoDespesaModel{
     getAll = async() => {
         return await prisma.tipo_despesa.findMany();
     }
+
+    delete = async(id: number) => {
+        return await prisma.tipo_despesa.delete({
+            where:{
+                id: id
+            }
+        })
+    }
+
+    update = async(id: number, nome: string) => {
+        return await prisma.tipo_despesa.update({
+            where:{
+                id: id
+            },
+            data:{
+                nome: nome
+            }
+        })
+    }
 }

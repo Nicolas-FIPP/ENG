@@ -8,6 +8,7 @@ import usuarioRoutes from "routes/UsuarioRoutes"
 import pessoaRoutes from "routes/PessoaRoutes"
 import oficinaRoutes from "routes/OficinaRoutes"
 import eventoRoutes from "routes/EventoRoutes"
+import agendaRoutes from "routes/AgendaRoutes"
 DateTime.local().setZone("America/Sao_Paulo");
 
 const app = express();
@@ -25,10 +26,8 @@ app.use("/tipo-oficina", tipooficinaRoutes);
 app.use("/despesa", despesaRoutes)
 app.use("/usuario", usuarioRoutes);
 app.use("/pessoa", pessoaRoutes);
+app.use("/agenda", agendaRoutes);
 app.use("/oficina", oficinaRoutes);
 app.use("/evento", eventoRoutes);
-
-
-
 
 app.listen(process.env.PORT || 3344);

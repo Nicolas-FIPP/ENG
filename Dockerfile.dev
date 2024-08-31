@@ -13,6 +13,8 @@ RUN yarn add bcrypt
 RUN yarn add jsonwebtoken
 RUN yarn add cors
 RUN prisma generate
+RUN yarn add twilio
+
 
 EXPOSE 3344
 

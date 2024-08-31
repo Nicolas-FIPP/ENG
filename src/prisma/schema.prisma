@@ -26,6 +26,7 @@ model beneficio {
 
 model despesa {
   id            Int      @id @default(autoincrement())
+  nome          String
   valor         Float
   dt_vencimento DateTime
   dt_pagamento  DateTime
@@ -54,6 +55,31 @@ model doacao {
   pes_id       Int
   pessoa       pessoa         @relation(fields: [pes_id], references: [id])
   itens_doacao itens_doacao[]
+}
+
+model agenda_doacao {
+  id          Int            @id @default(autoincrement())
+  name        String
+  cpf         String
+  tel         String         @default("") @db.VarChar(11)
+  data        DateTime
+  delivery    DeliveryOption
+  uf          String?        @db.VarChar(2)
+  cidade      String?
+  rua         String?
+  bairro      String?
+  complemento String?
+  cep         String?        @db.VarChar(8)
+  numero      String?
+  aprovado    Boolean        @default(false)
+  ativo       Boolean        @default(true)
+
+  @@map("agenda_doacao")
+}
+
+enum DeliveryOption {
+  entrega
+  coleta
 }
 
 model donativo {

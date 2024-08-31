@@ -79,8 +79,8 @@ export default class PessoaController {
     try {
       console.log("ANTES DO GET ALL");
       const pessoas = await pessoaModel.getAll();
-      console.log("CHEGOU AQUI");
-      res.status(200).json(pessoas);
+      console.log(pessoas[0])
+       return res.status(200).json(pessoas);
     } catch (e) {
       console.log("Failed to get all users", e);
       res.status(500).send({
@@ -161,8 +161,11 @@ export default class PessoaController {
   };
 
   delete = async (req: Request, res: Response) => {
+    const id: number = parseInt(req.params.id);
+      console.log("-------------------------------------------"+id)
     try {
-      const id: number = parseInt(req.body.id);
+      const id: number = parseInt(req.params.id);
+      console.log("-------------------------------------------"+id)
       const userDeleted = await pessoaModel.delete(id);
       res.status(201).json({message: "ok"});
     } catch (e) {
