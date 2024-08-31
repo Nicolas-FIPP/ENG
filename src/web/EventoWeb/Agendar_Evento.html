@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+      
+        <title>Agendar - Evento</title>
+        <meta content="" name="description">
+        <meta content="" name="keywords">
+      
+        <!-- Favicons -->
+        <!--CASO VC QUERIA COLOCAR ALGUMA IMAGEM AQUI-->
+        <!--<link href="assets/img/Logo-Infoeste.png" rel="icon">-->
+        
+      
+        <!-- Google Fonts -->
+        <link
+          href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet">
+
+        <!-- Vendor CSS Files -->
+         
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        
+        <!-- Template Main CSS File -->
+        <link href="assets/css/style.css" rel="stylesheet">
+      
+        <!-- =======================================================
+        * Updated: Aug 30 2023 with Bootstrap v5.3.1
+        * Template URL: https://bootstrapmade.com/anyar-free-multipurpose-one-page-bootstrap-theme/
+        ======================================================== -->
+        
+      </head>
+<body id="verifica">
+
+    <header id="header" class="d-flex align-items-center ">
+        <div class="container d-flex align-items-center justify-content-between">
+    
+          <!--<h1 class="logo"><a href="index.html"><img class="img-fluid" src="assets/img/Logo-Infoeste.png" alt="Logotipo Infoeste" style="max-width: 35%;" href="index.html">                                                          </a><strong><a href="index.html">INFOESTE</a></strong></h1>-->
+          <!-- Uncomment below if you prefer to use an image logo -->
+          <!-- <a href=index.html" class="logo"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+    
+          <!-- .navbar -->
+          <!--<nav id="navbar" class="navbar">
+            <ul>
+              <li><a class="nav-link scrollto" href="index.html" target="_self">Home</a></li>
+            </ul>
+            <i class="bi bi-list mobile-nav-toggle"></i>
+          </nav>-->
+    
+        </div>
+      </header>
+      <section class="contact">
+        <div class="container">
+          <div class="section-title" style="text-align: center;">
+              <h2 id="TITULO_DESTAQUE">Agendar EVENTO</h2>
+          </div>
+          <hr>
+          <form id="FORMULARIO" method="post" role="form" class="php-email-form" onsubmit="event.preventDefault();">
+              <div class="row">
+                  <div class="col-md-4 mb-3">
+                      <label for="Name" class="form-label">Nome</label>
+                      <input type="text" name="courseName" class="form-control" id="NOME" placeholder="Ex. Jantar Beneficente">
+                  </div>
+                  <div class="col-md-4 mb-3">
+                    <label for="classDate" class="form-label">Data de Início</label>
+                    <input type="datetime-local" name="DateIni" class="form-control" id="DATAINI">
+                  </div>
+                  <div class="col-md-4 mb-3">
+                      <label for="classDate" class="form-label">Data de Término</label>
+                      <input type="datetime-local" name="DateFim" class="form-control" id="DATAFIM">
+                  </div>
+              </div> <br>
+              <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="CEP" class="form-label">CEP</label>
+                        <input type="text" class="form-control" name="Cep" id="CEP" placeholder="00000-000" onkeyup="mascara('#####-###',this,event)" onblur="buscaCep()">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="classEstate" class="form-label">Estado</label>
+                        <select class="form-control" name="estado" id="ESTADO" onchange="buscarCidadesDadoEstado(null)">
+                            <option value="">Selecione seu Estado</option>
+                            <option value="AC">Acre</option>
+                            <option value="AL">Alagoas</option>
+                            <option value="AP">Amapá</option>
+                            <option value="AM">Amazonas</option>
+                            <option value="BA">Bahia</option>
+                            <option value="CE">Ceará</option>
+                            <option value="DF">Distrito Federal</option>
+                            <option value="ES">Espírito Santo</option>
+                            <option value="GO">Goiás</option>
+                            <option value="MA">Maranhão</option>
+                            <option value="MT">Mato Grosso</option>
+                            <option value="MS">Mato Grosso do Sul</option>
+                            <option value="MG">Minas Gerais</option>
+                            <option value="PA">Pará</option>
+                            <option value="PB">Paraíba</option>
+                            <option value="PR">Paraná</option>
+                            <option value="PE">Pernambuco</option>
+                            <option value="PI">Piauí</option>
+                            <option value="RJ">Rio de Janeiro</option>
+                            <option value="RN">Rio Grande do Norte</option>
+                            <option value="RS">Rio Grande do Sul</option>
+                            <option value="RO">Rondônia</option>
+                            <option value="RR">Roraima</option>
+                            <option value="SC">Santa Catarina</option>
+                            <option value="SP">São Paulo</option>
+                            <option value="SE">Sergipe</option>
+                            <option value="TO">Tocantins</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="cidade" class="form-label">Cidade</label>
+                        <select class="form-control" name="cidade" id="CIDADE">
+                            <!--OS OPTIONS VÃO SER INSERIDOS AQUI PELO RETORNO DA API-->
+                        </select>
+                    </div>
+               </div> <br>
+
+              <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="classBairro" class="form-label">Bairro</label>
+                        <input type="text" name="bairro" class="form-control" id="BAIRRO" placeholder="Ex. Vila do Estadio">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="classRua" class="form-label">Rua</label>
+                        <input type="text" name="rua" class="form-control" id="RUA" placeholder="Ex. Barão do Rio Branco">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="classComplemento" class="form-label">Complemento</label>
+                        <input type="text" name="complemento" class="form-control" id="COMPLEMENTO" placeholder="Ex. Apartamento 8 / Casa A">
+                    </div>
+              </div> <br>
+
+          <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="classNumero" class="form-label">Número</label>
+                    <input type="text" name="numero" class="form-control" id="NUMERO" placeholder="Ex. 619" required="required">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="classNumero" class="form-label">Custo</label>
+                    <input type="text" name="custo" class="form-control" id="CUSTO" placeholder="R$ 1.500" required="required" onkeyup="mMoeda(this);">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="pessoa" class="form-label">Pessoa Responsável</label>
+                    <select class="form-control" name="pessoa" id="PESSOA">
+                    <!--OS OPTIONS VÃO SER INSERIDOS AQUI PELO RETORNO DA API-->
+                    </select>
+                </div> 
+          </div> <br>
+
+          <div class="row">
+            <div class="text-center"> <br> <br> <br> <br>
+                <button type="submit" class="btn btn-success btn-lg" onclick="ValidarCampos()">Cadastrar</button>
+            </div>
+          </div>
+
+        </form>
+        </div>
+      </section>
+    </div> 
+
+    <hr> <br>
+
+      <div class="container">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h2>Todos os <b>Eventos</b></h2> <br>
+                    </div>
+                    <div>
+                        <!--<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Adicionar Novo Tipo</span></a>-->
+                        <input type="text" class="form-control" style="width: -webkit-fill-available;" oninput="CarregaTabelaFiltrada(this.value)" placeholder="Pesquise pelo Nome"></input>
+                    </div>
+                </div>
+            </div>
+            <div style="overflow-x: scroll;">
+                <table class="table table-striped table-hover" >
+                    <thead>
+                        <tr>
+                            <th><span id=""></span></th>
+                            <th>Nome</th>
+                            <th>Custo</th>
+                            <th>Início</th>
+                            <th>Término</th>
+                            <th>CEP</th>
+                            <th>Estado</th>
+                            <th>Cidade</th>
+                            <th>Bairro</th>
+                            <th>Rua</th>
+                            <th>Complemento</th>
+                            <th>Número</th>
+                            <th>Responsável</th>
+                            <th><strong>FUNÇÕES</strong></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-tbody" >
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- Edit Modal HTML -->
+    <div id="editEmployeeModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form>
+                    <div class="modal-header">                        
+                        <h4 class="modal-title">Alterar</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">                    
+                        <div class="form-group">
+                            <label>Nome</label>
+                            <input id="MODAL_EDIT_Nome" type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Custo</label>
+                            <input id="MODAL_EDIT_Custo" type="text" class="form-control" onkeyup="mMoeda(this);" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Data de Início</label>
+                            <input id="MODAL_EDIT_DataIni" type="datetime-local" name="DateIni" class="form-control" required>
+                        </div>        
+                        <div class="form-group">
+                            <label>Data de Término</label>
+                            <input id="MODAL_EDIT_DataFim" type="datetime-local" name="DateFim" class="form-control" required>            
+                        </div>   
+                        <div class="form-group">
+                            <label>CEP</label>
+                            <input id="MODAL_EDIT_Cep" type="text" class="form-control" placeholder="00000-000" onkeyup="mascara('#####-###',this,event)" onblur="buscaCepEdit(this);" required>
+                        </div>   
+                        <div class="form-group">
+                            <label class="form-label">Estado</label>
+                            <select class="form-control" name="estado" id="MODAL_EDIT_Estado" onchange="buscarCidadesDadoEstadoEdit(null)">
+                                <option value="">Selecione seu Estado</option>
+                                <option value="AC">Acre</option>
+                                <option value="AL">Alagoas</option>
+                                <option value="AP">Amapá</option>
+                                <option value="AM">Amazonas</option>
+                                <option value="BA">Bahia</option>
+                                <option value="CE">Ceará</option>
+                                <option value="DF">Distrito Federal</option>
+                                <option value="ES">Espírito Santo</option>
+                                <option value="GO">Goiás</option>
+                                <option value="MA">Maranhão</option>
+                                <option value="MT">Mato Grosso</option>
+                                <option value="MS">Mato Grosso do Sul</option>
+                                <option value="MG">Minas Gerais</option>
+                                <option value="PA">Pará</option>
+                                <option value="PB">Paraíba</option>
+                                <option value="PR">Paraná</option>
+                                <option value="PE">Pernambuco</option>
+                                <option value="PI">Piauí</option>
+                                <option value="RJ">Rio de Janeiro</option>
+                                <option value="RN">Rio Grande do Norte</option>
+                                <option value="RS">Rio Grande do Sul</option>
+                                <option value="RO">Rondônia</option>
+                                <option value="RR">Roraima</option>
+                                <option value="SC">Santa Catarina</option>
+                                <option value="SP">São Paulo</option>
+                                <option value="SE">Sergipe</option>
+                                <option value="TO">Tocantins</option>
+                        </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Cidade</label>
+                            <select class="form-control" name="cidade" id="MODAL_EDIT_Cidade">
+                                <!--OS OPTIONS VÃO SER INSERIDOS AQUI PELO RETORNO DA API-->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Bairro</label>
+                            <input id="MODAL_EDIT_Bairro" type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Rua</label>
+                            <input id="MODAL_EDIT_Rua" type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Complemento</label>
+                            <input id="MODAL_EDIT_Complemento" type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Número</label>
+                            <input id="MODAL_EDIT_Numero" type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="pessoa" class="form-label">Pessoa Responsável</label>
+                            <select class="form-control" name="pessoa" id="MODAL_EDIT_Responsavel">
+                                <!--OS OPTIONS VÃO SER INSERIDOS AQUI PELO RETORNO DA API-->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+                        <input type="submit" class="btn btn-warning" id="MODAL_EDIT_Id" data-user-id="" onclick="ValidarCamposEdit(this,event)" value="Alterar">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Delete Modal HTML -->
+    <div id="deleteEmployeeModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form>
+                    <div class="modal-header">                        
+                        <h4 class="modal-title">Deletar</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">                    
+                        <p>Você tem certeza que Deseja DELETAR o Registro Selecionado ?</p>
+                        <p class="text-warning"><small>Essa ação não pode ser Desfeita</small></p>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+                        <input type="submit" class="btn btn-danger" id="MODAL_DELETE_Id" data-user-id="" onclick="DeletaEvento(event)" value="Deletar"> 
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+      
+</body>
+<script src="assets/js/APIs.js"></script>
+<script src="assets/js/Mascaras&Validacoes.js"></script>
+
+</html>
