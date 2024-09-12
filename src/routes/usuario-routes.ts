@@ -1,20 +1,16 @@
-import UsuarioControl from "controllers/UsuarioControl";
-import { Router } from "express"
+import UsuarioControl from 'controllers/usuario-control';
+import { Router } from 'express';
 //import { autenticacaoToken } from "services/AutenticacaoToken";
 
 const routes = Router();
 
 const usuarioControl = new UsuarioControl();
 
-
 // Rota para cadastrar um usuário
-routes.post('/cadastrar', usuarioControl.create);
+routes.post('/', usuarioControl.create);
 
 // Rota para logar
-routes.post('/login', usuarioControl.login)
-
-
-
+routes.post('/login', usuarioControl.login);
 
 // Rota pra obterum usuário pelo id
 //routes.get('/get-usuario/:id', autenticacaoToken, usuarioControl.get)
