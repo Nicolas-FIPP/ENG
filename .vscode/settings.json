@@ -1,0 +1,63 @@
+{
+    "editor.formatOnSave": true,
+    "eslint.useFlatConfig": true,
+    "editor.detectIndentation": true,
+    "editor.insertSpaces": true,
+    "editor.rulers": [80, 120],
+    "editor.tabSize": 2,
+    "git.ignoreLimitWarning": true,
+    "files.watcherExclude": {
+      "**/.git/objects/**": true,
+      "**/.git/subtree-cache/**": true,
+      "**/build": true,
+      "**/node_modules": true
+    },
+    "search.exclude": {
+      "**/.git/objects/**": true,
+      "**/.git/subtree-cache/**": true,
+      "**/build": true,
+      "**/node_modules": true,
+      "**package-lock.json**": true,
+      "**yarn.lock**": true,
+      "**/pnpm-lock.yaml**": true
+    },
+    "[typescript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit"
+      }
+    },
+    "[typescriptreact]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit"
+      }
+    },
+    "prettier.configPath": ".prettierrc",
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascriptreact]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "typescript.inlayHints.parameterNames.enabled": "none",
+    "[typescript][typescriptreact]": {
+      "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit"
+      }
+    },
+    "editor.snippetSuggestions": "inline",
+    "editor.quickSuggestions": {
+      "other": "inline"
+    },
+    "editor.suggestOnTriggerCharacters": true,
+    "javascript.suggest.autoImports": false,
+    "typescript.suggest.autoImports": true,
+    "editor.inlineSuggest.enabled": false,
+    "editor.suggest.filterGraceful": false,
+    "editor.suggest.selectionMode": "never",
+    "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+    "editor.columnSelection": false,
+    "editor.defaultColorDecorators": true
+  }
+  
