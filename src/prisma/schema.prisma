@@ -176,6 +176,13 @@ model participante {
   @@id([pes_id, eve_id])
 }
 
+model pessoasInterassadasEvento {
+  Id       Int    @id
+  nome     String @db.VarChar(64)
+  email    String @db.VarChar(64)
+  telefone String @db.VarChar(12)
+}
+
 model pessoa {
   id          Int      @id @default(autoincrement())
   nome        String
