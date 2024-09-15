@@ -1,42 +1,35 @@
-import { EventoIn, EventoOut } from "dtos/EventoDTO";
-import { TipoOficinaIn, TipoOficinaOut } from "dtos/TipoOficinaDTO";
-import { Request, Response } from "express";
-import EventoModel from "models/EventoModel";
+import { EventoIn, EventoOut } from 'dtos/EventoDTO';
+import { Request, Response } from 'express';
+import EventoModel from 'models/EventoModel';
+import PessoaInteressadaModel from 'models/pessoa-interessada-model';
 
 const eventoModel = new EventoModel();
-
+const pessoaInteressadaModel = new PessoaInteressadaModel();
 export default class EventoControl {
   create = async (req: Request, res: Response) => {
     try {
+      const Evento: EventoIn = req.body;
 
-      console.log('O QUE VEIO DO BODY AI ---');
-      console.log(req.body);
-
-      const Evento : EventoIn = req.body;
-      console.log('O EVENTO AI PAIZAO');
-      console.log(Evento);
-      
       Evento.dt_ini = new Date(Evento.dt_ini);
       Evento.dt_fim = new Date(Evento.dt_fim);
 
-      if (eventoModel.validaDatas(Evento.dt_ini, Evento.dt_fim))
-      {
-        const newEvento : EventoOut = await eventoModel.create(Evento);
+      if (eventoModel.validaDatas(Evento.dt_ini, Evento.dt_fim)) {
+        const newEvento: EventoOut = await eventoModel.create(Evento);
+
+        // chamar notificar
+
         res.status(201).json(newEvento);
-      }
-      else
-      {
+      } else {
         res.status(400).send({
-          error: "USR-01",
-          message: "Failed to create Evento: invalid date",
+          error: 'USR-01',
+          message: 'Failed to create Evento: invalid date',
         });
       }
-    
     } catch (e) {
-      console.log("Failed to create Evento", e);
+      console.log('Failed to create Evento', e);
       res.status(500).send({
-        error: "USR-01",
-        message: "Failed to create Evento",
+        error: 'USR-01',
+        message: 'Failed to create Evento',
       });
     }
   };
@@ -51,15 +44,15 @@ export default class EventoControl {
         res.status(200).json(newEvento);
       } else {
         res.status(404).json({
-          error: "USR-06",
-          message: "Evento not found.",
+          error: 'USR-06',
+          message: 'Evento not found.',
         });
       }
     } catch (e) {
-      console.log("Failed to get Evento", e);
+      console.log('Failed to get Evento', e);
       res.status(500).send({
-        error: "USR-02",
-        message: "Failed to get Evento",
+        error: 'USR-02',
+        message: 'Failed to get Evento',
       });
     }
   };
@@ -69,10 +62,10 @@ export default class EventoControl {
       const Evento_s: EventoOut[] | null = await eventoModel.getAll();
       res.status(200).json(Evento_s);
     } catch (e) {
-      console.log("Failed to get all Evento_s", e);
+      console.log('Failed to get all Evento_s', e);
       res.status(500).send({
-        error: "USR-03",
-        message: "Failed to get all Evento_s",
+        error: 'USR-03',
+        message: 'Failed to get all Evento_s',
       });
     }
   };
@@ -80,13 +73,13 @@ export default class EventoControl {
   update = async (req: Request, res: Response) => {
     try {
       const id: number = parseInt(req.params.id);
-      console.log("O ID AI = ",id);
-      console.log("O QUE VEIO DO BODY UPDATE = ",req.body);
+      console.log('O ID AI = ', id);
+      console.log('O QUE VEIO DO BODY UPDATE = ', req.body);
       const updateEvento: EventoIn = req.body;
 
       updateEvento.dt_ini = new Date(updateEvento.dt_ini);
       updateEvento.dt_fim = new Date(updateEvento.dt_fim);
-      console.log("OBJETO CONVERTIDO UPDATE = ",updateEvento);
+      console.log('OBJETO CONVERTIDO UPDATE = ', updateEvento);
 
       const EventoUpdated: EventoOut | null = await eventoModel.update(id, updateEvento);
 
@@ -94,15 +87,15 @@ export default class EventoControl {
         res.status(200).json(EventoUpdated);
       } else {
         res.status(404).json({
-          error: "USR-06",
-          message: "Evento not found.",
+          error: 'USR-06',
+          message: 'Evento not found.',
         });
       }
     } catch (e) {
-      console.log("Failed to update Evento", e);
+      console.log('Failed to update Evento', e);
       res.status(500).send({
-        error: "USR-04",
-        message: "Failed to update Evento",
+        error: 'USR-04',
+        message: 'Failed to update Evento',
       });
     }
   };
@@ -113,10 +106,10 @@ export default class EventoControl {
       const EventoDeleted = await eventoModel.delete(id);
       res.status(204).json(EventoDeleted);
     } catch (e) {
-      console.log("Failed to delete Evento", e);
+      console.log('Failed to delete Evento', e);
       res.status(500).send({
-        error: "USR-05",
-        message: "Failed to delete Evento",
+        error: 'USR-05',
+        message: 'Failed to delete Evento',
       });
     }
   };

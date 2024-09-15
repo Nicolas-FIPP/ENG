@@ -1,30 +1,34 @@
 import { PrismaClient } from '@prisma/client';
-import { create } from 'domain';
 import { EventoIn } from 'dtos/EventoDTO';
+import { Observador, Sujeito } from './observador';
 
 const prisma = new PrismaClient();
 
-export default class EventoModel {
+export default class EventoModel implements Sujeito {
+  private observadores: Observador[] = [];
 
-
-  validaDatas = (DataIni : Date, DataFim : Date) => {
-    console.log("ENTROU NA FUNÇÃO DE VALIDAR");
-    console.log(DataIni + " " + DataFim);
-    
-    if (DataIni != null && DataIni != null && DataIni != undefined && DataIni != undefined)
-    {
-      if (DataFim > DataIni)
-        return true;
-      else
-        return false;
-    }
-    else
-      return false;
+  add = (observador: Observador): void => {
+    this.observadores.push(observador);
   };
 
-  create = async (evento : EventoIn) => {
+  remove = (observador: Observador) => {
+    this.observadores = this.observadores.filter((obs) => obs !== observador);
+  };
+
+  notificar = (observador: Observador) => {
+    observador.enviarEmail(this.observadores);
+  };
+
+  validaDatas = (DataIni: Date, DataFim: Date) => {
+    if (DataIni != null && DataIni != null && DataIni != undefined && DataIni != undefined) {
+      if (DataFim > DataIni) return true;
+      else return false;
+    } else return false;
+  };
+
+  create = async (evento: EventoIn) => {
     return await prisma.evento.create({
-      data : evento
+      data: evento,
     });
   };
 
@@ -39,32 +43,32 @@ export default class EventoModel {
         },
       },
     });
-  }
+  };
 
   get = async (id: number) => {
     return await prisma.evento.findUnique({
       where: {
-        id
-      }
+        id,
+      },
     });
-  }
+  };
 
   delete = async (id: number) => {
     return await prisma.evento.delete({
       where: {
-        id
-      }
-    })
-  }
+        id,
+      },
+    });
+  };
 
   update = async (id: number, evento: EventoIn) => {
     return await prisma.evento.update({
       where: {
-        id
+        id,
       },
       data: {
-        ...evento
-      }
-    })
-  }
-};
+        ...evento,
+      },
+    });
+  };
+}

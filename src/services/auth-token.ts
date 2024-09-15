@@ -1,6 +1,6 @@
 import { HttpStatusCode } from 'axios';
 import { NextFunction, Request, Response } from 'express';
-import UsuarioModel from 'models/UsuarioModel';
+import UsuarioModel from 'models/usuario-model';
 
 const jwt = require('jsonwebtoken');
 
