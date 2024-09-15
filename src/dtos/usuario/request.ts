@@ -1,9 +1,5 @@
 import { z } from 'zod';
-
-enum AccessLevels {
-  admin = 1,
-  user = 2,
-}
+import { AccessLevels } from './usuario.dto';
 
 const createUserBodyRequest = z.object({
   senha: z.string(),
@@ -16,4 +12,9 @@ const loginUsuarioRequest = z.object({
   senha: z.string(),
 });
 
-export { createUserBodyRequest, loginUsuarioRequest };
+const alterarSenhaUsuarioRequest = z.object({
+  id: z.number(),
+  nova_senha: z.string(),
+});
+
+export { alterarSenhaUsuarioRequest, createUserBodyRequest, loginUsuarioRequest };

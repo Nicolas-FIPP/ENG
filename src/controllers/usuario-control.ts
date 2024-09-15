@@ -1,6 +1,6 @@
 import { HttpStatusCode } from 'axios';
-import { createUserBodyRequest, loginUsuarioRequest } from 'dtos/usuario/request';
-import { UsuarioCreateBody, UsuarioLoginBody } from 'dtos/usuario/usuario.dto';
+import { alterarSenhaUsuarioRequest, createUserBodyRequest, loginUsuarioRequest } from 'dtos/usuario/request';
+import { AccessLevels, UsuarioCreateBody, UsuarioLoginBody } from 'dtos/usuario/usuario.dto';
 import { Request, Response } from 'express';
 import FisicaModel from 'models/FisicaModel';
 import PessoaModel from 'models/PessoaModel';
@@ -131,55 +131,46 @@ export default class UsuarioControl {
   };
 
   inativar = async (req: Request, res: Response) => {
-    /*if(req.body.nivel !== 1){
-            return res.status(401).send({message: "Não autorizado."});
-        }*/
-
     try {
-      console.log(req.params.id);
-      console.log('vvvvvvvvvvvvvvvv');
-
       const usuario = await usuarioModel.getById(Number(req.params.id));
       if (!usuario) {
-        return res.status(404).json({ message: 'Usuário não encontrado.' });
+        return res.status(HttpStatusCode.NotFound).json({ message: 'Usuário não encontrado.' });
       }
 
-      if (usuario.nivel_acesso === 1) {
-        const admins = await usuarioModel.getAllAdmins(1);
+      if (usuario.nivel_acesso === AccessLevels.admin) {
+        const admins = await usuarioModel.getAllAdmins(AccessLevels.admin);
         if (admins.length === 1) {
-          return res.status(400).json({ message: 'Não é possível excluir todos os admins.' });
+          return res.status(HttpStatusCode.BadRequest).json({ message: 'Não é possível excluir todos os admins.' });
         }
       }
 
-      const usuarioDelete = await usuarioModel.deleteLogico(Number(req.params.id));
+      await usuarioModel.deleteLogico(Number(req.params.id));
 
-      return res.status(200).json({ message: 'Usuário foi inativado.' });
+      return res.status(HttpStatusCode.Ok).json({ message: 'Usuário foi inativado.' });
     } catch (error) {
-      return res.status(500).json({ message: 'Não foi possível deletar o usuário.' });
+      return res.status(HttpStatusCode.InternalServerError).json({ message: 'Não foi possível deletar o usuário.' });
     }
   };
 
   alterarSenha = async (req: Request, res: Response) => {
-    /*if(req.body.nivel !== 1){
-            return res.status(401).send({message: "Não autorizado."});
-        }*/
-
-    const id = req.body.id;
-    const novaSenha = req.body.nova_senha;
-
-    const usuario = await usuarioModel.getById(id);
-    if (!usuario) {
-      return res.status(404).send({ message: 'Usuário não encontrado.' });
+    const usuarioParsed = alterarSenhaUsuarioRequest.safeParse(req.body);
+    if (!usuarioParsed.success) {
+      return res.status(HttpStatusCode.BadRequest).json(usuarioParsed.error.format());
     }
 
-    /*const match = await bcrypt.compare(novaSenha, usuario.senha);
-        if(!match){
-            return res.status(400).send({message: "A senha tual está incorreta."});
-        }*/
-    await usuarioModel.alterarSenha(id, novaSenha);
+    const usuario = await usuarioModel.getById(usuarioParsed.data.id);
+    if (!usuario) {
+      return res.status(HttpStatusCode.NotFound).send({ message: 'Usuário não encontrado.' });
+    }
 
-    //Hash na nova senha
+    const match = await bcrypt.compare(usuarioParsed.data.nova_senha, usuario.senha);
+    if (!match) {
+      return res.status(HttpStatusCode.BadRequest).send({ message: 'A senha atual está incorreta.' });
+    }
 
-    return res.status(200).json({ message: 'Senha alterada.' });
+    usuarioParsed.data.nova_senha = await bcrypt.hash(usuarioParsed.data.nova_senha, 10);
+    await usuarioModel.alterarSenha(usuarioParsed.data.id, usuarioParsed.data.nova_senha);
+
+    return res.status(HttpStatusCode.Ok).json({ message: 'Senha alterada.' });
   };
 }

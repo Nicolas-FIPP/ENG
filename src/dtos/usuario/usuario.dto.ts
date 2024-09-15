@@ -10,3 +10,8 @@ export interface UsuarioLoginBody {
   cpf: string;
   senha: string;
 }
+
+export enum AccessLevels {
+  admin = 1,
+  user = 2,
+}
