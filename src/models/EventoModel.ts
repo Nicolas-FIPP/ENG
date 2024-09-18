@@ -19,6 +19,13 @@ export default class EventoModel implements Sujeito {
     observador.enviarEmail(this.observadores);
   };
 
+
+
+
+  
+
+  
+
   validaDatas = (DataIni: Date, DataFim: Date) => {
     if (DataIni != null && DataIni != null && DataIni != undefined && DataIni != undefined) {
       if (DataFim > DataIni) return true;

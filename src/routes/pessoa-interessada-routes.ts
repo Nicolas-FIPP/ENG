@@ -1,9 +1,13 @@
 import { Router } from 'express';
+import PessoaInteressadaControl from "../controllers/pessoa-interessada-control";
+
+
+const pessoaInteressadaControl = new PessoaInteressadaControl();
 
 const routes = Router();
 
 // Criar pessoa interessada
-routes.post('/');
+routes.post('/',pessoaInteressadaControl.create);
 
 // Buscar todas as pessoas interessadas
 routes.get('/');
