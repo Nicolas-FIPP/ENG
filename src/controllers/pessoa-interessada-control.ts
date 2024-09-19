@@ -1,30 +1,38 @@
 import { HttpStatusCode } from 'axios';
+import { PessoaInteressadaBodyRequest } from 'dtos/pessoa-interessada/request';
 import { Request, Response } from 'express';
 import EventoModel from 'models/EventoModel';
-import PessoaInteressadaModel from 'models/pessoa-interessada-model';
-import {PessoaInteressada} from '../dtos/pessoa-interessada/pessoa-interessada'
 
 const eventoModel = new EventoModel();
-const pessoaInteressadaModel = new PessoaInteressadaModel();
 
 export default class PessoaInteressadaControl {
-  create = async (req: Request, res: Response) => {
+  public add = async (req: Request, res: Response) => {
     try {
+      const pessoaInteressada: PessoaInteressadaBodyRequest = req.body;
+      const response = await eventoModel.add(pessoaInteressada);
 
-      const interessada : PessoaInteressada = req.body;
+      if (response) {
+        return res.status(HttpStatusCode.Created).json(response);
+      }
 
-      const interessadaOut = await pessoaInteressadaModel.create(interessada);
-      return res.status(200).json(interessadaOut);
-      // adicionar pessoa interessada no banco
-      // chamar add observador eventoModel.add(pessoaInteressadaModel)
-    } catch (error) {
-      return res.status(HttpStatusCode.InternalServerError);
+      return res.status(HttpStatusCode.InternalServerError).send();
+    } catch (e) {
+      return res.status(HttpStatusCode.InternalServerError).json(e);
     }
   };
 
-  getAll = async (req: Request, res: Response) => {};
+  public remove = async (req: Request, res: Response) => {
+    try {
+      const email = req.body.email;
+      const response = await eventoModel.remove(email);
 
-  getByEmail = async (req: Request, res: Response) => {};
+      if (response) {
+        return res.status(HttpStatusCode.Created).json(response);
+      }
 
-  deleteByEmail = async (req: Request, res: Response) => {};
+      return res.status(HttpStatusCode.InternalServerError).send();
+    } catch (e) {
+      return res.status(HttpStatusCode.InternalServerError).json(e);
+    }
+  };
 }

@@ -1,23 +1,18 @@
-import { PrismaClient } from '@prisma/client';
-import { PessoaInteressada } from 'dtos/pessoa-interessada/pessoa-interessada';
+import { PessoaInteressada, PessoaInteressadaDados } from 'dtos/pessoa-interessada/pessoa-interessada';
 import { Observador } from 'models/observador';
 
-const prisma = new PrismaClient();
-
 export default class PessoaInteressadaModel implements Observador {
-  enviarEmail = (observadores: Observador[]): void => {
-    // recebe a lista e manda email
+  public nome: string;
+  public email: string;
+  public constructor(pessoaInteressada: PessoaInteressada) {
+    (this.nome = pessoaInteressada.nome), (this.email = pessoaInteressada.email);
+  }
+
+  enviarEmail = (): PessoaInteressadaDados => {
+    const response: PessoaInteressadaDados = {
+      nome: this.nome,
+      email: this.email,
+    };
+    return response;
   };
-
-  create = async (pessoaInteressada: PessoaInteressada) => {
-    return await prisma.pessoaInteressada.create({
-      data: pessoaInteressada,
-    });
-  };
-
-  getAll = async () => {};
-
-  getByEmail = async () => {};
-
-  deleteByEmail = async () => {};
 }

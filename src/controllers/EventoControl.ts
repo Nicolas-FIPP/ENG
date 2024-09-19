@@ -1,36 +1,26 @@
+import { HttpStatusCode } from 'axios';
 import { EventoIn, EventoOut } from 'dtos/EventoDTO';
+import { CreateEventoResponseDto } from 'dtos/pessoa-interessada/response';
 import { Request, Response } from 'express';
 import EventoModel from 'models/EventoModel';
-import PessoaInteressadaModel from 'models/pessoa-interessada-model';
 
 const eventoModel = new EventoModel();
-const pessoaInteressadaModel = new PessoaInteressadaModel();
 export default class EventoControl {
-  create = async (req: Request, res: Response) => {
+  public create = async (req: Request, res: Response) => {
     try {
-      const Evento: EventoIn = req.body;
+      const evento: EventoIn = req.body;
 
-      Evento.dt_ini = new Date(Evento.dt_ini);
-      Evento.dt_fim = new Date(Evento.dt_fim);
+      evento.dt_ini = new Date(evento.dt_ini);
+      evento.dt_fim = new Date(evento.dt_fim);
 
-      if (eventoModel.validaDatas(Evento.dt_ini, Evento.dt_fim)) {
-        const newEvento: EventoOut = await eventoModel.create(Evento);
-
-        // chamar notificar
-
-        res.status(201).json(newEvento);
+      if (eventoModel.validaDatas(evento.dt_ini, evento.dt_fim)) {
+        const newEvento: CreateEventoResponseDto = await eventoModel.criarEvento(evento);
+        res.status(HttpStatusCode.Created).json(newEvento);
       } else {
-        res.status(400).send({
-          error: 'USR-01',
-          message: 'Failed to create Evento: invalid date',
-        });
+        res.status(HttpStatusCode.BadRequest).send();
       }
     } catch (e) {
-      console.log('Failed to create Evento', e);
-      res.status(500).send({
-        error: 'USR-01',
-        message: 'Failed to create Evento',
-      });
+      return res.status(HttpStatusCode.InternalServerError).json(e);
     }
   };
 
