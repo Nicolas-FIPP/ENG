@@ -181,6 +181,7 @@ model pessoaInteressada {
   nome     String @db.VarChar(64)
   email    String @unique @db.VarChar(64)
   telefone String @unique @db.VarChar(12)
+
 }
 
 model pessoa {
