@@ -6,6 +6,7 @@ import agendaRoutes from 'routes/AgendaRoutes';
 import despesaRoutes from 'routes/DespesaRoutes';
 import eventoRoutes from 'routes/EventoRoutes';
 import oficinaRoutes from 'routes/OficinaRoutes';
+import pessoaInteressadaRoutes from 'routes/pessoa-interessada-routes';
 import pessoaRoutes from 'routes/PessoaRoutes';
 import tipooficinaRoutes from 'routes/tipooficinaRoutes';
 import usuarioRoutes from 'routes/usuario-routes';
@@ -27,5 +28,6 @@ app.use('/pessoa', pessoaRoutes);
 app.use('/agenda', agendaRoutes);
 app.use('/oficina', oficinaRoutes);
 app.use('/evento', eventoRoutes);
+app.use('/interessada', pessoaInteressadaRoutes);
 
 app.listen(process.env.PORT || 3344);

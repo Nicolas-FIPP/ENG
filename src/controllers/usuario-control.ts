@@ -4,7 +4,7 @@ import { AccessLevels, UsuarioCreateBody, UsuarioLoginBody } from 'dtos/usuario/
 import { Request, Response } from 'express';
 import FisicaModel from 'models/FisicaModel';
 import PessoaModel from 'models/PessoaModel';
-import UsuarioModel from 'models/UsuarioModel';
+import UsuarioModel from 'models/usuario-model';
 
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
