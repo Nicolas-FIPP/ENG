@@ -30,22 +30,10 @@ export default class EventoModel implements Sujeito {
   public notificar = async (): Promise<PessoaInteressadaDados[]> => {
     const prismaReponse: PessoaInteressada[] = await prisma.pessoaInteressada.findMany();
 
-    /* const prismaResponseData: PessoaInteressadaModel[] = prismaReponse.map((pessoaInteressada) =>({
-      nome: pessoaInteressada.nome,
-      email: pessoaInteressada.email,
-      enviarEmail(): 
-    }
-    ))
-
-    const response: PessoaInteressadaDados[] = prismaResponseData.map((pessoaInteressada) =>
-      pessoaInteressada.enviarEmail(),
-    ); */
-
     const prismaResponseData: PessoaInteressadaModel[] = prismaReponse.map(
       (pessoa) => new PessoaInteressadaModel(pessoa),
     );
 
-    // Envia e retorna os dados formatados
     const response: PessoaInteressadaDados[] = prismaResponseData.map((pessoaModel) => pessoaModel.enviarEmail());
 
     return response;
