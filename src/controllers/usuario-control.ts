@@ -40,7 +40,7 @@ export default class UsuarioControl {
       }
 
       novoUsuarioBody.pes_id = pessoaFisica.pes_id;
-      const usuarioCriado: UsuarioCreateBody = await usuarioModel.create(novoUsuarioBody);
+      const usuarioCriado = await usuarioModel.create(novoUsuarioBody);
       if (!usuarioCriado) {
         return res.status(HttpStatusCode.InternalServerError).json({ message: 'Falha ao criar usuário.' });
       }
