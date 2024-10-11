@@ -181,7 +181,6 @@ model pessoaInteressada {
   nome     String @db.VarChar(64)
   email    String @unique @db.VarChar(64)
   telefone String @unique @db.VarChar(12)
-
 }
 
 model pessoa {
@@ -258,4 +257,23 @@ model usuario {
   pes_id  Int       @unique
   despesa despesa[]
   fisica  fisica    @relation(fields: [pes_id], references: [pes_id])
+}
+
+model contasPagar {
+  id        Int      @id @default(autoincrement())
+  valor     Float
+  criado_em DateTime @default(now())
+}
+
+model contasReceber {
+  id        Int      @id @default(autoincrement())
+  valor     Float
+  criado_em DateTime @default(now())
+}
+
+model movimentacaoCaixa {
+  id        Int      @id @default(autoincrement())
+  valor     Float
+  status    Boolean
+  criado_em DateTime @default(now())
 }
