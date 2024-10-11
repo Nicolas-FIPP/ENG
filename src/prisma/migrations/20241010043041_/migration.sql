@@ -238,6 +238,34 @@ CREATE TABLE "usuario" (
     CONSTRAINT "usuario_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "contasPagar" (
+    "id" SERIAL NOT NULL,
+    "valor" DOUBLE PRECISION NOT NULL,
+    "criado_em" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "contasPagar_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "contasReceber" (
+    "id" SERIAL NOT NULL,
+    "valor" DOUBLE PRECISION NOT NULL,
+    "criado_em" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "contasReceber_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "movimentacaoCaixa" (
+    "id" SERIAL NOT NULL,
+    "valor" DOUBLE PRECISION NOT NULL,
+    "status" BOOLEAN NOT NULL,
+    "criado_em" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "movimentacaoCaixa_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "pessoaInteressada_email_key" ON "pessoaInteressada"("email");
 
