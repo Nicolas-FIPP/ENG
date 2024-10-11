@@ -9,6 +9,7 @@ import oficinaRoutes from 'routes/OficinaRoutes';
 import pessoaInteressadaRoutes from 'routes/pessoa-interessada-routes';
 import pessoaRoutes from 'routes/PessoaRoutes';
 import tipooficinaRoutes from 'routes/tipooficinaRoutes';
+import pagamentoRoutes from 'routes/transacao-routes';
 import usuarioRoutes from 'routes/usuario-routes';
 DateTime.local().setZone('America/Sao_Paulo');
 
@@ -29,5 +30,6 @@ app.use('/agenda', agendaRoutes);
 app.use('/oficina', oficinaRoutes);
 app.use('/evento', eventoRoutes);
 app.use('/interessada', pessoaInteressadaRoutes);
+app.use('/pagamento', pagamentoRoutes);
 
 app.listen(process.env.PORT || 3344);
