@@ -3,6 +3,7 @@ import { TransacaoBodyRequest } from 'dtos/transacao/transacao';
 import PixModel from './strategy/pix-model';
 
 const pixModel = new PixModel();
+const prismaClient = new PrismaClient();
 
 export class RecebimentoModel {
   create = async (transacao: TransacaoBodyRequest, prisma: PrismaClient) => {
@@ -15,5 +16,9 @@ export class RecebimentoModel {
     });
 
     return responsePrisma;
+  };
+
+  getAll = async () => {
+    return await prismaClient.contasReceber.findMany();
   };
 }

@@ -1,5 +1,7 @@
 import { PrismaClient } from '@prisma/client';
+import { HttpStatusCode } from 'axios';
 import { TransacaoBodyRequest } from 'dtos/transacao/transacao';
+import { Request, Response } from 'express';
 import { PagamentoModel } from 'models/transacoes/pagamento-model';
 import { Template } from './template-method';
 
@@ -14,5 +16,11 @@ export class PagamentoControl extends Template {
     } catch (e) {
       return false;
     }
+  }
+
+  public async getAll(req: Request, res: Response) {
+    let response = await pagamentoModel.getAll();
+
+    response ? res.status(HttpStatusCode.Ok).json(response) : res.status(HttpStatusCode.BadRequest);
   }
 }

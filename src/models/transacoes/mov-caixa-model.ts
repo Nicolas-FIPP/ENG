@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 
+const prismaClient = new PrismaClient();
 export class MovimentoCaixaModel {
   create = async (valor: number, status: boolean, prisma: PrismaClient): Promise<boolean> => {
     try {
@@ -13,5 +14,9 @@ export class MovimentoCaixaModel {
     } catch (e) {
       return false;
     }
+  };
+
+  getAll = async () => {
+    return prismaClient.movimentacaoCaixa.findMany();
   };
 }
