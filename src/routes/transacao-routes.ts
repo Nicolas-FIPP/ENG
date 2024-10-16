@@ -12,7 +12,7 @@ routes.post('/pagar', pagamentoControl.quitar.bind(pagamentoControl));
 routes.get('/pagar', pagamentoControl.getAll);
 
 routes.post('/receber', recebimentoControl.quitar.bind(recebimentoControl));
-routes.get('/receber', pagamentoControl.getAll);
+routes.get('/receber', recebimentoControl.getAll);
 
 routes.get('/mov-caixa', movCaixa.getAll);
 
